@@ -1,0 +1,42 @@
+<script>
+  export let position = '0-0-0'
+
+  $: [x, y, z] = position.split('-').map(Number)
+
+  const translationMap = {
+    'x-0': '-translate-x-[20svmin]',
+    'x-1': '-translate-x-0',
+    'x-2': 'translate-x-[20svmin]',
+    'y-0': '-translate-y-[20svmin]',
+    'y-1': '-translate-y-0',
+    'y-2': 'translate-y-[20svmin]',
+    'z-0': '-translate-z-[20svmin]',
+    'z-1': '-translate-z-0',
+    'z-2': 'translate-z-[20svmin]',
+  }
+</script>
+
+<div class="
+  absolute
+  w-[20.1svmin] h-[20.1svmin] -left-[10.05svmin] -top-[10.05svmin]
+  {translationMap[`x-${x}`]} {translationMap[`y-${y}`]} {translationMap[`z-${z}`]}"
+>
+    <div class="face neutral-600 dark:neutral-400 translate-z-[10svmin]"></div>
+    <div class="face neutral-600 dark:neutral-400 -translate-z-[10svmin] rotate-y-180"></div>
+    <div class="face neutral-600 dark:neutral-400 translate-x-[10svmin] -rotate-y-90"></div>
+    <div class="face neutral-600 dark:neutral-400 -translate-x-[10svmin] rotate-y-90"></div>
+    <div class="face neutral-600 dark:neutral-400 translate-y-[10svmin] rotate-x-90"></div>
+    <div class="face neutral-600 dark:neutral-400 -translate-y-[10svmin] -rotate-x-90"></div>
+</div>
+
+<style>
+  .face {
+    @apply absolute w-full h-full;
+    border-width: 0.01svmin;
+    border-radius: 0.15svmin;
+  }
+
+  * {
+    transform-style: preserve-3d;
+  }
+</style>

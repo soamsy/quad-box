@@ -1,0 +1,26 @@
+{
+  "name": "quad-box",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "daisyui": "^5.0.35",
+    "eslint": "^9.26.0",
+    "eslint-plugin-svelte": "^3.6.0",
+    "globals": "^16.1.0",
+    "svelte": "^5.28.1",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@lucide/svelte": "^0.511.0",
+    "@tailwindcss/vite": "^4.1.7",
+    "tailwindcss": "^4.1.7",
+    "theme-change": "^2.5.0"
+  }
+}
