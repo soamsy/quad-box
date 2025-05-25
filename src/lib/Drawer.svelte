@@ -1,29 +1,29 @@
 <script>
-import { onMount } from 'svelte';
-import { settings } from '../stores/settingsStore';
-import { PanelLeft, ChartBar, ChartArea, ChartCandlestick, ChartBarStacked, ChartColumn, PanelLeftClose, SquareChevronLeft, PanelLeftOpen } from '@lucide/svelte';
-import ThemeSwapper from './ThemeSwapper.svelte';
-import ModeSwapper from './ModeSwapper.svelte';
-let open = false;
+import { onMount } from 'svelte'
+import { settings } from '../stores/settingsStore'
+import { PanelLeft, ChartBar, ChartArea, ChartCandlestick, ChartBarStacked, ChartColumn, PanelLeftClose, SquareChevronLeft, PanelLeftOpen } from '@lucide/svelte'
+import ThemeSwapper from './ThemeSwapper.svelte'
+import ModeSwapper from './ModeSwapper.svelte'
+let open = false
 
-const toggle = () => open = !open;
-const close = () => open = false;
+const toggle = () => open = !open
+const close = () => open = false
 
-let drawerRef;
-let panelButtonRef;
+let drawerRef
+let panelButtonRef
 
 function handleClickOutside(event) {
   if (open && !drawerRef.contains(event.target) && !panelButtonRef.contains(event.target)) {
-    close();
+    close()
   }
 }
 
 onMount(() => {
-  document.addEventListener('click', handleClickOutside);
+  document.addEventListener('click', handleClickOutside)
   return () => {
-    document.removeEventListener('click', handleClickOutside);
-  };
-});
+    document.removeEventListener('click', handleClickOutside)
+  }
+})
 </script>
 
 <div class="relative flex flex-col h-svh overflow-hidden">

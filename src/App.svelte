@@ -1,23 +1,24 @@
 <script>
-  import ThemeSwapper from "./lib/ThemeSwapper.svelte";
-  import Drawer from "./lib/Drawer.svelte";
-  import Cube from "./lib/Cube.svelte";
-  import { settings } from "./stores/settingsStore";
-  import { mobile, setMobile } from "./stores/mobileStore";
-  import { generateGame } from "./lib/nback";
-  import { onMount } from "svelte";
+  import ThemeSwapper from "./lib/ThemeSwapper.svelte"
+  import Drawer from "./lib/Drawer.svelte"
+  import Cube from "./lib/Cube.svelte"
+  import { settings } from "./stores/settingsStore"
+  import { mobile, setMobile } from "./stores/mobileStore"
+  import { generateGame } from "./lib/nback"
+  import { onMount } from "svelte"
 
-  $: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee';
-  $: isMobile = $mobile;
+  $: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee'
+  $: isMobile = $mobile
+
 
   onMount(() => {
     setMobile()
   })
 
-  window.addEventListener('resize', () => setMobile());
-  window.addEventListener('orientationchange', setMobile);
+  window.addEventListener('resize', () => setMobile())
+  window.addEventListener('orientationchange', setMobile)
 
-  const game = generateGame($settings);
+  const game = generateGame($settings)
   console.log(game)
 </script>
 

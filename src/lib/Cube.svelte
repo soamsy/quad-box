@@ -1,10 +1,10 @@
 <script>
-  import Cell from "./Cell.svelte";
-  import { POSITION_POOL } from "./constants";
-  import { settings } from "../stores/settingsStore";
-  import { mobile } from "../stores/mobileStore";
+  import Cell from "./Cell.svelte"
+  import { POSITION_POOL } from "./constants"
+  import { settings } from "../stores/settingsStore"
+  import { mobile } from "../stores/mobileStore"
 
-  $: rotationTime = (3000 / $settings.rotationSpeed).toFixed(0);
+  $: rotationTime = (3000 / $settings.rotationSpeed).toFixed(0)
 </script>
 
 <div class="flex relative items-center justify-center w-full h-full perspective-distant">

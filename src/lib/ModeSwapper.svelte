@@ -1,38 +1,38 @@
 <script>
-  import { settings } from '../stores/settingsStore';
-  import { Triangle } from '@lucide/svelte';
-  $: mode = $settings.mode;
+  import { settings } from '../stores/settingsStore'
+  import { Triangle } from '@lucide/svelte'
+  $: mode = $settings.mode
 
   const darkColors = new Map([
     ['quad', 'bg-rose-900'],
     ['dual', 'bg-cyan-800'],
     ['custom', 'bg-gray-700']
-  ]);
+  ])
 
   const lightColors = new Map([
     ['quad', 'bg-rose-400'],
     ['dual', 'bg-cyan-400'],
     ['custom', 'bg-gray-400']
-  ]);
+  ])
 
-  const modes = [...lightColors.keys()];
+  const modes = [...lightColors.keys()]
 
-  $: bg = $settings.theme === 'light' ? lightColors.get(mode) : darkColors.get(mode);
+  $: bg = $settings.theme === 'light' ? lightColors.get(mode) : darkColors.get(mode)
 
   const nextMode = () => {
-    let nextIndex = modes.indexOf(mode) + 1;
+    let nextIndex = modes.indexOf(mode) + 1
     if (nextIndex > modes.length - 1) {
-      nextIndex = 0;
+      nextIndex = 0
     }
-    settings.update('mode', modes[nextIndex]);
+    settings.update('mode', modes[nextIndex])
   }
 
   const prevMode = () => {
-    let prevIndex = modes.indexOf(mode) - 1;
+    let prevIndex = modes.indexOf(mode) - 1
     if (prevIndex < 0) {
-      prevIndex = modes.length - 1;
+      prevIndex = modes.length - 1
     }
-    settings.update('mode', modes[prevIndex]);
+    settings.update('mode', modes[prevIndex])
   }
 </script>
 

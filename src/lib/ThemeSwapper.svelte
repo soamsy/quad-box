@@ -1,9 +1,9 @@
 <script>
-  import { Moon, Sun } from "@lucide/svelte";
-  import { settings } from "../stores/settingsStore";
+  import { Moon, Sun } from "@lucide/svelte"
+  import { settings } from "../stores/settingsStore"
 
   const toggleTheme = (theme) => {
-    settings.update('theme', $settings.theme === 'light' ? 'dark' : 'light');
+    settings.update('theme', $settings.theme === 'light' ? 'dark' : 'light')
   }
 </script>
 
