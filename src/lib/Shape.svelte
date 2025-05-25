@@ -13,7 +13,6 @@ $: strokeColor = $settings.theme === 'dark' ? '#333' : '#222'
   </svg>
 </div>
 
-
 <style>
   .shape {
     @apply w-full h-full flex items-center justify-center;
