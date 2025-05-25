@@ -2,7 +2,7 @@
   import { Moon, Sun } from "@lucide/svelte"
   import { settings } from "../stores/settingsStore"
 
-  const toggleTheme = (theme) => {
+  const toggleTheme = () => {
     settings.update('theme', $settings.theme === 'light' ? 'dark' : 'light')
   }
 </script>
