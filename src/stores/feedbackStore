@@ -79,16 +79,18 @@ const createFeedbackStore = () => {
       }
     })
 
-    const currentTimeout = setTimeout(() => {
-      feedbackStore.update((current) => {
-        return {
-          ...current,
-          global: defaultFeedback.global,
-          [field]: defaultFeedback[field],
-        }
-      })
-    }, 350)
-    timeouts.push(currentTimeout)
+    if (value === 'late-failure') {
+      const currentTimeout = setTimeout(() => {
+        feedbackStore.update((current) => {
+          return {
+            ...current,
+            global: defaultFeedback.global,
+            [field]: current[field] === 'late-failure' ? defaultFeedback[field] : current[field],
+          }
+        })
+      }, 350)
+      timeouts.push(currentTimeout)
+    }
   }
 
   return {
