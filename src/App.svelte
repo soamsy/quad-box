@@ -28,7 +28,7 @@ let gameInfo
 let presentation
 let timeoutCancelFns
 
-const resetValues = () => {
+const resetRuntimeData = () => {
   isPlaying = false
   trials = []
   currentTrial = {}
@@ -38,7 +38,7 @@ const resetValues = () => {
   timeoutCancelFns = []
 }
 
-resetValues()
+resetRuntimeData()
 
 $: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee'
 $: isMobile = $mobile
@@ -113,8 +113,8 @@ const startGame = async () => {
   gameInfo = { ...game.meta }
   trials = structuredClone(game.trials)
   selectTrial(0)
-  await delay(1000)
   try {
+    await delay(1000)
     await playTrial(0)
   } catch {
     // ignore
@@ -127,7 +127,7 @@ const endGame = () => {
   }
   scoreTrials()
   timeoutCancelFns.forEach(fn => fn())
-  resetValues()
+  resetRuntimeData()
   feedback.reset()
 }
 
