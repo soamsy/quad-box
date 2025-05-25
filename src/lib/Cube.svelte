@@ -9,7 +9,7 @@
 
 <div class="flex relative items-center justify-center w-full h-full perspective-distant">
   <div class="scene absolute transform-3d -translate-z-[5svmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
-  {#each POSITION_POOL as position}
+  {#each POSITION_POOL as position (position)}
     <Cell {position} />
   {/each}
   </div>

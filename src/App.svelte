@@ -1,5 +1,4 @@
 <script>
-  import ThemeSwapper from "./lib/ThemeSwapper.svelte"
   import Drawer from "./lib/Drawer.svelte"
   import Cube from "./lib/Cube.svelte"
   import { settings } from "./stores/settingsStore"
