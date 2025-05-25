@@ -99,7 +99,7 @@ const playTrial = async (i) => {
 
   selectTrial(i)
   presentation.highlight = true
-  const audioWait = audioPlayer.play(currentTrial.audio)
+  const audioWait = currentTrial.audio ? audioPlayer.play(currentTrial.audio) : Promise.resolve()
   const presentationWait = delay(Math.min(2000, gameInfo.trialTime - 350)).then(() => presentation.highlight = false)
   const trialWait = delay(gameInfo.trialTime)
   await Promise.all([audioWait, presentationWait, trialWait])
