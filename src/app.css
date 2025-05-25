@@ -1,9 +1,11 @@
 @import "tailwindcss";
+@import 'tailwindcss/utilities';
 @plugin "daisyui" {
   themes: black --dark, bumblebee --light;
 }
 
 @custom-variant dark (&:where([data-theme=black], [data-theme=black] *));
+@custom-variant light (&:where([data-theme=bumblebee], [data-theme=bumblebee] *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -35,4 +37,32 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+}
+
+@utility game-button {
+    @apply btn light:btn-soft btn-accent opacity-90;
+}
+
+.game-button-lg {
+  @apply game-button w-full text-8xl p-8 flex-auto relative;
+}
+
+.game-button-lg-hint {
+  @apply absolute top-[10%] text-xl;
+}
+
+.game-button-lg-group {
+  @apply w-full h-full flex flex-col gap-2 items-center justify-around py-1;
+}
+
+.game-button-sm {
+  @apply game-button w-full h-full text-4xl relative flex-auto;
+}
+
+.game-button-sm-hint {
+  @apply absolute top-[4%] text-sm sm:text-xl;
+}
+
+.stretch {
+  @apply absolute left-0 top-0 w-full h-full;
 }

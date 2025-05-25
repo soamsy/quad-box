@@ -26,33 +26,33 @@ onMount(() => {
 });
 </script>
 
-<div class="relative h-svh overflow-hidden">
-  <div class="w-full h-10 flex items-center justify-between bg-base-200 border-b-1 py-1">
+<div class="relative flex flex-col h-svh overflow-hidden">
+  <div class="w-full h-16 lg:h-10 flex items-center justify-between bg-base-200 border-b-1 py-1">
     <div flex gap-4 pl-2>
       <div on:click|stopPropagation={toggle} bind:this={panelButtonRef}>
         {#if open}
-          <PanelLeftClose class="btn btn-square btn-ghost h-6" />
+          <PanelLeftClose class="btn btn-square btn-ghost h-8 lg:h-6" />
         {:else}
-          <PanelLeftOpen class="btn btn-square btn-ghost h-6" />
+          <PanelLeftOpen class="btn btn-square btn-ghost h-8 lg:h-6" />
         {/if}
       </div>
     </div>
-    <div class="flex gap-4">
+    <div class="flex gap-4 text-2xl lg:text-lg">
       <div>N = {$settings.nBack}</div>
       <div>QUAD</div>
     </div>
     <div class="flex gap-4 pr-2">
       <div>
-        <ChartColumn class="btn btn-square btn-ghost h-6" />
+        <ChartColumn class="btn btn-square btn-ghost h-8 lg:h-6" />
       </div>
     </div>
   </div>
 
-  <div class="flex h-full overflow-x-hidden w-fit duration-150" class:-translate-x-72={!open}>
+  <div class="flex-auto flex overflow-x-hidden w-fit duration-150" class:-translate-x-90={!open} class:sm:-translate-x-72={!open}>
 
     <nav
       bind:this={drawerRef}
-      class="top-0 left-0 h-full w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
+      class="top-0 left-0 h-full w-90 sm:w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
     >
       <div class="flex w-full flex-col px-4 gap-2">
         <div class="text-xl font-semibold flex justify-between items-center pt-4">
@@ -103,7 +103,7 @@ onMount(() => {
       </div>
     </nav>
 
-    <div class="w-screen h-full transition-transform duration-150">
+    <div class="relative w-screen h-full transition-transform duration-150 dark:bg-neutral-800 bg-white">
       <slot />
     </div>
   </div>
