@@ -211,10 +211,10 @@ document.addEventListener('keydown', e => handleKey(e.code))
         <button class="game-button text-4xl p-8 md:p-10" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="flex w-full h-full gap-1 row-start-3 md:mt-6">
-        <button class="game-button-sm {$feedback.position}" on:click={() => checkForMatch('position')}>A<span class="game-button-sm-hint">Position</span></button>
-        <button class="game-button-sm {$feedback.color}" on:click={() => checkForMatch('color')}>F<span class="game-button-sm-hint">Color</span></button>
-        <button class="game-button-sm {$feedback.shape}" on:click={() => checkForMatch('shape')}>J<span class="game-button-sm-hint">Shape</span></button>
-        <button class="game-button-sm {$feedback.audio}" on:click={() => checkForMatch('audio')}>L<span class="game-button-sm-hint">Audio</span></button>
+        <button class="game-button-sm {$feedback.position}" on:click={() => checkForMatch('position')} on:touchmove={() => checkForMatch('position')}>A<span class="game-button-sm-hint">Position</span></button>
+        <button class="game-button-sm {$feedback.color}" on:click={() => checkForMatch('color')} on:touchmove={() => checkForMatch('color')}>F<span class="game-button-sm-hint">Color</span></button>
+        <button class="game-button-sm {$feedback.shape}" on:click={() => checkForMatch('shape')} on:touchmove={() => checkForMatch('shape')}>J<span class="game-button-sm-hint">Shape</span></button>
+        <button class="game-button-sm {$feedback.audio}" on:click={() => checkForMatch('audio')} on:touchmove={() => checkForMatch('audio')}>L<span class="game-button-sm-hint">Audio</span></button>
       </div>
     </div>
     {:else}
@@ -224,12 +224,12 @@ document.addEventListener('keydown', e => handleKey(e.code))
         <button class="game-button text-5xl px-12 py-10 max-w-[90%] mr-4" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
-        <button disabled={$feedback.color === 'disabled'} class="game-button-lg {$feedback.color}" on:click={() => checkForMatch('color')}>F<span class="game-button-lg-hint">Color</span></button>
-        <button disabled={$feedback.position === 'disabled'} class="game-button-lg {$feedback.position}" on:click={() => checkForMatch('position')}>A<span class="game-button-lg-hint">Position</span></button>
+        <button disabled={$feedback.color === 'disabled'} class="game-button-lg {$feedback.color}" on:click={() => checkForMatch('color')} on:touchmove={() => checkForMatch('color')}>F<span class="game-button-lg-hint">Color</span></button>
+        <button disabled={$feedback.position === 'disabled'} class="game-button-lg {$feedback.position}" on:click={() => checkForMatch('position')} on:touchmove={() => checkForMatch('position')}>A<span class="game-button-lg-hint">Position</span></button>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
-        <button disabled={$feedback.shape === 'disabled'} class="game-button-lg {$feedback.shape}" on:click={() => checkForMatch('shape')}>J<span class="game-button-lg-hint">Shape</span></button>
-        <button disabled={$feedback.audio === 'disabled'} class="game-button-lg {$feedback.audio}" on:click={() => checkForMatch('audio')}>L<span class="game-button-lg-hint">Audio</span></button>
+        <button disabled={$feedback.shape === 'disabled'} class="game-button-lg {$feedback.shape}" on:click={() => checkForMatch('shape')} on:touchmove={() => checkForMatch('shape')}>J<span class="game-button-lg-hint">Shape</span></button>
+        <button disabled={$feedback.audio === 'disabled'} class="game-button-lg {$feedback.audio}" on:click={() => checkForMatch('audio')} on:touchmove={() => checkForMatch('audio')}>L<span class="game-button-lg-hint">Audio</span></button>
       </div>
       <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
     </div>

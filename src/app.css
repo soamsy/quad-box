@@ -40,7 +40,7 @@ body {
 }
 
 @utility game-button {
-    @apply btn light:btn-soft btn-accent opacity-90 light:hover:bg-base-200 light:hover:text-neutral-950;
+    @apply btn light:btn-soft btn-accent opacity-90 light:hover:bg-base-200 light:hover:text-neutral-950 duration-50;
 }
 
 .game-button-lg {
