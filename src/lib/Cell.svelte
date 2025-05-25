@@ -1,12 +1,11 @@
 <script>
   import Shape from "./Shape.svelte"
-  import { gameSettings } from "../stores/gameSettingsStore"
   export let trial = { position: '0-0-0' }
-  export let presentation = { highlight: false }
+  export let highlight = false
 
   $: [x, y, z] = trial.position.split('-').map(Number)
 
-  $: faceStyle = presentation.highlight && trial.color && !trial.shape ? `background-color: ${trial.color}; background-opacity: 0.95;` : ''
+  $: faceStyle = highlight && trial.color && !trial.shape ? `background-color: ${trial.color}; background-opacity: 0.95;` : ''
 
   const translationMap = {
     'x-0': '-translate-x-[20svmin]',
@@ -23,33 +22,33 @@
 
 <div class="cell {translationMap[`x-${x}`]} {translationMap[`y-${y}`]} {translationMap[`z-${z}`]}">
     <div class="face translate-z-[10svmin]" style="{faceStyle}">
-      {#if $gameSettings.enableShape}
-      <Shape {trial} {presentation} />
+      {#if trial.shape}
+      <Shape {trial} />
       {/if}
     </div>
     <div class="face -translate-z-[10svmin] rotate-y-180" style="{faceStyle}">
-      {#if $gameSettings.enableShape}
-      <Shape {trial} {presentation} />
+      {#if trial.shape}
+      <Shape {trial} />
       {/if}
     </div>
     <div class="face translate-x-[10svmin] -rotate-y-90" style="{faceStyle}">
-      {#if $gameSettings.enableShape}
-      <Shape {trial} {presentation} />
+      {#if trial.shape}
+      <Shape {trial} />
       {/if}
     </div>
     <div class="face -translate-x-[10svmin] rotate-y-90" style="{faceStyle}">
-      {#if $gameSettings.enableShape}
-      <Shape {trial} {presentation} />
+      {#if trial.shape}
+      <Shape {trial} />
       {/if}
     </div>
     <div class="face translate-y-[10svmin] rotate-x-90" style="{faceStyle}">
-      {#if $gameSettings.enableShape}
-      <Shape {trial} {presentation} />
+      {#if trial.shape}
+      <Shape {trial} />
       {/if}
     </div>
     <div class="face -translate-y-[10svmin] -rotate-x-90" style="{faceStyle}">
-      {#if $gameSettings.enableShape}
-      <Shape {trial} {presentation} />
+      {#if trial.shape}
+      <Shape {trial} />
       {/if}
     </div>
 </div>
