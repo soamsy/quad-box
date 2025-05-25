@@ -1,7 +1,10 @@
 <script>
-  export let position = '0-0-0'
+  export let trial = { position: '0-0-0' }
+  export let presentation = { highlight: false }
 
-  $: [x, y, z] = position.split('-').map(Number)
+  $: [x, y, z] = trial.position.split('-').map(Number)
+
+  $: faceStyle = presentation.highlight && trial.color ? `background-color: ${trial.color}; background-opacity: 0.9;` : ''
 
   const translationMap = {
     'x-0': '-translate-x-[20svmin]',
@@ -21,12 +24,12 @@
   w-[20.1svmin] h-[20.1svmin] -left-[10.05svmin] -top-[10.05svmin]
   {translationMap[`x-${x}`]} {translationMap[`y-${y}`]} {translationMap[`z-${z}`]}"
 >
-    <div class="face neutral-600 dark:neutral-400 translate-z-[10svmin]"></div>
-    <div class="face neutral-600 dark:neutral-400 -translate-z-[10svmin] rotate-y-180"></div>
-    <div class="face neutral-600 dark:neutral-400 translate-x-[10svmin] -rotate-y-90"></div>
-    <div class="face neutral-600 dark:neutral-400 -translate-x-[10svmin] rotate-y-90"></div>
-    <div class="face neutral-600 dark:neutral-400 translate-y-[10svmin] rotate-x-90"></div>
-    <div class="face neutral-600 dark:neutral-400 -translate-y-[10svmin] -rotate-x-90"></div>
+    <div class="face neutral-600 dark:neutral-400 translate-z-[10svmin]" style="{faceStyle}"></div>
+    <div class="face neutral-600 dark:neutral-400 -translate-z-[10svmin] rotate-y-180" style="{faceStyle}"></div>
+    <div class="face neutral-600 dark:neutral-400 translate-x-[10svmin] -rotate-y-90" style="{faceStyle}"></div>
+    <div class="face neutral-600 dark:neutral-400 -translate-x-[10svmin] rotate-y-90" style="{faceStyle}"></div>
+    <div class="face neutral-600 dark:neutral-400 translate-y-[10svmin] rotate-x-90" style="{faceStyle}"></div>
+    <div class="face neutral-600 dark:neutral-400 -translate-y-[10svmin] -rotate-x-90" style="{faceStyle}"></div>
 </div>
 
 <style>

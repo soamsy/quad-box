@@ -1,0 +1,95 @@
+import { get, writable } from 'svelte/store'
+import { gameSettings } from './gameSettingsStore'
+
+const createFeedbackStore = () => {
+  const defaultFeedback = {
+    global: 'blank',
+    position: 'blank',
+    color: 'blank',
+    shape: 'blank',
+    audio: 'blank',
+  }
+
+  const updateDefaultFeedback = ($gameSettings) => {
+    defaultFeedback.position = 'blank'
+    defaultFeedback.color = $gameSettings.enableColor ? 'blank' : 'disabled'
+    defaultFeedback.shape = $gameSettings.enableShape ? 'blank' : 'disabled'
+    defaultFeedback.audio = $gameSettings.enableAudio ? 'blank' : 'disabled'
+  }
+
+
+  updateDefaultFeedback(get(gameSettings))
+
+  const feedbackStore = writable(defaultFeedback)
+
+  gameSettings.subscribe(($gameSettings) => {
+    updateDefaultFeedback($gameSettings)
+    feedbackStore.update((current) => {
+      const updates = {}
+      for (const key in defaultFeedback) {
+        if (['blank', 'disabled'].includes(current[key]) && key in defaultFeedback) {
+          updates[key] = defaultFeedback[key]
+        }
+      }
+      return {
+        ...current,
+        ...updates,
+      }
+    })
+  })
+
+  let timeouts = []
+  const reset = () => {
+    feedbackStore.set(defaultFeedback)
+    timeouts.forEach(timeout => clearTimeout(timeout))
+    timeouts = []
+  }
+
+  const clearLateFailures = () => {
+    feedbackStore.update((current) => {
+      return Object.entries(current).reduce((acc, [key]) => {
+        acc[key] = (key === 'late-failure' ? defaultFeedback[key] : current[key])
+        return acc
+      }, {})
+    })
+  }
+
+  const apply = (field, value) => {
+    let globalUpdate = 'blank'
+    if (value === 'failure' || value === 'late-failure') {
+      globalUpdate = 'failure'
+    } else if (value === 'success') {
+      globalUpdate = 'success'
+    }
+
+    feedbackStore.update((current) => {
+      return {
+        ...current,
+        [field]: value,
+        global: globalUpdate,
+      }
+    })
+
+    const currentTimeout = setTimeout(() => {
+      feedbackStore.update((current) => {
+        return {
+          ...current,
+          global: defaultFeedback.global,
+          [field]: defaultFeedback[field],
+        }
+      })
+    }, 350)
+    timeouts.push(currentTimeout)
+  }
+
+  return {
+    ...feedbackStore,
+    clearLateFailures,
+    reset,
+    apply,
+  }
+}
+
+
+export const feedback = createFeedbackStore()
+

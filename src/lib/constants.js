@@ -67,7 +67,7 @@ export const COLOR_POOL = Object.keys(LIGHT_PALETTE)
 export const SHAPE_POOL = Object.keys(SHAPES)
 
 const NATURAL_PATH = "Natural-Numbers/"
-export const AUDIO_POOL = [
+export const NUMBER_AUDIO_POOL = [
   `${NATURAL_PATH}1.wav`,
   `${NATURAL_PATH}2.wav`,
   `${NATURAL_PATH}3.wav`,
@@ -76,6 +76,10 @@ export const AUDIO_POOL = [
   `${NATURAL_PATH}6.wav`,
   `${NATURAL_PATH}7.wav`,
   `${NATURAL_PATH}8.wav`,
+]
+
+export const ALL_AUDIO = [
+  ...NUMBER_AUDIO_POOL,
 ]
 
 export const POSITION_POOL = [

@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, AUDIO_POOL, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, POSITION_POOL } from "./constants"
 
 const pick = (pool) => {
   return pool[Math.floor(Math.random() * pool.length)]
@@ -43,13 +43,13 @@ const generateStimuli = (trials, type, pool, nBack, matchChance, interference) =
 }
 
 export const generateGame = (settings) => {
-  const { nBack, numTrials, enableAudio, enableShape, enableColor, matchChance, interference } = settings
-  let trials = new Array(numTrials).fill().map(() => ({ matches: [] }))
+  const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, matchChance, interference } = settings
+  let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
   let tags = ['position']
   generateStimuli(trials, 'position', POSITION_POOL, nBack, matchChance, interference)
   if (enableAudio) {
     tags.push('audio')
-    generateStimuli(trials, 'audio', AUDIO_POOL, nBack, matchChance, interference)
+    generateStimuli(trials, 'audio', NUMBER_AUDIO_POOL, nBack, matchChance, interference)
   }
   if (enableShape) {
     tags.push('shape')
@@ -67,10 +67,12 @@ export const generateGame = (settings) => {
     title = 'quad'
   } else if (enableAudio && (enableColor != enableShape)) {
     title = 'tri'
+  } else {
+    title = 'custom'
   }
 
   const game = {
-    meta: { nBack, numTrials, title, tags, matchChance, interference, timestamp: Date.now() },
+    meta: { nBack, numTrials, trialTime, title, tags, matchChance, interference, timestamp: Date.now() },
     trials: trials,
   }
   

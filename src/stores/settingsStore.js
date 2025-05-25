@@ -3,19 +3,44 @@ import { writable } from 'svelte/store'
 const STORAGE_KEY = 'quad-box-settings'
 
 const defaultSettings = {
+  version: "v1",
   mode: 'quad',
   theme: 'dark',
-  nBack: 2,
-  numTrials: 25,
-  trialTime: 2500,
-  matchChance: 30,
-  interference: 30,
+  gameSettings: {
+    quad: {
+      nBack: 2,
+      numTrials: 30,
+      trialTime: 2500,
+      matchChance: 30,
+      interference: 30,
+      enableAudio: true,
+      enableShape: true,
+      enableColor: true,
+    },
+    dual: {
+      nBack: 2,
+      numTrials: 30,
+      trialTime: 2500,
+      matchChance: 30,
+      interference: 30,
+      enableAudio: true,
+      enableShape: false,
+      enableColor: false,
+    },
+    custom: {
+      nBack: 2,
+      numTrials: 30,
+      trialTime: 2500,
+      matchChance: 30,
+      interference: 30,
+      enableAudio: true,
+      enableShape: false,
+      enableColor: true,
+    }
+  },
   feedback: 'show',
   rotationSpeed: 35,
   audioSource: 'numbers',
-  enableAudio: true,
-  enableShape: true,
-  enableColor: true,
 }
 
 const loadSettings = () => {

@@ -1,9 +1,11 @@
 <script>
+export let title
+import { ChartColumn, PanelLeftClose, PanelLeftOpen } from '@lucide/svelte'
 import { onMount } from 'svelte'
 import { settings } from '../stores/settingsStore'
-import { PanelLeft, ChartBar, ChartArea, ChartCandlestick, ChartBarStacked, ChartColumn, PanelLeftClose, SquareChevronLeft, PanelLeftOpen } from '@lucide/svelte'
-import ThemeSwapper from './ThemeSwapper.svelte'
+import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
+import ThemeSwapper from './ThemeSwapper.svelte'
 let open = false
 
 const toggle = () => open = !open
@@ -24,6 +26,8 @@ onMount(() => {
     document.removeEventListener('click', handleClickOutside)
   }
 })
+
+$: gameSettings = $settings.gameSettings[$settings.mode]
 </script>
 
 <div class="relative flex flex-col h-svh overflow-hidden">
@@ -37,9 +41,9 @@ onMount(() => {
         {/if}
       </div>
     </div>
-    <div class="flex gap-4 text-2xl lg:text-lg">
-      <div>N = {$settings.nBack}</div>
-      <div>QUAD</div>
+    <div class="flex gap-4 text-2xl lg:text-lg select-none">
+      <div>N = {gameSettings.nBack}</div>
+      <div>{title.toUpperCase()}</div>
     </div>
     <div class="flex gap-4 pr-2">
       <div>
@@ -61,26 +65,8 @@ onMount(() => {
         </div>
         <div class="w-full border-b-1 my-1"></div>
         <ModeSwapper />
-        <div class="flex flex-col gap-1">
-          <label class="text-lg">N-back: {$settings.nBack}
-            <input type="range" min="1" max="12" bind:value={$settings.nBack} class="range" />
-          </label>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-lg">Trial Time: {$settings.trialTime}ms
-            <input type="range" min="1000" max="5000" bind:value={$settings.trialTime} step="100" class="range" />
-          </label>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-lg">Match Chance: {$settings.matchChance}%
-            <input type="range" min="0" max="100" bind:value={$settings.matchChance} step="1" class="range" />
-          </label>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-lg">Interference: {$settings.interference}%
-            <input type="range" min="0" max="100" bind:value={$settings.interference} step="1" class="range" />  
-          </label>
-        </div>
+        <GameSettings />
+        <div class="py-2 divider"></div>
         <div class="flex flex-col gap-1">
           <label class="text-lg">Rotation Speed: {$settings.rotationSpeed}
             <input type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
