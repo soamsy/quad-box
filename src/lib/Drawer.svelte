@@ -56,7 +56,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
 
     <nav
       bind:this={drawerRef}
-      class="top-0 left-0 h-full w-90 sm:w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
+      class="top-0 left-0 h-full overflow-y-auto w-90 sm:w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
     >
       <div class="flex w-full flex-col px-4 gap-2">
         <div class="text-xl font-semibold flex justify-between items-center pt-4">
@@ -87,6 +87,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
           </select>
         </div>
       </div>
+      <div class="my-10"></div>
     </nav>
 
     <div class="relative w-screen h-full transition-transform duration-150 dark:bg-[#232323] bg-white">
