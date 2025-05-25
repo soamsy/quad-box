@@ -5,7 +5,7 @@
 
   $: [x, y, z] = trial.position.split('-').map(Number)
 
-  $: faceStyle = highlight && trial.color && !trial.shape ? `background-color: ${trial.color}; background-opacity: 0.95;` : ''
+  $: faceStyle = (highlight && trial.color && !trial.shape) ? `background-color: ${trial.color}; background-opacity: 0.95;` : ''
 
   const translationMap = {
     'x-0': '-translate-x-[20svmin]',
@@ -22,32 +22,32 @@
 
 <div class="cell {translationMap[`x-${x}`]} {translationMap[`y-${y}`]} {translationMap[`z-${z}`]}">
     <div class="face translate-z-[10svmin]" style="{faceStyle}">
-      {#if trial.shape}
+      {#if trial.shape && highlight}
       <Shape {trial} />
       {/if}
     </div>
     <div class="face -translate-z-[10svmin] rotate-y-180" style="{faceStyle}">
-      {#if trial.shape}
+      {#if trial.shape && highlight}
       <Shape {trial} />
       {/if}
     </div>
     <div class="face translate-x-[10svmin] -rotate-y-90" style="{faceStyle}">
-      {#if trial.shape}
+      {#if trial.shape && highlight}
       <Shape {trial} />
       {/if}
     </div>
     <div class="face -translate-x-[10svmin] rotate-y-90" style="{faceStyle}">
-      {#if trial.shape}
+      {#if trial.shape && highlight}
       <Shape {trial} />
       {/if}
     </div>
     <div class="face translate-y-[10svmin] rotate-x-90" style="{faceStyle}">
-      {#if trial.shape}
+      {#if trial.shape && highlight}
       <Shape {trial} />
       {/if}
     </div>
     <div class="face -translate-y-[10svmin] -rotate-x-90" style="{faceStyle}">
-      {#if trial.shape}
+      {#if trial.shape && highlight}
       <Shape {trial} />
       {/if}
     </div>
