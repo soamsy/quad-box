@@ -5,7 +5,7 @@
   import { POSITION_POOL } from "./constants"
   import { settings } from "../stores/settingsStore"
   import { mobile } from "../stores/mobileStore"
-  import { LIGHT_PALETTE, DARK_PALETTE } from "./constants";
+  import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
 
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
   $: lightColor = LIGHT_PALETTE?.[trial.color] ?? '#313131'
