@@ -165,7 +165,7 @@ const delay = async (ms) => {
 }
 
 const checkForMatch = (type) => {
-  if (!isPlaying) {
+  if (!isPlaying || trialsIndex < gameInfo.nBack) {
     return
   }
 
