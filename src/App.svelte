@@ -266,6 +266,4 @@ button.late-failure {
 .dark button.late-failure {
   background-color: #a6712c;
 }
-
-
 </style>
