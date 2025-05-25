@@ -1,10 +1,12 @@
 <script>
+  import Shape from "./Shape.svelte"
+  import { gameSettings } from "../stores/gameSettingsStore"
   export let trial = { position: '0-0-0' }
   export let presentation = { highlight: false }
 
   $: [x, y, z] = trial.position.split('-').map(Number)
 
-  $: faceStyle = presentation.highlight && trial.color ? `background-color: ${trial.color}; background-opacity: 0.9;` : ''
+  $: faceStyle = presentation.highlight && trial.color && !trial.shape ? `background-color: ${trial.color}; background-opacity: 0.95;` : ''
 
   const translationMap = {
     'x-0': '-translate-x-[20svmin]',
@@ -19,27 +21,43 @@
   }
 </script>
 
-<div class="
-  absolute
-  w-[20.1svmin] h-[20.1svmin] -left-[10.05svmin] -top-[10.05svmin]
-  {translationMap[`x-${x}`]} {translationMap[`y-${y}`]} {translationMap[`z-${z}`]}"
->
-    <div class="face neutral-600 dark:neutral-400 translate-z-[10svmin]" style="{faceStyle}"></div>
-    <div class="face neutral-600 dark:neutral-400 -translate-z-[10svmin] rotate-y-180" style="{faceStyle}"></div>
-    <div class="face neutral-600 dark:neutral-400 translate-x-[10svmin] -rotate-y-90" style="{faceStyle}"></div>
-    <div class="face neutral-600 dark:neutral-400 -translate-x-[10svmin] rotate-y-90" style="{faceStyle}"></div>
-    <div class="face neutral-600 dark:neutral-400 translate-y-[10svmin] rotate-x-90" style="{faceStyle}"></div>
-    <div class="face neutral-600 dark:neutral-400 -translate-y-[10svmin] -rotate-x-90" style="{faceStyle}"></div>
+<div class="cell {translationMap[`x-${x}`]} {translationMap[`y-${y}`]} {translationMap[`z-${z}`]}">
+    <div class="face translate-z-[10svmin]" style="{faceStyle}">
+      {#if $gameSettings.enableShape}
+      <Shape {trial} {presentation} />
+      {/if}
+    </div>
+    <div class="face -translate-z-[10svmin] rotate-y-180" style="{faceStyle}">
+      {#if $gameSettings.enableShape}
+      <Shape {trial} {presentation} />
+      {/if}
+    </div>
+    <div class="face translate-x-[10svmin] -rotate-y-90" style="{faceStyle}">
+      {#if $gameSettings.enableShape}
+      <Shape {trial} {presentation} />
+      {/if}
+    </div>
+    <div class="face -translate-x-[10svmin] rotate-y-90" style="{faceStyle}">
+      {#if $gameSettings.enableShape}
+      <Shape {trial} {presentation} />
+      {/if}
+    </div>
+    <div class="face translate-y-[10svmin] rotate-x-90" style="{faceStyle}">
+      {#if $gameSettings.enableShape}
+      <Shape {trial} {presentation} />
+      {/if}
+    </div>
+    <div class="face -translate-y-[10svmin] -rotate-x-90" style="{faceStyle}">
+      {#if $gameSettings.enableShape}
+      <Shape {trial} {presentation} />
+      {/if}
+    </div>
 </div>
 
 <style>
-  .face {
-    @apply absolute w-full h-full;
-    border-width: 0.01svmin;
-    border-radius: 0.15svmin;
-  }
-
-  * {
+  .cell {
+    @apply absolute w-[20.1svmin] h-[20.1svmin] -left-[10.05svmin] -top-[10.05svmin];
     transform-style: preserve-3d;
   }
+
 </style>

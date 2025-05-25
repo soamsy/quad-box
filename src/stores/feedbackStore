@@ -1,5 +1,6 @@
 import { get, writable } from 'svelte/store'
 import { gameSettings } from './gameSettingsStore'
+import { settings } from './settingsStore'
 
 const createFeedbackStore = () => {
   const defaultFeedback = {
@@ -16,7 +17,6 @@ const createFeedbackStore = () => {
     defaultFeedback.shape = $gameSettings.enableShape ? 'blank' : 'disabled'
     defaultFeedback.audio = $gameSettings.enableAudio ? 'blank' : 'disabled'
   }
-
 
   updateDefaultFeedback(get(gameSettings))
 
@@ -45,6 +45,12 @@ const createFeedbackStore = () => {
     timeouts = []
   }
 
+  let hideFeedback = get(settings).feedback === 'hide'
+  settings.subscribe($settings => {
+    hideFeedback = $settings.feedback === 'hide'
+    reset()
+  })
+
   const clearLateFailures = () => {
     feedbackStore.update((current) => {
       return Object.entries(current).reduce((acc, [key]) => {
@@ -55,6 +61,9 @@ const createFeedbackStore = () => {
   }
 
   const apply = (field, value) => {
+    if (hideFeedback) {
+      return
+    }
     let globalUpdate = 'blank'
     if (value === 'failure' || value === 'late-failure') {
       globalUpdate = 'failure'

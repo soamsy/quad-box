@@ -40,7 +40,7 @@ body {
 }
 
 @utility game-button {
-    @apply btn light:btn-soft btn-accent opacity-90;
+    @apply btn light:btn-soft btn-accent opacity-90 light:hover:bg-base-200 light:hover:text-neutral-950;
 }
 
 .game-button-lg {
@@ -65,4 +65,10 @@ body {
 
 .stretch {
   @apply absolute left-0 top-0 w-full h-full;
+}
+
+.face {
+  @apply absolute w-full h-full border-neutral-950 dark:border-neutral-300;
+  border-width: 0.01svmin;
+  border-radius: 0.15svmin;
 }

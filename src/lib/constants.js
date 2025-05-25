@@ -1,66 +1,59 @@
 export const SHAPES = {
   diamond: `
-    M50,0 L100,50 L50,100 L0,50 Z
+    M55,5 L105,55 L55,105 L5,55 Z
   `,
   heart: `
-    M50,90 
-    C20,70 0,40 25,20 
-    A15,15 0 0,1 50,30 
-    A15,15 0 0,1 75,20 
-    C100,40 80,70 50,90 Z
+    M55,90
+    C30,75 10,45 30,25
+    C40,15 55,20 55,35
+    C55,20 70,15 80,25
+    C100,45 80,75 55,90 Z
   `,
   hemicircle: `
-    M0,50 
-    A50,50 0 0,1 100,50 
-    L100,100 
-    L0,100 Z
+    M5,35
+    A55,65 0 0,1 100,35 
+    L100,100
+    L5,100 Z
   `,
   octagon: `
-    M30,0 L70,0 L100,30 L100,70 L70,100 L30,100 L0,70 L0,30 Z
+    M35,5 L75,5 L105,35 L105,75 L75,105 L35,105 L5,75 L5,35 Z
   `,
   square: `
-    M0,0 H100 V100 H0 Z
+    M5,5 H100 V100 H5 Z
   `,
   star: `
-    M50,0 
-    L61.8,35.1 L100,35.1 
-    L69.1,57 L80.9,91.0 
-    L50,70 L19.1,91 
-    L30.9,57 L0,35.1 
-    L38.2,35.1 Z
-  `,
-  trapezoid: `
-    M25,0 L75,0 L100,100 L0,100 Z
+    M55,5 
+    L66.8,40.1 L105,40.1 
+    L74.1,62 L85.9,96 
+    L55,75 L24.1,96 
+    L35.9,62 L5,40.1 
+    L43.2,40.1 Z
   `,
   triangle: `
-    M50,0 L100,100 L0,100 Z
+    M55,5 L105,105 L5,105 Z
   `
 }
 
-export const DARK_PALETTE = {
-  red: '#FF6370',
-  green: '#65FF85',
-  blue: '#2555FF',
-  yellow: '#FCFC69',
-  purple: '#B365FF',
+export const LIGHT_PALETTE = {
+  red: '#FF2233',
+  green: '#35FF55',
+  blue: '#2545FF',
+  yellow: '#FBFB61',
+  purple: '#8831EA',
   cyan: '#69FCFF',
-  monochrome: '#FFFFFF',
-  orange: '#FF9355',
-  pink: '#FF65B3',
-  brown: '#504512',
+  orange: '#FF9320',
+  pink: '#FC75BA',
 }
 
-export const LIGHT_PALETTE = {
-  red: '#FF2320',
-  green: '#20FF30',
-  blue: '#1525FF',
-  yellow: '#FCFC09',
-  purple: '#7325FF',
-  cyan: '#09FCFF',
-  monochrome: '#000000',
-  orange: '#FF9000',
-  pink: '#FF45C3',
-  brown: '#765000',
+export const DARK_PALETTE = {
+  red: '#A4031F',
+  green: '#09AA40',
+  blue: '#0A0AD7',
+  yellow: '#DFAC28',
+  purple: '#56255D',
+  cyan: '#57B6C3',
+  orange: '#CC5000',
+  pink: '#F27191',
 }
 
 export const COLOR_POOL = Object.keys(LIGHT_PALETTE)

@@ -75,7 +75,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
           <span class="text-lg">Feedback:</span>
           <select bind:value={$settings.feedback} id="feedback-select" class="select">
-            <option value="none">None</option>
+            <option value="hide">Hide</option>
             <option value="show">Show</option>
           </select>
         </div>
@@ -89,7 +89,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       </div>
     </nav>
 
-    <div class="relative w-screen h-full transition-transform duration-150 dark:bg-neutral-800 bg-white">
+    <div class="relative w-screen h-full transition-transform duration-150 dark:bg-[#232323] bg-white">
       <slot />
     </div>
   </div>

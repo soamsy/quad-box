@@ -10,6 +10,7 @@ import { onMount } from "svelte"
 import { ALL_AUDIO } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
 import { addGame } from "./lib/gamedb"
+import SvgLoader from "./lib/SvgLoader.svelte"
 
 onMount(() => {
   setMobile()
@@ -27,6 +28,7 @@ let trialsIndex
 let gameInfo
 let presentation
 let timeoutCancelFns
+let gameId = 0
 
 const resetRuntimeData = () => {
   isPlaying = false
@@ -36,6 +38,7 @@ const resetRuntimeData = () => {
   gameInfo = {}
   presentation = { highlight: false }
   timeoutCancelFns = []
+  gameId++
 }
 
 resetRuntimeData()
@@ -43,7 +46,7 @@ resetRuntimeData()
 $: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee'
 $: isMobile = $mobile
 $: gameSettings = $settings.gameSettings[$settings.mode]
-$: game = generateGame(gameSettings)
+$: game = generateGame(gameSettings, gameId)
 $: trialDisplay = game.trials.length - trialsIndex
 $: title = isPlaying ? gameInfo.title : game.meta.title
 
@@ -173,27 +176,27 @@ const checkForMatch = (type) => {
   }
 }
 
-const handleKey = (key) => {
-  switch (key) {
-    case ' ':
+const handleKey = (code) => {
+  switch (code) {
+    case 'Space':
       startGame()
       break
-    case 'A':
+    case 'KeyA':
       checkForMatch('position')
       break
-    case 'F':
+    case 'KeyF':
       checkForMatch('color')
       break
-    case 'J':
+    case 'KeyJ':
       checkForMatch('shape')
       break
-    case 'L':
+    case 'KeyL':
       checkForMatch('audio')
       break
   }
 }
 
-document.addEventListener('keydown', e => handleKey(e.key))
+document.addEventListener('keydown', e => handleKey(e.code))
 
 </script>
 
@@ -204,7 +207,7 @@ document.addEventListener('keydown', e => handleKey(e.key))
     {#if isMobile}
     <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
       <div class="w-full h-full flex items-center justify-between row-start-1 p-8">
-        <div class="text-4xl ml-2 select-none" >{trialDisplay}</div>
+        <div class="text-4xl ml-2 select-none opacity-30" >{trialDisplay}</div>
         <button class="game-button text-4xl p-8 md:p-10" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="flex w-full h-full gap-1 row-start-3 md:mt-6">
@@ -221,17 +224,18 @@ document.addEventListener('keydown', e => handleKey(e.key))
         <button class="game-button text-5xl px-12 py-10 max-w-[90%] mr-4" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
-        <button disabled={$feedback.position === 'disabled'} class="game-button-lg {$feedback.position}" on:click={() => checkForMatch('position')}>A<span class="game-button-lg-hint">Position</span></button>
         <button disabled={$feedback.color === 'disabled'} class="game-button-lg {$feedback.color}" on:click={() => checkForMatch('color')}>F<span class="game-button-lg-hint">Color</span></button>
+        <button disabled={$feedback.position === 'disabled'} class="game-button-lg {$feedback.position}" on:click={() => checkForMatch('position')}>A<span class="game-button-lg-hint">Position</span></button>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
-        <button disabled={$feedback.audio === 'disabled'} class="game-button-lg {$feedback.audio}" on:click={() => checkForMatch('audio')}>L<span class="game-button-lg-hint">Audio</span></button>
         <button disabled={$feedback.shape === 'disabled'} class="game-button-lg {$feedback.shape}" on:click={() => checkForMatch('shape')}>J<span class="game-button-lg-hint">Shape</span></button>
+        <button disabled={$feedback.audio === 'disabled'} class="game-button-lg {$feedback.audio}" on:click={() => checkForMatch('audio')}>L<span class="game-button-lg-hint">Audio</span></button>
       </div>
-      <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none">{trialDisplay}</div>
+      <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
     </div>
     {/if}
 </Drawer>
+<SvgLoader />
 </main>
 
 <style>
@@ -240,19 +244,19 @@ document.addEventListener('keydown', e => handleKey(e.key))
 }
 
 button.success {
-  background-color: #738e41;
+  background-color: #93C82E;
 }
 
 .dark button.success {
-  background-color: #4d744e;
+  background-color: #386D38;
 }
 
 button.failure {
-  background-color: #f1483c;
+  background-color: #EE3527;
 }
 
 .dark button.failure {
-  background-color: #903535;
+  background-color: #9F2323;
 }
 
 button.late-failure {

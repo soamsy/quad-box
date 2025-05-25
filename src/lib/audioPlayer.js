@@ -5,7 +5,7 @@ class AudioPlayer {
     this.cache = cache
     this.volume = volume
     this.audioCache = new Map()
-    this.location = 'src/assets/'
+    this.location = 'audio/'
   }
 
   preload(url) {

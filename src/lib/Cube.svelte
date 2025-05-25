@@ -7,15 +7,15 @@
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants";
 
-  $: lightColor = LIGHT_PALETTE?.[trial.color] ?? '#fff'
-  $: darkColor = DARK_PALETTE?.[trial.color] ?? '#111'
-  $: rotationTime = (3000 / $settings.rotationSpeed).toFixed(0)
+  $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
+  $: lightColor = LIGHT_PALETTE?.[trial.color] ?? '#313131'
+  $: darkColor = (trial.shape) ? LIGHT_PALETTE?.[trial.color] ?? '#FFFFFF' : DARK_PALETTE?.[trial.color] ?? '#FFFFFF'
   $: color = $settings.theme === 'dark' ? darkColor : lightColor
-  $: coloredTrial = trial.color ? { ...trial, color } : trial
+  $: coloredTrial = { ...trial, color }
 </script>
 
-<div class="flex relative items-center justify-center w-full h-full perspective-distant">
-  <div class="scene absolute transform-3d -translate-z-[5svmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
+<div class="flex relative items-center justify-center w-full h-full perspective-[900px]">
+  <div class="scene absolute transform-3d -translate-z-[10vmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
   {#each POSITION_POOL as position (position)}
     <Cell {position} trial={trial.position === position ? coloredTrial : { position }} {presentation} />
   {/each}
