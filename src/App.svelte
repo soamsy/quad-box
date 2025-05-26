@@ -9,7 +9,6 @@ import { generateGame } from "./lib/nback"
 import { onMount } from "svelte"
 import { ALL_AUDIO } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
-import { addGame } from "./lib/gamedb"
 
 onMount(() => {
   setMobile()
@@ -51,21 +50,6 @@ $: game = generateGame(gameSettings, $settings, gameId)
 $: trialDisplay = game.trials.length - trialsIndex
 $: title = isPlaying ? gameInfo.title : game.meta.title
 
-const detectMissedStimuli = () => {
-  feedback.reset()
-  for (const match of currentTrial.matches) {
-    if (!(match in scoresheet[trialsIndex])) {
-      scoresheet[trialsIndex][match] = false
-      feedback.apply(match, 'late-failure')
-    }
-  }
-}
-
-const selectTrial = (i) => {
-  currentTrial = trials[i]
-  trialsIndex = i
-}
-
 const playTrial = async (i) => {
   if (i >= trials.length) {
     endGame()
@@ -80,6 +64,11 @@ const playTrial = async (i) => {
   await Promise.all([audioWait, presentationWait, trialWait])
   detectMissedStimuli()
   await playTrial(i + 1)
+}
+
+const selectTrial = (i) => {
+  currentTrial = trials[i]
+  trialsIndex = i
 }
 
 const startGame = async () => {
@@ -104,7 +93,7 @@ const endGame = () => {
   if (!isPlaying) {
     return
   }
-  scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), trialsIndex >= trials.length ? 'completed' : 'incomplete')
+  analytics.scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), trialsIndex >= trials.length ? 'completed' : 'incomplete')
   timeoutCancelFns.forEach(fn => fn())
   resetRuntimeData()
   feedback.reset()
@@ -118,26 +107,14 @@ const toggleGame = () => {
   }
 }
 
-const delay = async (ms) => {
-  let timeoutId
-  let rejectFn
-
-  const promise = new Promise((resolve, reject) => {
-    rejectFn = reject
-    timeoutId = setTimeout(resolve, ms)
-  })
-
-  const cancel = () => {
-    if (timeoutId !== undefined) {
-      clearTimeout(timeoutId)
-      rejectFn(new Error('Timeout cancelled'))
-      timeoutId = undefined
+const detectMissedStimuli = () => {
+  feedback.reset()
+  for (const match of currentTrial.matches) {
+    if (!(match in scoresheet[trialsIndex])) {
+      scoresheet[trialsIndex][match] = false
+      feedback.apply(match, 'late-failure')
     }
   }
-
-  timeoutCancelFns.push(cancel)
-
-  return promise
 }
 
 const checkForMatch = (type) => {
@@ -170,6 +147,28 @@ const handleKey = (code) => {
       checkForMatch('audio')
       break
   }
+}
+
+const delay = async (ms) => {
+  let timeoutId
+  let rejectFn
+
+  const promise = new Promise((resolve, reject) => {
+    rejectFn = reject
+    timeoutId = setTimeout(resolve, ms)
+  })
+
+  const cancel = () => {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId)
+      rejectFn(new Error('Timeout cancelled'))
+      timeoutId = undefined
+    }
+  }
+
+  timeoutCancelFns.push(cancel)
+
+  return promise
 }
 
 document.addEventListener('keydown', e => handleKey(e.code))
