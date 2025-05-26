@@ -12,7 +12,7 @@ const defaultSettings = {
       numTrials: 30,
       trialTime: 2500,
       matchChance: 25,
-      interference: 25,
+      interference: 20,
       enableAudio: true,
       enableShape: true,
       enableColor: true,
