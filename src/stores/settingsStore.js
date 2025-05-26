@@ -40,7 +40,7 @@ const defaultSettings = {
   },
   feedback: 'show',
   rotationSpeed: 35,
-  audioSource: 'numbers',
+  audioSource: 'letters',
 }
 
 const loadSettings = () => {

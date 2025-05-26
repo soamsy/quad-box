@@ -105,7 +105,7 @@ export const LETTER_AUDIO_POOL = [
   `${LETTERS_PATH}i.opus`,
   `${LETTERS_PATH}j.opus`,
   `${LETTERS_PATH}m.opus`,
-  `${LETTERS_PATH}s.opus`,
+  `${LETTERS_PATH}l.opus`,
   `${LETTERS_PATH}t.opus`,
   `${LETTERS_PATH}k.opus`,
 ]
