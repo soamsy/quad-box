@@ -50,16 +50,7 @@ const createFeedbackStore = () => {
     reset()
   })
 
-  const clearLateFailures = () => {
-    feedbackStore.update((current) => {
-      return Object.entries(current).reduce((acc, [key]) => {
-        acc[key] = (key === 'late-failure' ? defaultFeedback[key] : current[key])
-        return acc
-      }, {})
-    })
-  }
-
-  const apply = (field, value) => {
+  const apply = (updates) => {
     if (hideFeedback) {
       return
     }
@@ -67,29 +58,32 @@ const createFeedbackStore = () => {
     feedbackStore.update((current) => {
       return {
         ...current,
-        [field]: value
+        ...updates,
       }
     })
 
-    if (value === 'late-failure') {
+    if (Object.values(updates).includes('late-failure')) {
+      console.log('time out')
       const currentTimeout = setTimeout(() => {
         feedbackStore.update((current) => {
-          if (current[field] !== 'late-failure') {
-            return current
+          let updates = {}
+          for (const key in current) {
+            if (current[key] === 'late-failure') {
+              updates[key] = defaultFeedback[key]
+            }
           }
           return {
             ...current,
-            [field]: defaultFeedback[field],
+            ...updates,
           }
         })
-      }, 350)
+      }, 500)
       timeouts.push(currentTimeout)
     }
   }
 
   return {
     ...feedbackStore,
-    clearLateFailures,
     reset,
     apply,
   }

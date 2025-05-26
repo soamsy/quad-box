@@ -108,13 +108,16 @@ const toggleGame = () => {
 }
 
 const detectMissedStimuli = () => {
-  feedback.reset()
-  for (const match of currentTrial.matches) {
-    if (!(match in scoresheet[trialsIndex])) {
-      scoresheet[trialsIndex][match] = false
-      feedback.apply(match, 'late-failure')
+  let updates = {}
+  for (const tag of gameInfo.tags) {
+    if (currentTrial.matches.includes(tag) &&!(tag in scoresheet[trialsIndex])) {
+      scoresheet[trialsIndex][tag] = false
+      updates[tag] = 'late-failure'
+    } else {
+      updates[tag] = 'blank'
     }
   }
+  feedback.apply(updates)
 }
 
 const checkForMatch = (type) => {
@@ -125,7 +128,7 @@ const checkForMatch = (type) => {
   if (type in currentTrial && !(type in scoresheet[trialsIndex])) {
     const isSuccess = currentTrial.matches.includes(type)
     scoresheet[trialsIndex][type] = isSuccess
-    feedback.apply(type, isSuccess ? 'success' : 'failure')
+    feedback.apply({ [type]: isSuccess ? 'success' : 'failure' })
   }
 }
 
