@@ -59,11 +59,12 @@
 
 <style>
   .cell {
-    @apply absolute w-[20.1svmin] h-[20.1svmin] -left-[10.05svmin] -top-[10.05svmin];
+    @apply absolute w-[20svmin] h-[20svmin] -left-[10svmin] -top-[10svmin];
     transform-style: preserve-3d;
   }
 
   .face {
+    @apply absolute w-full h-full;
     background-color: var(--face-bg-color);
     background-image: var(--shape-url);
     background-position: center;

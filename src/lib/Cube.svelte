@@ -35,14 +35,52 @@
 
 </script>
 
-<div class="flex relative items-center justify-center w-full h-full perspective-[900px]">
-  <div class="scene absolute transform-3d -translate-z-[10vmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
+<div class="flex absolute items-center justify-center w-full h-full perspective-[900px]">
+  <div class="scene absolute transform-3d -translate-z-[15vmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
   {#each POSITION_POOL as position (position)}
     <Cell {position} 
       boxColor={trial.position === position && highlight ? boxColor : ''}
       shapeName={trial.position === position && highlight ? shapeName : ''}
       shapeOuterColor={trial.position === position && highlight ? shapeOuterColor : ''} />
   {/each}
+  <div class="frame absolute w-[60vmin] h-[60vmin] -translate-z-[30vmin] -left-[30vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] -translate-z-[30vmin] -left-[30vmin] -top-[10vmin]"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] -translate-z-[30vmin] -left-[10vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] -translate-z-[10vmin] -left-[30vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] -translate-z-[10vmin] -left-[30vmin] -top-[10vmin]"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] -translate-z-[10vmin] -left-[10vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] translate-z-[10vmin] -left-[30vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] translate-z-[10vmin] -left-[30vmin] -top-[10vmin]"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] translate-z-[10vmin] -left-[10vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] translate-z-[30vmin] -left-[30vmin] -top-[30vmin]"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] translate-z-[30vmin] -left-[30vmin] -top-[10vmin]"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] translate-z-[30vmin] -left-[10vmin] -top-[30vmin]"></div>
+
+  <div class="frame absolute w-[60vmin] h-[60vmin] -translate-y-[30vmin] -left-[30vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] -translate-y-[30vmin] -left-[30vmin] -top-[10vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] -translate-y-[30vmin] -left-[10vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] -translate-y-[10vmin] -left-[30vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] -translate-y-[10vmin] -left-[30vmin] -top-[10vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] -translate-y-[10vmin] -left-[10vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] translate-y-[10vmin] -left-[30vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] translate-y-[10vmin] -left-[30vmin] -top-[10vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] translate-y-[10vmin] -left-[10vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] translate-y-[30vmin] -left-[30vmin] -top-[30vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] translate-y-[30vmin] -left-[30vmin] -top-[10vmin] rotate-x-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] translate-y-[30vmin] -left-[10vmin] -top-[30vmin] rotate-x-90"></div>
+
+  <div class="frame absolute w-[60vmin] h-[60vmin] -translate-x-[30vmin] -left-[30vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] -translate-x-[30vmin] -left-[30vmin] -top-[10vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] -translate-x-[30vmin] -left-[10vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] -translate-x-[10vmin] -left-[30vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] -translate-x-[10vmin] -left-[30vmin] -top-[10vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] -translate-x-[10vmin] -left-[10vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] translate-x-[10vmin] -left-[30vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] translate-x-[10vmin] -left-[30vmin] -top-[10vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] translate-x-[10vmin] -left-[10vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[60vmin] translate-x-[30vmin] -left-[30vmin] -top-[30vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[60vmin] h-[20vmin] translate-x-[30vmin] -left-[30vmin] -top-[10vmin] rotate-y-90"></div>
+  <div class="frame absolute w-[20vmin] h-[60vmin] translate-x-[30vmin] -left-[10vmin] -top-[30vmin] rotate-y-90"></div>
   </div>
 </div>
 

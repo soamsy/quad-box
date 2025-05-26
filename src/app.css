@@ -67,10 +67,9 @@ body {
   @apply absolute left-0 top-0 w-full h-full;
 }
 
-.face {
-  @apply absolute w-full h-full border-neutral-950 dark:border-neutral-300;
-  border-width: 0.01svmin;
-  border-radius: 0.15svmin;
+.frame {
+  @apply border-neutral-950 dark:border-neutral-300;
+  border-width: 0.15svmin;
 }
 
 .game-button-sm.disabled {
