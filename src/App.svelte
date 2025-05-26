@@ -46,7 +46,7 @@ resetRuntimeData()
 $: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee'
 $: isMobile = $mobile
 $: gameSettings = $settings.gameSettings[$settings.mode]
-$: game = generateGame(gameSettings, gameId)
+$: game = generateGame(gameSettings, $settings, gameId)
 $: trialDisplay = game.trials.length - trialsIndex
 $: title = isPlaying ? gameInfo.title : game.meta.title
 

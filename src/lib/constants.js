@@ -71,8 +71,22 @@ export const NUMBER_AUDIO_POOL = [
   `${NATURAL_PATH}8.wav`,
 ]
 
+const LETTERS_PATH = "Letters/"
+export const LETTER_AUDIO_POOL = [
+  `${LETTERS_PATH}b.opus`,
+  `${LETTERS_PATH}c.opus`,
+  `${LETTERS_PATH}g.opus`,
+  `${LETTERS_PATH}i.opus`,
+  `${LETTERS_PATH}j.opus`,
+  `${LETTERS_PATH}m.opus`,
+  `${LETTERS_PATH}s.opus`,
+  `${LETTERS_PATH}t.opus`,
+  `${LETTERS_PATH}v.opus`,
+]
+
 export const ALL_AUDIO = [
-  ...NUMBER_AUDIO_POOL,
+  ...NUMBER_AUDIO_POOL, 
+  ...LETTER_AUDIO_POOL,
 ]
 
 export const POSITION_POOL = [

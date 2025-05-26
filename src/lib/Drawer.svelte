@@ -83,7 +83,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
           <span class="text-lg">Audio:</span>
           <select bind:value={$settings.audioSource} id="audio-select" class="select">
             <option value="numbers">Numbers</option>
-            <option value="primes">Primes</option>
+            <option value="letters">Letters</option>
           </select>
         </div>
       </div>

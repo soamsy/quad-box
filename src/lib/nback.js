@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, POSITION_POOL } from "./constants"
 
 const pick = (pool) => {
   return pool[Math.floor(Math.random() * pool.length)]
@@ -42,14 +42,18 @@ const generateStimuli = (trials, type, pool, nBack, matchChance, interference) =
   }
 }
 
-export const generateGame = (settings) => {
+const getAudioPool = (globalSettings) => {
+  return globalSettings.audioSource === 'numbers' ? NUMBER_AUDIO_POOL : LETTER_AUDIO_POOL
+}
+
+export const generateGame = (settings, globalSettings) => {
   const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, matchChance, interference } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
   let tags = ['position']
   generateStimuli(trials, 'position', POSITION_POOL, nBack, matchChance, interference)
   if (enableAudio) {
     tags.push('audio')
-    generateStimuli(trials, 'audio', NUMBER_AUDIO_POOL, nBack, matchChance, interference)
+    generateStimuli(trials, 'audio', getAudioPool(globalSettings), nBack, matchChance, interference)
   }
   if (enableShape) {
     tags.push('shape')
