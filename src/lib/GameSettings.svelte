@@ -7,6 +7,21 @@
     gameSettings.setField(field, clampedValue)
   }
 
+  const toggleShapeOrColor = (event, field) => {
+    gameSettings.setField(field, event.target.checked)
+    if (event.target.value) {
+      gameSettings.setField('enableShapeColor', false)
+    }
+  }
+
+  const toggleShapeAndColor = (event) => {
+    gameSettings.setField('enableShapeColor', event.target.checked)
+    if (event.target.value) {
+      gameSettings.setField('enableShape', false)
+      gameSettings.setField('enableColor', false)
+    }
+  }
+
   $: numTrials = $gameSettings.numTrials
 </script>
 
@@ -37,15 +52,19 @@
 </div>
 {#if $settings.mode === 'custom'}
 <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-audio" class="text-lg">Enable Audio:</label>
+  <label for="enable-audio" class="text-lg">Audio:</label>
   <input id="enable-audio" type="checkbox" bind:checked={$gameSettings.enableAudio} class="toggle" />
 </div>
 <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-color" class="text-lg">Enable Color:</label>
-  <input id="enable-color" type="checkbox" bind:checked={$gameSettings.enableColor} class="toggle" />
+  <label for="enable-color" class="text-lg">Color:</label>
+  <input id="enable-color" type="checkbox" checked={$gameSettings.enableColor} on:input={(e) => toggleShapeOrColor(e, 'enableColor')} class="toggle" />
 </div>
 <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-shape" class="text-lg">Enable Shape:</label>
-  <input id="enable-shape" type="checkbox" bind:checked={$gameSettings.enableShape} class="toggle" />
+  <label for="enable-shape" class="text-lg">Shape:</label>
+  <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShape} on:input={(e) => toggleShapeOrColor(e, 'enableShape')} class="toggle" />
+</div>
+<div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+  <label for="enable-shape" class="text-lg">Pattern:</label>
+  <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
 </div>
 {/if}

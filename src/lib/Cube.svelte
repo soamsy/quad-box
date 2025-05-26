@@ -12,13 +12,16 @@
       return `${trial.shape}-${$settings.theme}-inner`
     } else if (trial.shape) {
       return `${trial.shape}-${$settings.theme}-${trial.color}`
+    } else if (trial.shapeColor) {
+      const [shape, color] = trial.shapeColor.split('-')
+      return `${shape}-${$settings.theme}-${color}`
     } else {
       return ''
     }
   }
 
   const findBoxColor = (trial) => {
-    if (trial.shape) {
+    if (trial.shape || trial.shapeColor) {
       return ''
     } else if (trial.color) {
       return $settings.theme === 'dark' ? DARK_PALETTE[trial.color] : LIGHT_PALETTE[trial.color]

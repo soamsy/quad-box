@@ -58,6 +58,7 @@ export const DARK_PALETTE = {
 
 export const COLOR_POOL = Object.keys(LIGHT_PALETTE)
 export const SHAPE_POOL = Object.keys(SHAPES)
+export const SHAPE_COLOR_POOL = SHAPE_POOL.flatMap(shape => Object.keys(LIGHT_PALETTE).map(color => `${shape}-${color}`))
 
 function createSvgBlobUrl(path, fill, stroke) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110">

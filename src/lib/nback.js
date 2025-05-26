@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, SHAPE_COLOR_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, POSITION_POOL } from "./constants"
 
 const pick = (pool) => {
   return pool[Math.floor(Math.random() * pool.length)]
@@ -47,7 +47,7 @@ const getAudioPool = (globalSettings) => {
 }
 
 export const generateGame = (settings, globalSettings) => {
-  const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, matchChance, interference } = settings
+  const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
   let tags = ['position']
   generateStimuli(trials, 'position', POSITION_POOL, nBack, matchChance, interference)
@@ -59,17 +59,21 @@ export const generateGame = (settings, globalSettings) => {
     tags.push('shape')
     generateStimuli(trials, 'shape', SHAPE_POOL, nBack, matchChance, interference)
   }
+  if (enableShapeColor) {
+    tags.push('shapeColor')
+    generateStimuli(trials, 'shapeColor', SHAPE_COLOR_POOL, nBack, matchChance, interference)
+  }
   if (enableColor) {
     tags.push('color')
     generateStimuli(trials, 'color', COLOR_POOL, nBack, matchChance, interference)
   }
   let title = tags.join('-')
 
-  if (enableAudio && !enableShape && !enableColor) {
+  if (enableAudio && !enableShape && !enableColor && !enableShapeColor) {
     title = 'dual'
   } else if (enableAudio && enableShape && enableColor) {
     title = 'quad'
-  } else if (enableAudio && (enableColor != enableShape)) {
+  } else if (enableAudio && (enableColor != enableShape || enableShapeColor)) {
     title = 'tri'
   } else {
     title = 'custom'

@@ -16,6 +16,7 @@ const defaultSettings = {
       enableAudio: true,
       enableShape: true,
       enableColor: true,
+      enableShapeColor: false,
     },
     dual: {
       nBack: 2,
@@ -26,6 +27,7 @@ const defaultSettings = {
       enableAudio: true,
       enableShape: false,
       enableColor: false,
+      enableShapeColor: false,
     },
     custom: {
       nBack: 2,
@@ -36,6 +38,7 @@ const defaultSettings = {
       enableAudio: true,
       enableShape: false,
       enableColor: true,
+      enableShapeColor: false,
     }
   },
   feedback: 'show',
