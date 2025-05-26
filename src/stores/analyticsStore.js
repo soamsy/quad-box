@@ -18,10 +18,30 @@ const createAnalyticsStore = () => {
   loadAnalytics().then(analytics => set(analytics))
   return {
     subscribe,
-    addGame: async (trial) => {
-      await addGame(trial)
+    scoreTrials: async (gameInfo, scoresheet, status) => {
+      const scores = {}
+      for (const tag of gameInfo.tags) {
+        scores[tag] = { hits: 0, misses: 0 }
+      }
+
+      for (const answers of scoresheet) {
+        for (const tag of gameInfo.tags) {
+          if (answers[tag]) {
+            scores[tag].hits++
+          } else {
+            scores[tag].misses++
+          }
+        }
+      }
+
+      await addGame({
+        ...gameInfo,
+        scores,
+        completedTrials: scoresheet.length,
+        status
+      })
       set(await loadAnalytics())
-    },
+    }
   }
 }
 

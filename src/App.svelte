@@ -51,32 +51,6 @@ $: game = generateGame(gameSettings, $settings, gameId)
 $: trialDisplay = game.trials.length - trialsIndex
 $: title = isPlaying ? gameInfo.title : game.meta.title
 
-const scoreTrials = () => {
-  const scores = {}
-  for (const tag of gameInfo.tags) {
-    scores[tag] = { hits: 0, misses: 0 }
-  }
-
-  for (let i = 0; i < trialsIndex; i++) {
-    const answers = scoresheet[i]
-    for (const tag of gameInfo.tags) {
-      if (answers[tag]) {
-        scores[tag].hits++
-      } else {
-        scores[tag].misses++
-      }
-    }
-  }
-
-  analytics.addGame
-  addGame({
-    ...gameInfo,
-    scores,
-    completedTrials: trialsIndex,
-    status: trialsIndex >= trials.length ? 'completed' : 'incomplete'
-  })
-}
-
 const detectMissedStimuli = () => {
   feedback.reset()
   for (const match of currentTrial.matches) {
@@ -130,7 +104,7 @@ const endGame = () => {
   if (!isPlaying) {
     return
   }
-  scoreTrials()
+  scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), trialsIndex >= trials.length ? 'completed' : 'incomplete')
   timeoutCancelFns.forEach(fn => fn())
   resetRuntimeData()
   feedback.reset()
