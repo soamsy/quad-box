@@ -59,6 +59,32 @@ export const DARK_PALETTE = {
 export const COLOR_POOL = Object.keys(LIGHT_PALETTE)
 export const SHAPE_POOL = Object.keys(SHAPES)
 
+function createSvgBlobUrl(path, fill, stroke) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110">
+    <path d="${path.trim()}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>
+  </svg>`
+  const blob = new Blob([svg], { type: 'image/svg+xml' })
+  return URL.createObjectURL(blob)
+}
+
+const generateShapeUrls = () => {
+  const shapeUrls = {}
+  for (const shape in SHAPES) {
+    shapeUrls[shape] = {}
+    for (const lightColor in LIGHT_PALETTE) {
+      shapeUrls[`${shape}-light-${lightColor}`] = createSvgBlobUrl(SHAPES[shape], LIGHT_PALETTE[lightColor], '#222')
+    }
+    for (const darkColor in DARK_PALETTE) {
+      shapeUrls[`${shape}-dark-${darkColor}`] = createSvgBlobUrl(SHAPES[shape], DARK_PALETTE[darkColor], '#333')
+    }
+    shapeUrls[`${shape}-dark-inner`] = createSvgBlobUrl(SHAPES[shape], "#FFFFFF", '#333')
+    shapeUrls[`${shape}-light-inner`] = createSvgBlobUrl(SHAPES[shape], "#313131", '#333')
+  }
+  return shapeUrls
+}
+
+export const SHAPE_URLS = generateShapeUrls()
+
 const NATURAL_PATH = "Natural-Numbers/"
 export const NUMBER_AUDIO_POOL = [
   `${NATURAL_PATH}1.wav`,

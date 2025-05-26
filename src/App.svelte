@@ -10,7 +10,6 @@ import { onMount } from "svelte"
 import { ALL_AUDIO } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
 import { addGame } from "./lib/gamedb"
-import SvgLoader from "./lib/SvgLoader.svelte"
 
 onMount(() => {
   setMobile()
@@ -25,6 +24,7 @@ let isPlaying
 let trials
 let currentTrial
 let trialsIndex
+let scoresheet = []
 let gameInfo
 let presentation
 let timeoutCancelFns
@@ -35,6 +35,7 @@ const resetRuntimeData = () => {
   trials = []
   currentTrial = {}
   trialsIndex = 0
+  scoresheet = []
   gameInfo = {}
   presentation = { highlight: false }
   timeoutCancelFns = []
@@ -57,9 +58,9 @@ const scoreTrials = () => {
   }
 
   for (let i = 0; i < trialsIndex; i++) {
-    const trial = trials[i]
+    const answers = scoresheet[i]
     for (const tag of gameInfo.tags) {
-      if (trial.answers[tag]) {
+      if (answers[tag]) {
         scores[tag].hits++
       } else {
         scores[tag].misses++
@@ -79,8 +80,8 @@ const scoreTrials = () => {
 const detectMissedStimuli = () => {
   feedback.reset()
   for (const match of currentTrial.matches) {
-    if (!(match in currentTrial.answers)) {
-      currentTrial.answers[match] = false
+    if (!(match in scoresheet[trialsIndex])) {
+      scoresheet[trialsIndex][match] = false
       feedback.apply(match, 'late-failure')
     }
   }
@@ -115,6 +116,7 @@ const startGame = async () => {
   isPlaying = true
   gameInfo = { ...game.meta }
   trials = structuredClone(game.trials)
+  scoresheet = new Array(trials.length).fill().map(() => ({}))
   selectTrial(0)
   try {
     await delay(1000)
@@ -169,9 +171,9 @@ const checkForMatch = (type) => {
     return
   }
 
-  if (type in currentTrial && !(type in currentTrial.answers)) {
+  if (type in currentTrial && !(type in scoresheet[trialsIndex])) {
     const isSuccess = currentTrial.matches.includes(type)
-    currentTrial.answers[type] = isSuccess
+    scoresheet[trialsIndex][type] = isSuccess
     feedback.apply(type, isSuccess ? 'success' : 'failure')
   }
 }
@@ -235,7 +237,6 @@ document.addEventListener('keydown', e => handleKey(e.code))
     </div>
     {/if}
 </Drawer>
-<SvgLoader />
 </main>
 
 <style>
