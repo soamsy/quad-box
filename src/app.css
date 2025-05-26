@@ -72,3 +72,31 @@ body {
   border-width: 0.01svmin;
   border-radius: 0.15svmin;
 }
+
+.game-button-sm.disabled {
+  display: none;
+}
+
+button.success {
+  background-color: #93C82E;
+}
+
+.dark button.success {
+  background-color: #386D38;
+}
+
+button.failure {
+  background-color: #EE3527;
+}
+
+.dark button.failure {
+  background-color: #9F2323;
+}
+
+button.late-failure {
+  background-color: #F49F31;
+}
+
+.dark button.late-failure {
+  background-color: #a6712c;
+}
