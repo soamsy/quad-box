@@ -29,7 +29,7 @@
 
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
   $: shapeName = findShapeName(trial)
-  $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#EEEEEE' : '#FDFDFD') : '#FAFAFA'
+  $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
 
