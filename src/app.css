@@ -40,7 +40,7 @@ body {
 }
 
 @utility game-button {
-    @apply btn light:btn-soft btn-accent opacity-90 light:hover:bg-base-200 light:hover:text-neutral-950 duration-0;
+  @apply btn light:btn-soft btn-accent opacity-90 light:hover:bg-base-200 light:hover:text-neutral-950 duration-0;
 }
 
 .game-button-lg {
@@ -69,7 +69,20 @@ body {
 
 .frame {
   @apply border-neutral-950 dark:border-neutral-300;
-  border-width: 0.15svmin;
+  border-width: 0.3svmin;
+  opacity: 0.85;
+}
+
+.frame.tall {
+  border-width: 0.3svmin;
+  border-top-width: 0;
+  border-bottom-width: 0;
+}
+
+.frame.wide {
+  border-width: 0.3svmin;
+  border-left-width: 0;
+  border-right-width: 0;
 }
 
 .game-button-sm.disabled {

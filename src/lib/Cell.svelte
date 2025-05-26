@@ -6,15 +6,15 @@
   export let shapeOuterColor = null
 
   const translationMap = {
-    'x-0': '-translate-x-[20svmin]',
+    'x-0': '-translate-x-[20.1svmin]',
     'x-1': '-translate-x-0',
-    'x-2': 'translate-x-[20svmin]',
-    'y-0': '-translate-y-[20svmin]',
+    'x-2': 'translate-x-[20.1svmin]',
+    'y-0': '-translate-y-[20.1svmin]',
     'y-1': '-translate-y-0',
-    'y-2': 'translate-y-[20svmin]',
-    'z-0': '-translate-z-[20svmin]',
+    'y-2': 'translate-y-[20.1svmin]',
+    'z-0': '-translate-z-[20.1svmin]',
     'z-1': '-translate-z-0',
-    'z-2': 'translate-z-[20svmin]',
+    'z-2': 'translate-z-[20.1svmin]',
   }
 
   const calculateBoxClassNames = (x, y, z, shapeName) => {
@@ -59,7 +59,7 @@
 
 <style>
   .cell {
-    @apply absolute w-[20svmin] h-[20svmin] -left-[10svmin] -top-[10svmin];
+    @apply absolute w-[20svmin] h-[20svmin] -left-[10.0svmin] -top-[10svmin];
     transform-style: preserve-3d;
   }
 
