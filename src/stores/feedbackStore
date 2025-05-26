@@ -4,7 +4,6 @@ import { settings } from './settingsStore'
 
 const createFeedbackStore = () => {
   const defaultFeedback = {
-    global: 'blank',
     position: 'blank',
     color: 'blank',
     shape: 'blank',
@@ -64,28 +63,23 @@ const createFeedbackStore = () => {
     if (hideFeedback) {
       return
     }
-    let globalUpdate = 'blank'
-    if (value === 'failure' || value === 'late-failure') {
-      globalUpdate = 'failure'
-    } else if (value === 'success') {
-      globalUpdate = 'success'
-    }
 
     feedbackStore.update((current) => {
       return {
         ...current,
-        [field]: value,
-        global: globalUpdate,
+        [field]: value
       }
     })
 
     if (value === 'late-failure') {
       const currentTimeout = setTimeout(() => {
         feedbackStore.update((current) => {
+          if (current[field] !== 'late-failure') {
+            return current
+          }
           return {
             ...current,
-            global: defaultFeedback.global,
-            [field]: current[field] === 'late-failure' ? defaultFeedback[field] : current[field],
+            [field]: defaultFeedback[field],
           }
         })
       }, 350)
