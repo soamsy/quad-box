@@ -27,12 +27,12 @@
 </div>
 <div class="flex flex-col gap-1">
   <label class="text-lg">Match Chance: {$gameSettings.matchChance}%
-    <input type="range" min="0" max="100" bind:value={$gameSettings.matchChance} step="1" class="range" />
+    <input type="range" min="5" max="75" bind:value={$gameSettings.matchChance} step="1" class="range" />
   </label>
 </div>
 <div class="flex flex-col gap-1">
   <label class="text-lg">Interference: {$gameSettings.interference}%
-    <input type="range" min="0" max="100" bind:value={$gameSettings.interference} step="1" class="range" />  
+    <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />  
   </label>
 </div>
 {#if $settings.mode === 'custom'}
