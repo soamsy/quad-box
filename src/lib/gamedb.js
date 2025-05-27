@@ -25,7 +25,7 @@ const openDB = () => {
   })
 }
 
-export async function addGame(gameInfo ) {
+export async function addGame(gameInfo) {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, "readwrite")
   const store = tx.objectStore(STORE_NAME)
@@ -38,12 +38,13 @@ export async function getLastNGames(n) {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, "readonly")
   const store = tx.objectStore(STORE_NAME)
-  const index = store.index("timestamp")
+  const index = store.index("status_timestamp")
 
   const games = []
 
   return new Promise((resolve, reject) => {
-    const cursorRequest = index.openCursor(null, "prev")
+    const keyRange = IDBKeyRange.bound(["completed", 0], ["completed", Infinity])
+    const cursorRequest = index.openCursor(keyRange, "prev")
 
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result

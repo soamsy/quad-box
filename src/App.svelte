@@ -52,7 +52,7 @@ $: title = isPlaying ? gameInfo.title : game.meta.title
 
 const playTrial = async (i) => {
   if (i >= trials.length) {
-    endGame()
+    endGame('completed')
     return
   }
 
@@ -89,11 +89,11 @@ const startGame = async () => {
   }
 }
 
-const endGame = () => {
+const endGame = (status) => {
   if (!isPlaying) {
     return
   }
-  analytics.scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), trialsIndex >= trials.length ? 'completed' : 'incomplete')
+  analytics.scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), status)
   timeoutCancelFns.forEach(fn => fn())
   resetRuntimeData()
   feedback.reset()
@@ -101,7 +101,7 @@ const endGame = () => {
 
 const toggleGame = () => {
   if (isPlaying) {
-    endGame()
+    endGame('cancelled')
   } else {
     startGame()
   }

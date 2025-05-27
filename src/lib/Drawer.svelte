@@ -3,6 +3,8 @@ export let title
 import { ChartColumn, PanelLeftClose, PanelLeftOpen } from '@lucide/svelte'
 import { onMount } from 'svelte'
 import { settings } from '../stores/settingsStore'
+import { analytics } from '../stores/analyticsStore'
+import { mobile } from '../stores/mobileStore'
 import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
@@ -31,8 +33,8 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
 </script>
 
 <div class="relative flex flex-col h-svh overflow-hidden">
-  <div class="w-full h-16 lg:h-10 flex items-center justify-between bg-base-200 border-b-1 py-1">
-    <div flex gap-4 pl-2>
+  <div class="w-full h-16 lg:h-10 grid grid-cols-3 items-center bg-base-200 border-b-1 py-1">
+    <div class="flex gap-2">
       <div on:click|stopPropagation={toggle} bind:this={panelButtonRef}>
         {#if open}
           <PanelLeftClose class="btn btn-square btn-ghost h-8 lg:h-6" />
@@ -41,11 +43,16 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         {/if}
       </div>
     </div>
-    <div class="flex gap-4 text-2xl lg:text-lg select-none">
+    <div class="justify-self-center flex gap-4 text-2xl lg:text-lg select-none">
       <div>N = {gameSettings.nBack}</div>
       <div>{title.toUpperCase()}</div>
     </div>
-    <div class="flex gap-4 pr-2">
+    <div class="justify-self-end flex gap-4 pr-2">
+      <div class="text-2xl lg:text-lg">
+        {#if $analytics.lastTotalScore !== null}
+          {$mobile ? '' : 'Last:'} {$analytics.lastTotalScore}%
+        {/if}
+      </div>
       <div>
         <ChartColumn class="btn btn-square btn-ghost h-8 lg:h-6" />
       </div>
