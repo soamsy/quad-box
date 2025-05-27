@@ -12,7 +12,7 @@
 <slot></slot>
   <div class="game-button-sm-hint">{display}</div>
   {#if score && !isPlaying}
-  <div class="absolute top-[17%] text-xl flex gap-4">
+  <div class="absolute bottom-[12%] text-xl flex gap-4">
     <div>{score.hits}/{score.possible}</div>
     <div>{(score.percent * 100).toFixed(0)}%</div>
   </div>
