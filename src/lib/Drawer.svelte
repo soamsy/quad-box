@@ -24,6 +24,20 @@ const handleClickOutside = (event) => {
   }
 }
 
+const updateSuccessCriteria = (value) => {
+  settings.update('successCriteria', value)
+  if ($settings.failureCriteria > value) {
+    settings.update('failureCriteria', value)
+  }
+}
+
+const updateFailureCriteria = (value) => {
+  settings.update('failureCriteria', value)
+  if ($settings.successCriteria < value) {
+    settings.update('successCriteria', value)
+  }
+}
+
 onMount(() => {
   document.addEventListener('click', handleClickOutside)
   return () => {
@@ -78,7 +92,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         <GameSettings />
         <div class="py-2 divider"></div>
         <div class="flex flex-col gap-1">
-          <label class="text-lg">Rotation Speed: {$settings.rotationSpeed}
+          <label class="text-lg">Rotation speed: {$settings.rotationSpeed}
             <input type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
           </label>
         </div>
@@ -95,6 +109,26 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
             <option value="letters">Letters</option>
             <option value="numbers">Numbers</option>
           </select>
+        </div>
+        <div class="flex flex-col gap-1 mt-4">
+          <label class="text-lg">When ≥ {$settings.successCriteria}%
+            <input type="range" min="0" max="100" value={$settings.successCriteria} on:input={(e) => updateSuccessCriteria(+e.target.value)} step="1" class="range" />
+          </label>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-lg">Win after: {$settings.successComboRequired} in a row
+            <input type="range" min="1" max="9" bind:value={$settings.successComboRequired} step="1" class="range" />
+          </label>
+        </div>
+        <div class="flex flex-col gap-1 mt-4">
+          <label class="text-lg">When &lt; {$settings.failureCriteria}%
+            <input type="range" min="0" max="100" value={$settings.failureCriteria} on:input={(e) => updateFailureCriteria(+e.target.value)} step="1" class="range" />
+          </label>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-lg">Lose after: {$settings.failureComboRequired} in a row
+            <input type="range" min="1" max="9" bind:value={$settings.failureComboRequired} step="1" class="range" />
+          </label>
         </div>
       </div>
       <div class="my-10"></div>

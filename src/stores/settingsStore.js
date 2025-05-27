@@ -43,6 +43,10 @@ const defaultSettings = {
   },
   feedback: 'show',
   rotationSpeed: 35,
+  successCriteria: 80,
+  successComboRequired: 3,
+  failureCriteria: 50,
+  failureComboRequired: 3,
   audioSource: 'letters',
 }
 
