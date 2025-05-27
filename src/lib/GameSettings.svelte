@@ -64,7 +64,7 @@
   <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShape} on:input={(e) => toggleShapeOrColor(e, 'enableShape')} class="toggle" />
 </div>
 <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-shape" class="text-lg">Pattern:</label>
-  <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
+  <label for="enable-shape-color" class="text-lg">Pattern:</label>
+  <input id="enable-shape-color" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
 </div>
 {/if}
