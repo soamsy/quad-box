@@ -37,9 +37,9 @@
 </script>
 
 <div class="flex bg- items-center justify-around">
-  <div on:click={prevMode} class="btn rounded px-2 -rotate-90"><Triangle class="fill-base-100" /></div>
+  <div on:click={prevMode} class="btn rounded border-0 px-2 -rotate-90"><Triangle class="fill-base-100" /></div>
   <div class="flex-grow flex items-center justify-center mx-2 p-1 text-2xl select-none transition-colors duration-100 {bg}">{mode.toUpperCase()}</div>
-  <div on:click={nextMode} class="btn rounded px-2 rotate-90"><Triangle class="fill-base-100" /></div>
+  <div on:click={nextMode} class="btn rounded border-0 px-2 rotate-90"><Triangle class="fill-base-100" /></div>
 </div>
 
 
