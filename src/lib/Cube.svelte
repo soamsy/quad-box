@@ -2,7 +2,6 @@
   export let trial = {}
   export let presentation = {}
   import Cell from "./Cell.svelte"
-  import { POSITION_POOL } from "./constants"
   import { settings } from "../stores/settingsStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
@@ -40,12 +39,13 @@
 
 <div class="flex absolute items-center justify-center w-full h-full perspective-[900px]">
   <div class="scene absolute transform-3d -translate-z-[15svmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
-  {#each POSITION_POOL as position (position)}
-    <Cell {position} 
-      boxColor={trial.position === position && highlight ? boxColor : ''}
-      shapeName={trial.position === position && highlight ? shapeName : ''}
-      shapeOuterColor={trial.position === position && highlight ? shapeOuterColor : ''} />
-  {/each}
+  {#if trial.position && highlight}
+  <Cell 
+    position={trial.position}
+    {boxColor}
+    {shapeName}
+    {shapeOuterColor} />
+  {/if}
   <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"></div>
   <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] wide"></div>
   <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] tall"></div>
