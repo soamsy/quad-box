@@ -54,6 +54,7 @@ $: title = isPlaying ? gameInfo.title : game.meta.title
 
 const playTrial = async (i) => {
   if (i >= trials.length) {
+    await delay(1000)
     endGame('completed')
     return
   }
