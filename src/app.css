@@ -89,7 +89,7 @@ body {
   display: none;
 }
 
-button.success {
+button.success, button.success:hover {
   background-color: #93C82E;
 }
 
@@ -97,7 +97,7 @@ button.success {
   background-color: #386D38;
 }
 
-button.failure {
+button.failure, button.failure:hover {
   background-color: #EE3527;
 }
 
@@ -105,7 +105,7 @@ button.failure {
   background-color: #9F2323;
 }
 
-button.late-failure {
+button.late-failure, button.late-failure:hover {
   background-color: #F49F31;
 }
 
