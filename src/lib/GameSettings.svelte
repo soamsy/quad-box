@@ -3,8 +3,10 @@
   import { settings } from "../stores/settingsStore"
 
   const clampNumber = (field, min, value, max) => {
-    const clampedValue = Math.max(min, Math.min(value, max))
-    gameSettings.setField(field, clampedValue)
+    if (value < min || max < value) {
+      return
+    }
+    gameSettings.setField(field, value)
   }
 
   const toggleShapeOrColor = (event, field) => {
