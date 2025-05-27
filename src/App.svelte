@@ -1,6 +1,8 @@
 <script>
 import Drawer from "./lib/Drawer.svelte"
 import Cube from "./lib/Cube.svelte"
+import LargeKey from "./lib/LargeKey.svelte"
+import SmallKey from "./lib/SmallKey.svelte"
 import { settings } from "./stores/settingsStore"
 import { feedback } from "./stores/feedbackStore"
 import { analytics } from "./stores/analyticsStore"
@@ -93,7 +95,10 @@ const endGame = (status) => {
   if (!isPlaying) {
     return
   }
-  analytics.scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), status)
+
+  if (trialsIndex > gameInfo.nBack) {
+    analytics.scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), status)
+  }
   timeoutCancelFns.forEach(fn => fn())
   resetRuntimeData()
   feedback.reset()
@@ -181,7 +186,7 @@ document.addEventListener('keydown', e => handleKey(e.code))
 
 <main data-theme={theme} class={$settings.theme}>
 
-<Drawer {title}>
+<Drawer {title} {isPlaying}>
     <Cube trial={currentTrial} {presentation} />
     {#if isMobile}
     <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
@@ -190,11 +195,11 @@ document.addEventListener('keydown', e => handleKey(e.code))
         <button class="game-button text-4xl p-8 md:p-10" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="flex w-full h-full gap-1 row-start-3 md:mt-6">
-        <button class="game-button-sm {$feedback.position}" on:click={() => checkForMatch('position')} on:touchmove={() => checkForMatch('position')}>A<span class="game-button-sm-hint">Position</span></button>
-        <button class="game-button-sm {$feedback.color}" on:click={() => checkForMatch('color')} on:touchmove={() => checkForMatch('color')}>F<span class="game-button-sm-hint">Color</span></button>
-        <button class="game-button-sm {$feedback.shape}" on:click={() => checkForMatch('shape')} on:touchmove={() => checkForMatch('shape')}>J<span class="game-button-sm-hint">Shape</span></button>
-        <button class="game-button-sm {$feedback.shapeColor}" on:click={() => checkForMatch('shapeColor')} on:touchmove={() => checkForMatch('shapeColor')}>J<span class="game-button-sm-hint">ShapeColor</span></button>
-        <button class="game-button-sm {$feedback.audio}" on:click={() => checkForMatch('audio')} on:touchmove={() => checkForMatch('audio')}>L<span class="game-button-sm-hint">Audio</span></button>
+        <SmallKey field="position" display="Position" {isPlaying} {checkForMatch}>A</SmallKey>
+        <SmallKey field="color" display="Color" {isPlaying} {checkForMatch}>F</SmallKey>
+        <SmallKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</SmallKey>
+        <SmallKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}>J</SmallKey>
+        <SmallKey field="audio" display="Audio" {isPlaying} {checkForMatch}>L</SmallKey>
       </div>
     </div>
     {:else}
@@ -205,17 +210,17 @@ document.addEventListener('keydown', e => handleKey(e.code))
       </div>
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
         {#if !gameSettings.enableShapeColor}
-        <button disabled={$feedback.color === 'disabled'} class="game-button-lg {$feedback.color}" on:click={() => checkForMatch('color')} on:touchmove={() => checkForMatch('color')}>F<span class="game-button-lg-hint">Color</span></button>
+        <LargeKey field="color" display="Color" {isPlaying} {checkForMatch}>F</LargeKey>
         {/if}
-        <button disabled={$feedback.position === 'disabled'} class="game-button-lg {$feedback.position}" on:click={() => checkForMatch('position')} on:touchmove={() => checkForMatch('position')}>A<span class="game-button-lg-hint">Position</span></button>
+        <LargeKey field="position" display="Position" {isPlaying} {checkForMatch}>A</LargeKey>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
         {#if gameSettings.enableShapeColor}
-        <button disabled={$feedback.shapeColor === 'disabled'} class="game-button-lg {$feedback.shapeColor}" on:click={() => checkForMatch('shapeColor')} on:touchmove={() => checkForMatch('shapeColor')}>J<span class="game-button-lg-hint">Pattern</span></button>
+        <LargeKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}>J</LargeKey>
         {:else}
-        <button disabled={$feedback.shape === 'disabled'} class="game-button-lg {$feedback.shape}" on:click={() => checkForMatch('shape')} on:touchmove={() => checkForMatch('shape')}>J<span class="game-button-lg-hint">Shape</span></button>
+        <LargeKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</LargeKey>
         {/if}
-        <button disabled={$feedback.audio === 'disabled'} class="game-button-lg {$feedback.audio}" on:click={() => checkForMatch('audio')} on:touchmove={() => checkForMatch('audio')}>L<span class="game-button-lg-hint">Audio</span></button>
+        <LargeKey field="audio" display="Audio" {isPlaying} {checkForMatch}>L</LargeKey>
       </div>
       <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
     </div>

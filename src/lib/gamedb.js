@@ -34,7 +34,37 @@ export async function addGame(gameInfo) {
   db.close()
 }
 
-export async function getLastNGames(n) {
+export async function getLastRecentGame() {
+  const db = await openDB()
+  const tx = db.transaction(STORE_NAME, "readonly")
+  const store = tx.objectStore(STORE_NAME)
+  const index = store.index("timestamp")
+
+  const oneHourAgo = Date.now() - 60 * 60 * 1000
+  const keyRange = IDBKeyRange.lowerBound(oneHourAgo)
+
+  return new Promise((resolve, reject) => {
+    const cursorRequest = index.openCursor(keyRange, "prev")
+
+    cursorRequest.onsuccess = (event) => {
+      const cursor = event.target.result
+      if (cursor) {
+        addScoreMetadata(cursor.value)
+        resolve(cursor.value)
+      } else {
+        resolve(null)
+      }
+      db.close()
+    }
+
+    cursorRequest.onerror = () => {
+      db.close()
+      reject(cursorRequest.error)
+    }
+  })
+}
+
+export async function getLastNCompletedGames(n) {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, "readonly")
   const store = tx.objectStore(STORE_NAME)
@@ -49,6 +79,7 @@ export async function getLastNGames(n) {
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor && games.length < n) {
+        addScoreMetadata(cursor.value)
         games.push(cursor.value)
         cursor.continue()
       } else {
@@ -87,7 +118,7 @@ export async function getPlayTimeSince4AM() {
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor) {
-        playTime.total += cursor.value.trialTime * cursor.value.numTrials
+        playTime.total += (cursor.value.trialTime * cursor.value.completedTrials) / 1000
         cursor.continue()
       } else {
         db.close()
@@ -100,4 +131,23 @@ export async function getPlayTimeSince4AM() {
       reject(cursorRequest.error)
     }
   })
+}
+
+
+const addScoreMetadata = (game) => {
+  game.total = { hits: 0, misses: 0, percent: 0, possible: 0 }
+  for (const tag of game.tags) {
+    game.total.hits += game.scores[tag].hits
+    game.total.misses += game.scores[tag].misses
+    game.scores[tag].possible = game.scores[tag].hits + game.scores[tag].misses
+    game.scores[tag].percent = 0
+    if (game.scores[tag].hits > 0) {
+      game.scores[tag].percent = game.scores[tag].hits / game.scores[tag].possible
+    }
+  }
+
+  game.total.possible = game.total.hits + game.total.misses
+  if (game.total.hits > 0) {
+    game.total.percent = game.total.hits / game.total.possible
+  }
 }

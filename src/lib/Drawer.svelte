@@ -3,11 +3,13 @@ export let title
 import { ChartColumn, PanelLeftClose, PanelLeftOpen } from '@lucide/svelte'
 import { onMount } from 'svelte'
 import { settings } from '../stores/settingsStore'
+import { scores } from '../stores/scoreStore'
 import { analytics } from '../stores/analyticsStore'
 import { mobile } from '../stores/mobileStore'
 import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
+export let isPlaying = false
 let open = false
 
 const toggle = () => open = !open
@@ -16,7 +18,7 @@ const close = () => open = false
 let drawerRef
 let panelButtonRef
 
-function handleClickOutside(event) {
+const handleClickOutside = (event) => {
   if (open && !drawerRef.contains(event.target) && !panelButtonRef.contains(event.target)) {
     close()
   }
@@ -47,12 +49,13 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       <div>N = {gameSettings.nBack}</div>
       <div>{title.toUpperCase()}</div>
     </div>
-    <div class="justify-self-end flex gap-4 pr-2">
-      <div class="text-2xl lg:text-lg">
-        {#if $analytics.lastTotalScore !== null}
-          {$mobile ? '' : 'Last:'} {$analytics.lastTotalScore}%
-        {/if}
-      </div>
+    <div class="justify-self-end flex gap-4 pr-2 text-2xl lg:text-lg">
+      {#if !isPlaying && !$mobile && $analytics.playTime}
+      <div>Today: {$analytics.playTime}</div>
+      {/if}
+      {#if $scores.total && !isPlaying}
+      <div>{$mobile ? '' : 'Last:'} {($scores.total.percent * 100).toFixed(0)}%</div>
+      {/if}
       <div>
         <ChartColumn class="btn btn-square btn-ghost h-8 lg:h-6" />
       </div>
