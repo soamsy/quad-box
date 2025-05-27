@@ -49,7 +49,11 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
 </script>
 
 <div class="relative flex flex-col h-svh overflow-hidden">
-  <div class="w-full h-16 lg:h-10 grid grid-cols-3 items-center bg-base-200 border-b-1 py-1">
+  <div class="w-full h-16 lg:h-10 grid grid-cols-3 items-center bg-base-200 border-b-1 py-1 text-lg"
+  class:text-2xl={$mobile}
+  class:grid-cols-[1fr_3fr_1fr]={$mobile}
+  class:grid-cols-[3fr_2fr_3fr]={!$mobile}
+  >
     <div class="flex gap-2">
       <div on:click|stopPropagation={toggle} bind:this={panelButtonRef}>
         {#if open}
@@ -59,16 +63,19 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         {/if}
       </div>
     </div>
-    <div class="justify-self-center flex gap-4 text-2xl lg:text-lg select-none">
+    <div class="justify-self-center flex gap-4 select-none">
       <div>N = {gameSettings.nBack}</div>
       <div>{title.toUpperCase()}</div>
+      {#if $scores.total && $mobile}
+      <div>{($scores.total.percent * 100).toFixed(0)}%</div>
+      {/if}
     </div>
-    <div class="justify-self-end flex gap-4 pr-2 text-2xl lg:text-lg">
+    <div class="justify-self-end flex items-center gap-4 pr-2">
       {#if !isPlaying && !$mobile && $analytics.playTime}
       <div>Today: {$analytics.playTime}</div>
       {/if}
-      {#if $scores.total && !isPlaying}
-      <div>{$mobile ? '' : 'Last:'} {($scores.total.percent * 100).toFixed(0)}%</div>
+      {#if $scores.total && !isPlaying && !$mobile}
+      <div>Last: {($scores.total.percent * 100).toFixed(0)}%</div>
       {/if}
       <div>
         <ChartColumn class="btn btn-square btn-ghost h-8 lg:h-6" />
