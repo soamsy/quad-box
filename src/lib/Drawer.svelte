@@ -99,8 +99,8 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
           <span class="text-lg">Feedback:</span>
           <select bind:value={$settings.feedback} id="feedback-select" class="select">
-            <option value="hide">Hide</option>
             <option value="show">Show</option>
+            <option value="hide">Hide</option>
           </select>
         </div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
