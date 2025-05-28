@@ -99,11 +99,6 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         <ModeSwapper />
         <GameSettings />
         <div class="py-2 divider"></div>
-        <div class="flex flex-col gap-1">
-          <label class="text-lg">Rotation speed: {$settings.rotationSpeed}
-            <input type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
-          </label>
-        </div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
           <span class="text-lg">Feedback:</span>
           <select bind:value={$settings.feedback} id="feedback-select" class="select">
@@ -118,24 +113,34 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
             <option value="numbers">Numbers</option>
           </select>
         </div>
-        <div class="flex flex-col gap-1 mt-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-lg">Rotation speed: {$settings.rotationSpeed}
+            <input type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="grid grid-cols-[8fr_2fr] items-center gap-4">
+          <label for="enable-auto-progression" class="text-lg">Auto progression:</label>
+          <input id="enable-auto-progression" type="checkbox" bind:checked={$settings.enableAutoProgression} class="toggle" />
+        </div>
+        <div class="flex flex-col gap-1">
           <label class="text-lg">When ≥ {$settings.successCriteria}%
-            <input type="range" min="0" max="100" value={$settings.successCriteria} on:input={(e) => updateSuccessCriteria(+e.target.value)} step="1" class="range" />
+            <input disabled={!$settings.enableAutoProgression} type="range" min="0" max="100" value={$settings.successCriteria} on:input={(e) => updateSuccessCriteria(+e.target.value)} step="1" class="range" />
           </label>
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-lg">Win after: {$settings.successComboRequired} in a row
-            <input type="range" min="1" max="9" bind:value={$settings.successComboRequired} step="1" class="range" />
+            <input disabled={!$settings.enableAutoProgression} type="range" min="1" max="9" bind:value={$settings.successComboRequired} step="1" class="range" />
           </label>
         </div>
         <div class="flex flex-col gap-1 mt-4">
           <label class="text-lg">When &lt; {$settings.failureCriteria}%
-            <input type="range" min="0" max="100" value={$settings.failureCriteria} on:input={(e) => updateFailureCriteria(+e.target.value)} step="1" class="range" />
+            <input disabled={!$settings.enableAutoProgression} type="range" min="0" max="100" value={$settings.failureCriteria} on:input={(e) => updateFailureCriteria(+e.target.value)} step="1" class="range" />
           </label>
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-lg">Lose after: {$settings.failureComboRequired} in a row
-            <input type="range" min="1" max="9" bind:value={$settings.failureComboRequired} step="1" class="range" />
+            <input disabled={!$settings.enableAutoProgression} type="range" min="1" max="9" bind:value={$settings.failureComboRequired} step="1" class="range" />
           </label>
         </div>
       </div>

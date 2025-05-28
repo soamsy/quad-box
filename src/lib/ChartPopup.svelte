@@ -22,7 +22,7 @@
 
 </script>
 
-<button on:click={openModal}>
+<button class="flex items-center justify-center" on:click={openModal}>
   <ChartColumn class="btn btn-square btn-ghost h-8 lg:h-6" />
 </button>
 {#if show}

@@ -34,16 +34,16 @@
   </label>
 </div>
 <div class="flex flex-col gap-1">
-  <label class="text-lg">Trial Time: {$gameSettings.trialTime}ms
+  <label class="text-lg">Trial time: {$gameSettings.trialTime}ms
     <input type="range" min="1000" max="5000" bind:value={$gameSettings.trialTime} step="100" class="range" />
   </label>
 </div>
 <div class="grid grid-cols-[6fr_4fr] items-center gap-4">
-  <label for="num-trials" class="text-lg">Num Trials:</label>
+  <label for="num-trials" class="text-lg">Num trials:</label>
   <input id="num-trials" type="number" min="10" max="900" value={numTrials} on:input={(e) => clampNumber('numTrials', 10, +e.target.value, 900)} step="1" class="input" />
 </div>
 <div class="flex flex-col gap-1">
-  <label class="text-lg">Match Chance: {$gameSettings.matchChance}%
+  <label class="text-lg">Match chance: {$gameSettings.matchChance}%
     <input type="range" min="5" max="75" bind:value={$gameSettings.matchChance} step="1" class="range" />
   </label>
 </div>
