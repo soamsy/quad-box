@@ -64,7 +64,7 @@ export async function getLastRecentGame() {
   })
 }
 
-export async function getLastNCompletedGames(n) {
+export async function getAllCompletedGames() {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, "readonly")
   const store = tx.objectStore(STORE_NAME)
@@ -78,7 +78,7 @@ export async function getLastNCompletedGames(n) {
 
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
-      if (cursor && games.length < n) {
+      if (cursor) {
         addScoreMetadata(cursor.value)
         games.push(cursor.value)
         cursor.continue()
@@ -135,7 +135,7 @@ export async function getPlayTimeSince4AM() {
 
 
 const addScoreMetadata = (game) => {
-  game.total = { hits: 0, misses: 0, percent: 0, possible: 0 }
+  game.total = { hits: 0, misses: 0, percent: 0, possible: 0, ncalc: 0 }
   for (const tag of game.tags) {
     game.total.hits += game.scores[tag].hits
     game.total.misses += game.scores[tag].misses
@@ -149,5 +149,9 @@ const addScoreMetadata = (game) => {
   game.total.possible = game.total.hits + game.total.misses
   if (game.total.hits > 0) {
     game.total.percent = game.total.hits / game.total.possible
+  }
+
+  if (game.total.percent >= 0.4) {
+    game.ncalc = game.nBack + (game.total.percent - 0.5) * 2
   }
 }
