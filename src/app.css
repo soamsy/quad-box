@@ -32,6 +32,10 @@ html, body {
   background-color: #222;
 }
 
+html {
+  scrollbar-gutter: auto;
+}
+
 body {
   font-family: 'Go Mono', monospace;
   margin: 0;
