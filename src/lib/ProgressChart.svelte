@@ -3,6 +3,7 @@
   import { Chart, registerables } from 'chart.js'
   import 'chartjs-adapter-date-fns'
   import { getAllCompletedGames } from '../lib/gamedb'
+  import { settings } from '../stores/settingsStore'
 
   Chart.register(...registerables)
   Chart.defaults.font.family = 'Go Mono'
@@ -11,44 +12,55 @@
   let chart
   let canvas
 
-  const getDailyAverages = (games) => {
+  const getColorFromTitle = (title) => {
+    const hash = [...title].reduce((acc, c) => acc + c.charCodeAt(0) + 60, 0)
+    const hue = hash % 360
+    return `hsl(${hue}, 70%, ${$settings.theme === 'dark' ? '70' : '20'}%)`
+  }
+
+  const getDailyAveragesByTitle = (games) => {
     const grouped = {}
 
-    games.forEach(({ ncalc, timestamp }) => {
+    for (const { ncalc, timestamp, title } of games) {
+      if (!title) continue
+
       const day = new Date(timestamp)
       day.setHours(0, 0, 0, 0)
       const key = day.getTime()
 
-      if (!grouped[key]) {
-        grouped[key] = []
+      if (!grouped[title]) grouped[title] = {}
+      if (!grouped[title][key]) grouped[title][key] = []
+
+      grouped[title][key].push(ncalc)
+    }
+
+    const datasets = Object.entries(grouped).map(([title, dayGroup]) => {
+      const data = Object.entries(dayGroup).map(([ts, vals]) => ({
+        x: new Date(Number(ts)),
+        y: vals.reduce((a, b) => a + b, 0) / vals.length,
+      }))
+
+      return {
+        label: title,
+        data,
+        fill: false,
+        tension: 0.3,
+        borderWidth: 2,
+        borderColor: getColorFromTitle(title),
       }
-      grouped[key].push(ncalc)
     })
 
-    return Object.entries(grouped).map(([timestamp, values]) => ({
-      date: new Date(Number(timestamp)),
-      avg: values.reduce((a, b) => a + b, 0) / values.length
-    }))
+    return datasets
   }
 
   onMount(async () => {
     const games = (await getAllCompletedGames()).filter(game => 'ncalc' in game)
-    const dailyAverages = getDailyAverages(games)
-    const labels = dailyAverages.map(dp => dp.date)
-    const values = dailyAverages.map(dp => dp.avg)
+    const datasets = getDailyAveragesByTitle(games)
 
     chart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
-        labels,
-        datasets: [{
-          label: 'Average N-Scores',
-          data: values,
-          borderColor: 'rgba(75,192,192,1)',
-          backgroundColor: 'rgba(75,192,192,0.2)',
-          fill: true,
-          tension: 0.3
-        }]
+        datasets
       },
       options: {
         responsive: true,
@@ -59,13 +71,17 @@
               unit: 'day',
               tooltipFormat: 'PP',
             },
-          },
-          y: {
-            beginAtZero: true,
-            suggestedMax: 5,
             title: {
               display: true,
-              text: 'N-Score'
+              text: 'Date'
+            }
+          },
+          y: {
+            min: 0,
+            suggestedMax: 4,
+            title: {
+              display: true,
+              text: 'Score'
             }
           }
         },
@@ -75,7 +91,7 @@
           },
           tooltip: {
             callbacks: {
-              label: ctx => `Average: ${ctx.parsed.y.toFixed(2)}`
+              label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
             }
           }
         }
