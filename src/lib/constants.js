@@ -48,7 +48,7 @@ export const LIGHT_PALETTE = {
 export const DARK_PALETTE = {
   red: '#A4031F',
   green: '#09AA40',
-  blue: '#0A0AD7',
+  blue: '#1616CA',
   yellow: '#DFAC28',
   purple: '#56255D',
   cyan: '#57B6C3',
