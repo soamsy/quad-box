@@ -82,8 +82,10 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       {#if $scores.total && !isPlaying && !$mobile}
       <div>Last: {($scores.total.percent * 100).toFixed(0)}%</div>
       {/if}
-      <InfoPopup />
-      <ChartPopup />
+      <div class="flex">
+        <InfoPopup />
+        <ChartPopup />
+      </div>
     </div>
   </div>
 
