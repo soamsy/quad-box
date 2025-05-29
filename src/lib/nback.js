@@ -1,4 +1,5 @@
-import { COLOR_POOL, SHAPE_POOL, SHAPE_COLOR_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, POSITION_POOL } from "./constants"
+import { createVoronoiPool } from "./voronoi"
 
 const pick = (pool) => {
   return pool[Math.floor(Math.random() * pool.length)]
@@ -61,7 +62,7 @@ export const generateGame = (settings, globalSettings) => {
   }
   if (enableShapeColor) {
     tags.push('shapeColor')
-    generateStimuli(trials, 'shapeColor', SHAPE_COLOR_POOL, nBack, matchChance, interference)
+    generateStimuli(trials, 'shapeColor', createVoronoiPool(), nBack, matchChance, interference)
   }
   if (enableColor) {
     tags.push('color')

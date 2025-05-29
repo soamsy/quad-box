@@ -11,9 +11,6 @@
       return `${trial.shape}-${$settings.theme}-inner`
     } else if (trial.shape) {
       return `${trial.shape}-${$settings.theme}-${trial.color}`
-    } else if (trial.shapeColor) {
-      const [shape, color] = trial.shapeColor.split('-')
-      return `${shape}-${$settings.theme}-${color}`
     } else {
       return ''
     }
@@ -44,7 +41,8 @@
     position={trial.position}
     {boxColor}
     {shapeName}
-    {shapeOuterColor} />
+    {shapeOuterColor}
+    voronoi={trial.shapeColor} />
   {/if}
   <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"></div>
   <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] wide"></div>

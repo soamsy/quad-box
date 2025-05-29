@@ -1,9 +1,11 @@
 <script>
   import { SHAPE_URLS } from "./constants"
+  import { createVoronoiSvg } from "./voronoi"
   export let position = '0-0-0'
   export let boxColor = null
   export let shapeName = null
   export let shapeOuterColor = null
+  export let voronoi = null
 
   const translationMap = {
     'x-0': '-translate-x-[20.1svmin]',
@@ -17,6 +19,13 @@
     'z-2': 'translate-z-[20.1svmin]',
   }
 
+  const svgToDataUrl = (svgString) => {
+    const encoded = encodeURIComponent(svgString)
+      .replace(/'/g, '%27')
+      .replace(/"/g, '%22')
+    return `data:image/svg+xml,${encoded}`
+  }
+
   const calculateBoxClassNames = (x, y, z, shapeName) => {
     let classNames = []
     classNames.push(translationMap[`x-${x}`])
@@ -28,7 +37,7 @@
     return classNames.join(' ')
   }
 
-  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor) => {
+  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi) => {
     let style = ''
     if (boxColor) {
       style += `--face-bg-color: ${boxColor};`
@@ -38,13 +47,16 @@
 
     if (shapeName) {
       style += `--shape-url: url('${SHAPE_URLS[shapeName]}');`
+    } else if (voronoi) {
+      const [id, splits] = voronoi.split('-')
+      style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
     }
     return style
   }
 
   $: [x, y, z] = position.split('-').map(Number)
   $: boxClassNames = calculateBoxClassNames(x, y, z, shapeName)
-  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor)
+  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi)
 
 </script>
 
