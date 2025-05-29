@@ -25,17 +25,17 @@
 {#if show}
   <div class="modal modal-open" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
     <div class="modal-box help-box w-[90%] max-w-3xl">
-      <div class="prose max-w-none text-base text-gray-800 dark:text-gray-200">
-        <h2 class="text-2xl font-bold mb-2">How to Play</h2>
+      <div class="prose max-w-none text-gray-800 dark:text-gray-200 text-sm sm:text-base md:text-lg">
+        <h2 class="text-xl md:text-2xl font-bold mb-2">How to Play</h2>
         <p>
-          3D Quad N-Back is a working memory game. You must watch a cube repeatedly appear in a 3D grid alongside various cues, and match items that appeared
+          3D Quad N-Back is a working memory game. You must watch a cube repeatedly appear in a 3D grid, and match items that appeared
           <strong>n steps ago</strong> across four different modalities:
         </p>
         <ul class="list-disc list-inside my-4">
-          <li><strong>Position:</strong> where the cube appeared on the grid</li>
-          <li><strong>Audio:</strong> what was spoken</li>
-          <li><strong>Shape:</strong> the shape inside the cube</li>
+          <li><strong>Position:</strong> where the cube appeared</li>
           <li><strong>Color:</strong> the color of the cube</li>
+          <li><strong>Shape:</strong> the shape inside the cube</li>
+          <li><strong>Audio:</strong> what was spoken</li>
         </ul>
         <p>
           For each new item, press the corresponding key if it matches the item shown
