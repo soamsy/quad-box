@@ -35,7 +35,11 @@
 </script>
 
 <div class="flex absolute items-center justify-center w-full h-full perspective-[900px]">
-  <div class="scene absolute transform-3d -translate-z-[15svmin] bg-red-500" class:mb-20={$mobile} style="animation-duration: {rotationTime}s">
+  <div class="scene absolute transform-3d"
+  style="animation-duration: {rotationTime}s"
+  class:mb-20={$mobile}
+  class:-translate-z-[0svmin]={$mobile}
+  class:-translate-z-[15svmin]={!$mobile}>
   {#if trial.position && highlight}
   <Cell 
     position={trial.position}
