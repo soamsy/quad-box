@@ -8,18 +8,10 @@ import { feedback } from "./stores/feedbackStore"
 import { analytics } from "./stores/analyticsStore"
 import { mobile, setMobile } from "./stores/mobileStore"
 import { generateGame } from "./lib/nback"
-import { onMount } from "svelte"
+import { onMount, onDestroy } from "svelte"
 import { ALL_AUDIO } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
-
-onMount(() => {
-  setMobile()
-  ALL_AUDIO.forEach(audio => {
-    audioPlayer.preload(audio)
-  })
-})
-window.addEventListener('resize', () => setMobile())
-window.addEventListener('orientationchange', () => setMobile())
+import { runAutoProgression } from "./lib/autoProgression"
 
 let isPlaying
 let trials
@@ -55,7 +47,7 @@ $: title = isPlaying ? gameInfo.title : game.meta.title
 const playTrial = async (i) => {
   if (i >= trials.length) {
     await delay(1000)
-    endGame('completed')
+    await endGame('completed')
     return
   }
 
@@ -92,13 +84,16 @@ const startGame = async () => {
   }
 }
 
-const endGame = (status) => {
+const endGame = async (status) => {
   if (!isPlaying) {
     return
   }
 
   if (trialsIndex > gameInfo.nBack) {
-    analytics.scoreTrials(gameInfo, scoresheet.slice(0, trialsIndex), status)
+    await analytics.scoreTrials(gameInfo, status === 'completed' ? scoresheet : scoresheet.slice(0, trialsIndex), status)
+    if (status === 'completed') {
+      await runAutoProgression(gameInfo)
+    }
   }
   timeoutCancelFns.forEach(fn => fn())
   resetRuntimeData()
@@ -138,8 +133,8 @@ const checkForMatch = (type) => {
   }
 }
 
-const handleKey = (code) => {
-  switch (code) {
+const handleKey = (event) => {
+  switch (event.code) {
     case 'Space':
       startGame()
       break
@@ -181,7 +176,25 @@ const delay = async (ms) => {
   return promise
 }
 
-document.addEventListener('keydown', e => handleKey(e.code))
+onMount(() => {
+  setMobile()
+  ALL_AUDIO.forEach(audio => {
+    audioPlayer.preload(audio)
+  })
+})
+
+const onResize = () => setMobile()
+const onOrientationChange = () => setMobile()
+window.addEventListener('resize', onResize)
+window.addEventListener('orientationchange', onOrientationChange)
+document.addEventListener('keydown', handleKey)
+
+onDestroy(async () => {
+  await endGame('cancelled')
+  window.removeEventListener('resize', onResize)
+  window.removeEventListener('orientationchange', onOrientationChange)
+  document.removeEventListener('keydown', handleKey)
+})
 
 </script>
 

@@ -1,11 +1,12 @@
 <script>
 export let title
-import { ChartColumn, PanelLeftClose, PanelLeftOpen } from '@lucide/svelte'
+import { PanelLeftClose, PanelLeftOpen } from '@lucide/svelte'
 import { onMount } from 'svelte'
 import { settings } from '../stores/settingsStore'
 import { scores } from '../stores/scoreStore'
 import { analytics } from '../stores/analyticsStore'
 import { mobile } from '../stores/mobileStore'
+import { autoProgression } from '../stores/autoProgressionStore'
 import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
@@ -64,7 +65,9 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         {/if}
       </div>
     </div>
-    <div class="justify-self-center flex gap-4 select-none">
+    <div class="justify-self-center flex gap-4 select-none px-6"
+      class:advance={$autoProgression.advance} 
+      class:fallback={$autoProgression.fallback}>
       <div>N = {gameSettings.nBack}</div>
       <div>{title.toUpperCase()}</div>
       {#if $scores.total && $mobile}

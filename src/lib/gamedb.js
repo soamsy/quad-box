@@ -95,6 +95,39 @@ export async function getAllCompletedGames() {
   })
 }
 
+export async function getLast48HoursCompletedGames() {
+  const db = await openDB()
+  const tx = db.transaction(STORE_NAME, "readonly")
+  const store = tx.objectStore(STORE_NAME)
+  const index = store.index("timestamp")
+
+  const games = []
+
+  return new Promise((resolve, reject) => {
+    const now = new Date()
+    const twoDaysAgo = new Date(now - 48 * 60 * 60 * 1000)
+    const keyRange = IDBKeyRange.bound(twoDaysAgo.getTime(), now.getTime())
+    const cursorRequest = index.openCursor(keyRange, "prev")
+
+    cursorRequest.onsuccess = (event) => {
+      const cursor = event.target.result
+      if (cursor) {
+        addScoreMetadata(cursor.value)
+        games.push(cursor.value)
+        cursor.continue()
+      } else {
+        db.close()
+        resolve(games)
+      }
+    }
+
+    cursorRequest.onerror = () => {
+      db.close()
+      reject(cursorRequest.error)
+    }
+  })
+}
+
 export async function getPlayTimeSince4AM() {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, "readonly")
@@ -135,6 +168,9 @@ export async function getPlayTimeSince4AM() {
 
 
 const addScoreMetadata = (game) => {
+  if (game.status === 'tombstone') {
+    return game
+  }
   game.total = { hits: 0, misses: 0, percent: 0, possible: 0, ncalc: 0 }
   for (const tag of game.tags) {
     game.total.hits += game.scores[tag].hits
