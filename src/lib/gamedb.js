@@ -151,7 +151,9 @@ export async function getPlayTimeSince4AM() {
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor) {
-        playTime.total += (cursor.value.trialTime * cursor.value.completedTrials) / 1000
+        if (cursor.value.status !== "tombstone") {
+          playTime.total += (cursor.value.trialTime * cursor.value.completedTrials) / 1000
+        }
         cursor.continue()
       } else {
         db.close()
