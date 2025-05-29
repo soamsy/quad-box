@@ -16,10 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 23
+          node-version: 18
 
       - name: Install dependencies
         run: npm ci
@@ -27,10 +27,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload dist folder
+      - name: Upload built site
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./dist
+          path: dist
 
   deploy:
     needs: build
