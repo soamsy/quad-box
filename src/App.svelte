@@ -9,7 +9,7 @@ import { analytics } from "./stores/analyticsStore"
 import { mobile, setMobile } from "./stores/mobileStore"
 import { generateGame } from "./lib/nback"
 import { onMount, onDestroy } from "svelte"
-import { ALL_AUDIO } from "./lib/constants"
+import { LETTER_AUDIO_POOL, NUMBER_AUDIO_POOL } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
 import { runAutoProgression } from "./lib/autoProgression"
 
@@ -178,10 +178,22 @@ const delay = async (ms) => {
 
 onMount(() => {
   setMobile()
-  ALL_AUDIO.forEach(audio => {
-    audioPlayer.preload(audio)
-  })
 })
+
+const cacheAudioFiles = (audioSource) => {
+  switch (audioSource) {
+    case 'letters':
+      LETTER_AUDIO_POOL.forEach(audio => {
+        audioPlayer.preload(audio)
+      })
+      break
+    case 'numbers':
+      NUMBER_AUDIO_POOL.forEach(audio => {
+        audioPlayer.preload(audio)
+      })
+      break
+  }
+}
 
 const onResize = () => setMobile()
 const onOrientationChange = () => setMobile()
@@ -195,6 +207,9 @@ onDestroy(async () => {
   window.removeEventListener('orientationchange', onOrientationChange)
   document.removeEventListener('keydown', handleKey)
 })
+
+$: audioSource = $settings.audioSource
+$: cacheAudioFiles(audioSource)
 
 </script>
 
