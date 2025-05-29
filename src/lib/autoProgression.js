@@ -11,6 +11,9 @@ const takeUntil = (array, condition) => {
 
 export const runAutoProgression = async (gameInfo) => {
   const $settings = get(settings)
+  if (!$settings.enableAutoProgression) {
+    return
+  }
   const successCriteria = $settings.successCriteria
   const failureCriteria = $settings.failureCriteria
   const successComboRequired = $settings.successComboRequired
