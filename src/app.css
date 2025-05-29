@@ -71,24 +71,6 @@ body {
   @apply absolute left-0 top-0 w-full h-full;
 }
 
-.frame {
-  @apply border-neutral-950 dark:border-neutral-300;
-  border-width: 0.3svmin;
-  opacity: 0.85;
-}
-
-.frame.tall {
-  border-width: 0.3svmin;
-  border-top-width: 0;
-  border-bottom-width: 0;
-}
-
-.frame.wide {
-  border-width: 0.3svmin;
-  border-left-width: 0;
-  border-right-width: 0;
-}
-
 .game-button-sm.disabled {
   display: none;
 }

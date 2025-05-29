@@ -1,0 +1,7 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <line class="grid-line" x1="100" y1="0" x2="100" y2="300" stroke="#0a0a0a" stroke-width="1"/>
+  <line class="grid-line" x1="200" y1="0" x2="200" y2="300" stroke="#0a0a0a" stroke-width="1"/>
+  <line class="grid-line" x1="0" y1="100" x2="300" y2="100" stroke="#0a0a0a" stroke-width="1"/>
+  <line class="grid-line" x1="0" y1="200" x2="300" y2="200" stroke="#0a0a0a" stroke-width="1"/>
+  <rect class="grid-border" x="0" y="0" width="300" height="300" fill="none" stroke="#0a0a0a" stroke-width="1"/>
+</svg>

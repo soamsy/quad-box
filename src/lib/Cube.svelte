@@ -2,6 +2,7 @@
   export let trial = {}
   export let presentation = {}
   import Cell from "./Cell.svelte"
+  import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
@@ -34,56 +35,35 @@
 
 </script>
 
-<div class="flex absolute items-center justify-center w-full h-full perspective-[60svmin]">
-  <div class="scene absolute transform-3d -translate-z-[15svmin]"
+<div class="flex absolute items-center justify-center w-full h-full perspective-[900px]">
+  <div class="scene absolute transform-3d"
+  class:-translate-z-[10svmin]={!$mobile}
+  class:-translate-z-[0svmin]={$mobile}
   style="animation-duration: {rotationTime}s"
-  class:mb-14={$mobile}>
-  {#if trial.position && highlight}
-  <Cell 
-    position={trial.position}
-    {boxColor}
-    {shapeName}
-    {shapeOuterColor}
-    voronoi={trial.shapeColor} />
-  {/if}
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-z-[10.05svmin] -left-[30.15svmin] -top-[10.15svmin] wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-z-[10.05svmin] -left-[10.15svmin] -top-[30.15svmin] tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] translate-z-[10.05svmin] -left-[30.15svmin] -top-[10.15svmin] wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] translate-z-[10.05svmin] -left-[10.15svmin] -top-[30.15svmin] tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] translate-z-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] translate-z-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] tall"></div>
+  class:mb-14={$mobile}
+  >
+    {#if trial.position && highlight}
+    <Cell 
+      position={trial.position}
+      {boxColor}
+      {shapeName}
+      {shapeOuterColor}
+      voronoi={trial.shapeColor} />
+    {/if}
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
 
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-y-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-x-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-y-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-x-90 tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-y-[10.05svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-x-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-y-[10.05svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-x-90 tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] translate-y-[10.05svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-x-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] translate-y-[10.05svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-x-90 tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] translate-y-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-x-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] translate-y-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-x-90 tall"></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
 
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-x-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-y-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-x-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-y-90 tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] -translate-x-[10.05svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-y-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] -translate-x-[10.05svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-y-90 tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] translate-x-[10.05svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-y-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] translate-x-[10.05svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-y-90 tall"></div>
-  <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"></div>
-  <div class="frame absolute w-[60.3svmin] h-[20.3svmin] translate-x-[30.15svmin] -left-[30.15svmin] -top-[10.15svmin] rotate-y-90 wide"></div>
-  <div class="frame absolute w-[20.3svmin] h-[60.3svmin] translate-x-[30.15svmin] -left-[10.15svmin] -top-[30.15svmin] rotate-y-90 tall"></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
+    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
   </div>
 </div>
 
