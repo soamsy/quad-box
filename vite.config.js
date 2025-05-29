@@ -8,5 +8,5 @@ export default defineConfig({
     tailwindcss(),
     svelte(),
   ],
-  base: process.env.BASE_PATH || '/',
+  base: process.env.BASE_PATH || './',
 })
