@@ -2,7 +2,7 @@
 
 3D Quad N-Back
 
-Play at https://soamsy.github.io/quad-box/
+Play at https://quad-box.netlify.app
 
 # Development
 ```
