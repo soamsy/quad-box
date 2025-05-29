@@ -152,7 +152,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       <div class="my-10"></div>
     </nav>
 
-    <div class="relative w-screen h-full transition-transform duration-150 dark:bg-[#232323] bg-white">
+    <div class="relative w-screen h-full transition-transform duration-150 dark:bg-[#232323] bg-[#FBFBFB]">
       <slot />
     </div>
   </div>
