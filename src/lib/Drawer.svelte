@@ -11,6 +11,7 @@ import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
 import ChartPopup from "./ChartPopup.svelte"
+import InfoPopup from './InfoPopup.svelte'
 export let isPlaying = false
 let open = false
 
@@ -81,9 +82,8 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       {#if $scores.total && !isPlaying && !$mobile}
       <div>Last: {($scores.total.percent * 100).toFixed(0)}%</div>
       {/if}
-      <div>
-        <ChartPopup />
-      </div>
+      <InfoPopup />
+      <ChartPopup />
     </div>
   </div>
 

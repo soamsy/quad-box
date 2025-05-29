@@ -124,3 +124,11 @@ button.late-failure, button.late-failure:hover {
 .fallback {
   @apply bg-amber-600 text-neutral-50 dark:bg-amber-500 dark:text-neutral-900;
 }
+
+.modal-box {
+  @apply dark:bg-[#090909];
+}
+
+.help-box {
+  @apply dark:border-black dark:border-4
+}
