@@ -7,7 +7,7 @@
 
   Chart.register(...registerables)
   Chart.defaults.font.family = 'Go Mono'
-  Chart.defaults.font.size = 24
+  Chart.defaults.font.size = 16
   Chart.defaults.font.weight = 'normal'
   let chart
   let canvas
@@ -16,6 +16,64 @@
     const hash = [...title].reduce((acc, c) => acc + c.charCodeAt(0) + 60, 0)
     const hue = hash % 360
     return `hsl(${hue}, 70%, ${$settings.theme === 'dark' ? '70' : '20'}%)`
+  }
+
+  const getChartOptions = (theme) => {
+    const isDark = theme === 'dark'
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          ticks: {
+            color: isDark ? '#ccc' : '#333',
+          },
+          type: 'time',
+          time: {
+            unit: 'day',
+            tooltipFormat: 'PP',
+          },
+          grid: {
+            color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+          },
+          title: {
+            display: true,
+            text: 'Date',
+            color: isDark ? '#eee' : '#111'
+          }
+        },
+        y: {
+          min: 0,
+          suggestedMax: 4,
+          ticks: {
+            color: isDark ? '#ccc' : '#333',
+          },
+          grid: {
+            color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+          },
+          title: {
+            display: true,
+            text: 'Score',
+            color: isDark ? '#eee' : '#111'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: isDark ? '#ccc' : '#333'
+          }
+        },
+        tooltip: {
+          backgroundColor: isDark ? '#333' : '#fff',
+          titleColor: isDark ? '#fff' : '#000',
+          bodyColor: isDark ? '#eee' : '#111',
+          callbacks: {
+            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
+          }
+        }
+      }
+    }
   }
 
   const getDailyAveragesByTitle = (games) => {
@@ -62,55 +120,29 @@
       data: {
         datasets
       },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day',
-              tooltipFormat: 'PP',
-            },
-            title: {
-              display: true,
-              text: 'Date'
-            }
-          },
-          y: {
-            min: 0,
-            suggestedMax: 4,
-            title: {
-              display: true,
-              text: 'Score'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: true
-          },
-          tooltip: {
-            callbacks: {
-              label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
-            }
-          }
-        }
-      }
+      options: getChartOptions($settings.theme),
     })
+    handleResize()
   })
 
+  const handleResize = () => {
+    if (chart) {
+      chart.resize()
+    }
+  }
+  window.addEventListener('resize', handleResize)
+
   onDestroy(() => {
-    if (chart) chart.destroy()
+    if (chart) {
+      chart.destroy()
+    }
+    window.removeEventListener('resize', handleResize)
   })
 </script>
 
-<div>
+<div class="w-full h-[65svh]">
   <canvas bind:this={canvas}></canvas>
 </div>
 
 <style>
-  canvas {
-    width: 100%;
-    height: 70svh;
-  }
 </style>
