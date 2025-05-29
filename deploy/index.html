@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/quadbox.svg" as="image" type="image/svg+xml" />
+    <link rel="icon" type="image/svg+xml" href="/quadbox.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quad Box</title>
+  </head>
+  <body style="margin: 0; width: 100svw; height: 100svh; overflow: hidden;">
+    <iframe id="quad-iframe" src="https://soamsy.github.io/quad-box" width="100%" height="100%" style="border:none;"></iframe>
+  </body>
+  <script>
+    window.onload = function() {
+      const iframe = document.getElementById('quad-iframe');
+      iframe.focus();
+    };
+  </script>
+</html>
