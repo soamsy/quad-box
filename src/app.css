@@ -30,6 +30,8 @@
 
 html, body {
   background-color: #222;
+  overscroll-behavior-y: contain;
+  touch-action: pan-x pan-y;
 }
 
 html {
