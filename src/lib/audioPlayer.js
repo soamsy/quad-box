@@ -23,9 +23,7 @@ class AudioPlayer {
 
       let audio
       if (this.cache && this.audioCache.has(url)) {
-        // Clone to allow overlapping playbacks
-        const original = this.audioCache.get(url)
-        audio = original.cloneNode(true)
+        audio = this.audioCache.get(url)
       } else {
         audio = new Audio(this.location + url)
         audio.volume = this.volume
