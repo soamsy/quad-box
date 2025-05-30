@@ -1,6 +1,7 @@
 <script>
   import { SHAPE_URLS } from "./constants"
   import { createVoronoiSvg } from "./voronoi"
+  export let show = false
   export let position = '0-0-0'
   export let boxColor = null
   export let shapeName = null
@@ -26,7 +27,11 @@
     return `data:image/svg+xml,${encoded}`
   }
 
-  const calculateBoxClassNames = (x, y, z, shapeName) => {
+  const calculateBoxClassNames = (x, y, z, shapeName, show) => {
+    if (!show) {
+      return 'hidden'
+    }
+
     let classNames = []
     classNames.push(translationMap[`x-${x}`])
     classNames.push(translationMap[`y-${y}`])
@@ -54,8 +59,8 @@
     return style
   }
 
-  $: [x, y, z] = position.split('-').map(Number)
-  $: boxClassNames = calculateBoxClassNames(x, y, z, shapeName)
+  $: [x, y, z] = (position ?? '0-0-0').split('-').map(Number)
+  $: boxClassNames = calculateBoxClassNames(x, y, z, shapeName, show)
   $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi)
 
 </script>

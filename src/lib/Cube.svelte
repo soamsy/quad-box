@@ -35,21 +35,21 @@
 
 </script>
 
-<div class="flex absolute items-center justify-center w-full h-full perspective-[900px]">
+<div class="flex absolute items-center justify-center w-full h-full perspective-[65svmin]"
+  class:perspective-[150svmin]={$mobile}>
   <div class="scene absolute transform-3d"
   class:-translate-z-[10svmin]={!$mobile}
-  class:-translate-z-[0svmin]={$mobile}
-  style="animation-duration: {rotationTime}s"
-  class:mb-14={$mobile}
+  class:-translate-z-[-10svmin]={$mobile}
+  class:mb-10={$mobile}
+  style="animation-duration: {rotationTime}s;"
   >
-    {#if trial.position && highlight}
-    <Cell 
+    <Cell
+      show={trial.position && highlight}
       position={trial.position}
       {boxColor}
       {shapeName}
       {shapeOuterColor}
       voronoi={trial.shapeColor} />
-    {/if}
     <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
     <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
     <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
