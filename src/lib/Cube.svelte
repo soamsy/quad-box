@@ -36,10 +36,10 @@
 </script>
 
 <div class="flex absolute items-center justify-center w-full h-full perspective-[65svmin]"
-  class:perspective-[150svmin]={$mobile}>
+  class:perspective-[100svmin]={$mobile}>
   <div class="scene absolute transform-3d"
   class:-translate-z-[10svmin]={!$mobile}
-  class:-translate-z-[-10svmin]={$mobile}
+  class:-translate-z-[0svmin]={$mobile}
   class:mb-10={$mobile}
   style="animation-duration: {rotationTime}s;"
   >
