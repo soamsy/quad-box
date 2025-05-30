@@ -89,12 +89,12 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
     </div>
   </div>
 
-  <div class="flex-auto flex overflow-hidden w-fit duration-150" class:-translate-x-90={!open} class:sm:-translate-x-72={!open}>
-
+  <div class="flex-auto flex relative overflow-x-hidden w-fit duration-0">
     <nav
       bind:this={drawerRef}
-      class="top-0 left-0 h-full overflow-y-auto w-90 sm:w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
-    >
+      class="absolute top-0 left-0 h-full overflow-y-auto w-86 sm:w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
+      class:-translate-x-86={!open} class:sm:-translate-x-72={!open}
+      >
       <div class="flex w-full flex-col px-4 gap-2">
         <div class="text-xl font-semibold flex justify-between items-center pt-4">
           <span>Settings</span>
