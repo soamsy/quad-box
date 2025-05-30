@@ -59,43 +59,31 @@ body {
   @apply w-full h-full flex flex-col gap-2 items-center justify-around py-1;
 }
 
-.game-button-sm {
-  @apply game-button w-full h-full text-4xl relative flex-auto;
-}
-
-.game-button-sm-hint {
-  @apply absolute top-[4%] text-sm sm:text-xl;
-}
-
 .stretch {
   @apply absolute left-0 top-0 w-full h-full;
 }
 
-.game-button-sm.disabled {
-  display: none;
-}
-
-button.success, button.success:hover {
+button.light-success, button.light-success:hover {
   background-color: #93C82E;
 }
 
-.dark button.success {
+button.dark-success {
   background-color: #386D38;
 }
 
-button.failure, button.failure:hover {
+button.light-failure, button.light-failure:hover {
   background-color: #EE3527;
 }
 
-.dark button.failure {
+button.dark-failure {
   background-color: #9F2323;
 }
 
-button.late-failure, button.late-failure:hover {
+button.light-late-failure, button.light-late-failure:hover {
   background-color: #F49F31;
 }
 
-.dark button.late-failure {
+button.dark-late-failure {
   background-color: #a6712c;
 }
 

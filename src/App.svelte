@@ -223,7 +223,7 @@ $: cacheAudioFiles(audioSource)
         <div class="text-4xl ml-2 select-none opacity-30" >{trialDisplay}</div>
         <button class="game-button text-4xl p-8 md:p-10" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
-      <div class="flex w-full h-full gap-1 row-start-3 md:mt-6">
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(0,1fr))] grid-rows-1 max-w-full gap-1 row-start-3 md:mt-6">
         <SmallKey field="position" display="Position" {isPlaying} {checkForMatch}>A</SmallKey>
         <SmallKey field="color" display="Color" {isPlaying} {checkForMatch}>F</SmallKey>
         <SmallKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</SmallKey>
