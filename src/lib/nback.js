@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, LETTER_B_AUDIO_POOL, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, LETTER_2_AUDIO_POOL, POSITION_POOL } from "./constants"
 import { createVoronoiPool } from "./voronoi"
 
 const pick = (pool) => {
@@ -45,12 +45,12 @@ const generateStimuli = (trials, type, pool, nBack, matchChance, interference) =
 
 const getAudioPool = (globalSettings) => {
   switch (globalSettings.audioSource) {
-    case 'lettersb':
-      return LETTER_B_AUDIO_POOL
+    case 'letters':
+      return LETTER_AUDIO_POOL
     case 'numbers':
       return NUMBER_AUDIO_POOL
     default:
-      return LETTER_AUDIO_POOL
+      return LETTER_2_AUDIO_POOL
   }
 }
 

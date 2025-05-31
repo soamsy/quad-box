@@ -87,14 +87,14 @@ export const SHAPE_URLS = generateShapeUrls()
 
 const NATURAL_PATH = "Natural-Numbers/"
 export const NUMBER_AUDIO_POOL = [
-  `${NATURAL_PATH}1.wav`,
-  `${NATURAL_PATH}2.wav`,
-  `${NATURAL_PATH}3.wav`,
-  `${NATURAL_PATH}4.wav`,
-  `${NATURAL_PATH}5.wav`,
-  `${NATURAL_PATH}6.wav`,
-  `${NATURAL_PATH}7.wav`,
-  `${NATURAL_PATH}8.wav`,
+  `${NATURAL_PATH}1.opus`,
+  `${NATURAL_PATH}2.opus`,
+  `${NATURAL_PATH}3.opus`,
+  `${NATURAL_PATH}4.opus`,
+  `${NATURAL_PATH}5.opus`,
+  `${NATURAL_PATH}6.opus`,
+  `${NATURAL_PATH}7.opus`,
+  `${NATURAL_PATH}8.opus`,
 ]
 
 const LETTERS_PATH = "Letters/"
@@ -110,33 +110,32 @@ export const LETTER_AUDIO_POOL = [
   `${LETTERS_PATH}k.opus`,
 ]
 
-const LETTERS_B_PATH = "LettersB/"
-export const LETTER_B_AUDIO_POOL = [
- `${LETTERS_B_PATH}a.wav`,
- `${LETTERS_B_PATH}d.wav`,
- `${LETTERS_B_PATH}g.wav`,
- `${LETTERS_B_PATH}i.wav`,
- `${LETTERS_B_PATH}k.wav`,
- `${LETTERS_B_PATH}m.wav`,
- `${LETTERS_B_PATH}o.wav`,
- `${LETTERS_B_PATH}s.wav`,
- `${LETTERS_B_PATH}x.wav`,
- `${LETTERS_B_PATH}z.wav`,
- `${LETTERS_B_PATH}b.wav`,
- `${LETTERS_B_PATH}e.wav`,
- `${LETTERS_B_PATH}h.wav`,
- `${LETTERS_B_PATH}j.wav`,
- `${LETTERS_B_PATH}l.wav`,
- `${LETTERS_B_PATH}n.wav`,
- `${LETTERS_B_PATH}q.wav`,
- `${LETTERS_B_PATH}t.wav`,
- `${LETTERS_B_PATH}y.wav`,
+const LETTERS_2_PATH = "Letters2/"
+export const LETTER_2_AUDIO_POOL = [
+ `${LETTERS_2_PATH}a.opus`,
+ `${LETTERS_2_PATH}d.opus`,
+ `${LETTERS_2_PATH}g.opus`,
+ `${LETTERS_2_PATH}i.opus`,
+ `${LETTERS_2_PATH}k.opus`,
+ `${LETTERS_2_PATH}m.opus`,
+ `${LETTERS_2_PATH}o.opus`,
+ `${LETTERS_2_PATH}s.opus`,
+ `${LETTERS_2_PATH}x.opus`,
+ `${LETTERS_2_PATH}z.opus`,
+ `${LETTERS_2_PATH}b.opus`,
+ `${LETTERS_2_PATH}e.opus`,
+ `${LETTERS_2_PATH}h.opus`,
+ `${LETTERS_2_PATH}j.opus`,
+ `${LETTERS_2_PATH}l.opus`,
+ `${LETTERS_2_PATH}n.opus`,
+ `${LETTERS_2_PATH}q.opus`,
+ `${LETTERS_2_PATH}t.opus`,
 ]
 
 export const ALL_AUDIO = [
   ...NUMBER_AUDIO_POOL, 
   ...LETTER_AUDIO_POOL,
-  ...LETTER_B_AUDIO_POOL,
+  ...LETTER_2_AUDIO_POOL,
 ]
 
 export const POSITION_POOL = [

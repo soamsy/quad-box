@@ -48,7 +48,7 @@ const defaultSettings = {
   successComboRequired: 1,
   failureCriteria: 50,
   failureComboRequired: 3,
-  audioSource: 'letters',
+  audioSource: 'letters2',
 }
 
 const loadSettings = () => {
