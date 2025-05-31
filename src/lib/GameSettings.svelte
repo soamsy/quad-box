@@ -40,7 +40,7 @@
 </div>
 <div class="grid grid-cols-[6fr_4fr] items-center gap-4">
   <label for="num-trials" class="text-lg">Num trials:</label>
-  <input id="num-trials" type="number" min="10" max="900" value={numTrials} on:input={(e) => clampNumber('numTrials', 10, +e.target.value, 900)} step="1" class="input" />
+  <input id="num-trials" type="number" min="10" max="999" value={numTrials} on:input={(e) => clampNumber('numTrials', 10, +e.target.value, 999)} step="1" class="input" />
 </div>
 <div class="flex flex-col gap-1">
   <label class="text-lg">Match chance: {$gameSettings.matchChance}%
