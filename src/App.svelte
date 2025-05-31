@@ -41,7 +41,7 @@ $: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee'
 $: isMobile = $mobile
 $: gameSettings = $settings.gameSettings[$settings.mode]
 $: game = generateGame(gameSettings, $settings, gameId)
-$: trialDisplay = game.trials.length - trialsIndex
+$: trialDisplay = $settings.feedback === 'show' ? game.trials.length - trialsIndex : ''
 $: title = isPlaying ? gameInfo.title : game.meta.title
 
 const playTrial = async (i) => {
