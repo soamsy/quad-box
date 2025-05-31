@@ -35,7 +35,7 @@
 
 </script>
 
-<div class="flex absolute items-center justify-center w-full h-full perspective-[65svmin]"
+<div class="flex absolute items-center justify-center w-full h-full select-none perspective-[65svmin]"
   class:perspective-[100svmin]={$mobile}>
   <div class="scene absolute transform-3d"
   class:-translate-z-[10svmin]={!$mobile}
