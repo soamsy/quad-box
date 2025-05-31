@@ -208,11 +208,32 @@ window.addEventListener('resize', onResize)
 window.addEventListener('orientationchange', onOrientationChange)
 document.addEventListener('keydown', handleKey)
 
+const handleTouchStart = (event) => {
+  for (const touch of event.changedTouches) {
+    const target = document.elementFromPoint(touch.clientX, touch.clientY)
+    if (target?.classList.contains('stimulus-button')) {
+      target.click()
+    }
+  }
+}
+document.addEventListener('touchstart', handleTouchStart)
+const handleTouchMove = (event) => {
+  for (const touch of event.touches) {
+    const target = document.elementFromPoint(touch.clientX, touch.clientY)
+    if (target?.classList.contains('stimulus-button')) {
+      target.click()
+    }
+  }
+}
+document.addEventListener('touchmove', handleTouchMove)
+
 onDestroy(async () => {
   await endGame('cancelled')
   window.removeEventListener('resize', onResize)
   window.removeEventListener('orientationchange', onOrientationChange)
   document.removeEventListener('keydown', handleKey)
+  document.removeEventListener('touchstart', handleTouchStart)
+  document.removeEventListener('touchmove', handleTouchMove)
 })
 
 $: audioSource = $settings.audioSource
