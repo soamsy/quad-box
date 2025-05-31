@@ -94,6 +94,8 @@ const endGame = async (status) => {
     if (status === 'completed') {
       await runAutoProgression(gameInfo)
     }
+  } else {
+    console.debug('Game not recorded', trialsIndex, gameInfo, scoresheet, trials)
   }
   timeoutCancelFns.forEach(fn => fn())
   resetRuntimeData()
