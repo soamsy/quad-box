@@ -9,7 +9,7 @@ import { analytics } from "./stores/analyticsStore"
 import { mobile, setMobile } from "./stores/mobileStore"
 import { generateGame } from "./lib/nback"
 import { onMount, onDestroy } from "svelte"
-import { LETTER_AUDIO_POOL, NUMBER_AUDIO_POOL } from "./lib/constants"
+import { LETTER_AUDIO_POOL, LETTER_B_AUDIO_POOL, NUMBER_AUDIO_POOL } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
 import { runAutoProgression } from "./lib/autoProgression"
 
@@ -184,6 +184,11 @@ onMount(() => {
 
 const cacheAudioFiles = (audioSource) => {
   switch (audioSource) {
+    case 'lettersb':
+      LETTER_B_AUDIO_POOL.forEach(audio => {
+        audioPlayer.preload(audio)
+      })
+      break
     case 'letters':
       LETTER_AUDIO_POOL.forEach(audio => {
         audioPlayer.preload(audio)

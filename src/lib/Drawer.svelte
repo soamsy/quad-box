@@ -112,9 +112,10 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
           </select>
         </div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
-          <span class="text-lg">Sounds:</span>
+          <span class="text-lg">Voices:</span>
           <select bind:value={$settings.audioSource} id="audio-select" class="select">
-            <option value="letters">Letters</option>
+            <option value="letters">Letters A</option>
+            <option value="lettersb">Letters B</option>
             <option value="numbers">Numbers</option>
           </select>
         </div>

@@ -110,9 +110,33 @@ export const LETTER_AUDIO_POOL = [
   `${LETTERS_PATH}k.opus`,
 ]
 
+const LETTERS_B_PATH = "LettersB/"
+export const LETTER_B_AUDIO_POOL = [
+ `${LETTERS_B_PATH}a.wav`,
+ `${LETTERS_B_PATH}d.wav`,
+ `${LETTERS_B_PATH}g.wav`,
+ `${LETTERS_B_PATH}i.wav`,
+ `${LETTERS_B_PATH}k.wav`,
+ `${LETTERS_B_PATH}m.wav`,
+ `${LETTERS_B_PATH}o.wav`,
+ `${LETTERS_B_PATH}s.wav`,
+ `${LETTERS_B_PATH}x.wav`,
+ `${LETTERS_B_PATH}z.wav`,
+ `${LETTERS_B_PATH}b.wav`,
+ `${LETTERS_B_PATH}e.wav`,
+ `${LETTERS_B_PATH}h.wav`,
+ `${LETTERS_B_PATH}j.wav`,
+ `${LETTERS_B_PATH}l.wav`,
+ `${LETTERS_B_PATH}n.wav`,
+ `${LETTERS_B_PATH}q.wav`,
+ `${LETTERS_B_PATH}t.wav`,
+ `${LETTERS_B_PATH}y.wav`,
+]
+
 export const ALL_AUDIO = [
   ...NUMBER_AUDIO_POOL, 
   ...LETTER_AUDIO_POOL,
+  ...LETTER_B_AUDIO_POOL,
 ]
 
 export const POSITION_POOL = [
