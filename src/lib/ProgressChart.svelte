@@ -13,9 +13,23 @@
   let canvas
 
   const getColorFromTitle = (title) => {
-    const hash = [...title].reduce((acc, c) => acc + c.charCodeAt(0) + 60, 0)
+    let hash = 2166136261
+    for (let i = 0; i < title.length; i++) {
+      hash ^= title.charCodeAt(i)
+      hash = (hash * 16777619) >>> 0
+    }
+
+    hash ^= hash >>> 13
+    hash ^= hash << 7
+    hash ^= hash >>> 17
+
     const hue = hash % 360
-    return `hsl(${hue}, 70%, ${$settings.theme === 'dark' ? '70' : '20'}%)`
+    const sat = 60 + (hash % 30)
+    const light = $settings.theme === 'dark'
+      ? 60 + (hash % 20)
+      : 55 + (hash % 25)
+
+    return `hsl(${hue}, ${sat}%, ${light}%)`
   }
 
   const getChartOptions = (theme) => {
@@ -102,7 +116,6 @@
         label: title,
         data,
         fill: false,
-        tension: 0.3,
         borderWidth: 2,
         borderColor: getColorFromTitle(title),
       }
@@ -140,9 +153,7 @@
   })
 </script>
 
-<div class="w-full h-[65svh]">
-  <canvas bind:this={canvas}></canvas>
-</div>
+<canvas bind:this={canvas}></canvas>
 
 <style>
 </style>

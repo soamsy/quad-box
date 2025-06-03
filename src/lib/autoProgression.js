@@ -1,4 +1,4 @@
-import { getLast48HoursCompletedGames, addGame } from './gamedb'
+import { getLast48HoursGames, addGame } from './gamedb'
 import { get } from 'svelte/store'
 import { autoProgression } from '../stores/autoProgressionStore'
 import { settings } from '../stores/settingsStore'
@@ -19,7 +19,7 @@ export const runAutoProgression = async (gameInfo) => {
   const successComboRequired = $settings.successComboRequired
   const failureComboRequired = $settings.failureComboRequired
 
-  const recentGames = await getLast48HoursCompletedGames(Math.max(successComboRequired, failureComboRequired))
+  const recentGames = await getLast48HoursGames(Math.max(successComboRequired, failureComboRequired))
   const sameGames = recentGames.filter(game => ['completed', 'tombstone'].includes(game.status) && game.title === gameInfo.title && game.nBack === gameInfo.nBack)
   const applicableGames = takeUntil(sameGames, game => game.status === 'tombstone')
   const successGames = applicableGames.slice(0, successComboRequired)

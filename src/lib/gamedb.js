@@ -95,7 +95,15 @@ export async function getAllCompletedGames() {
   })
 }
 
-export async function getLast48HoursCompletedGames() {
+export async function getLast48HoursGames() {
+  return await getGamesTimeRange(new Date(Date.now() - 48 * 60 * 60 * 1000), new Date(Date.now() + 24 * 60 * 60 * 1000))
+}
+
+export async function getLastWeekGames() {
+  return await getGamesTimeRange(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date(Date.now() + 24 * 60 * 60 * 1000))
+}
+
+export async function getGamesTimeRange(start, end) {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, "readonly")
   const store = tx.objectStore(STORE_NAME)
@@ -104,9 +112,7 @@ export async function getLast48HoursCompletedGames() {
   const games = []
 
   return new Promise((resolve, reject) => {
-    const now = new Date()
-    const twoDaysAgo = new Date(now - 48 * 60 * 60 * 1000)
-    const keyRange = IDBKeyRange.bound(twoDaysAgo.getTime(), now.getTime())
+    const keyRange = IDBKeyRange.bound(start.getTime(), end.getTime())
     const cursorRequest = index.openCursor(keyRange, "prev")
 
     cursorRequest.onsuccess = (event) => {
