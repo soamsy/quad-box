@@ -92,8 +92,8 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
   <div class="flex-auto flex relative overflow-x-hidden w-fit duration-0">
     <nav
       bind:this={drawerRef}
-      class="absolute top-0 left-0 h-full overflow-y-auto w-86 sm:w-72 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
-      class:-translate-x-86={!open} class:sm:-translate-x-72={!open}
+      class="absolute top-0 left-0 h-full overflow-y-auto w-86 sm:w-80 bg-base-200 border-r-1 shadow-lg transform transition-transform duration-150 z-50"
+      class:-translate-x-86={!open} class:sm:-translate-x-80={!open}
       >
       <div class="flex w-full flex-col px-4 gap-2">
         <div class="text-xl font-semibold flex justify-between items-center pt-4">
@@ -113,7 +113,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
           </select>
         </div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
-          <span class="text-lg">Voices:</span>
+          <span class="text-lg">Voice:</span>
           <select bind:value={$settings.audioSource} id="audio-select" class="select">
             <option value="letters2">Letters A</option>
             <option value="letters">Letters B</option>
@@ -126,7 +126,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
           </label>
         </div>
         <div class="divider"></div>
-        <div class="grid grid-cols-[8fr_2fr] items-center gap-4">
+        <div class="grid grid-cols-[8fr_2fr] items-center">
           <label for="enable-auto-progression" class="text-lg">Auto progression:</label>
           <input id="enable-auto-progression" type="checkbox" bind:checked={$settings.enableAutoProgression} class="toggle" />
         </div>
