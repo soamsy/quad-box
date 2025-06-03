@@ -15,7 +15,33 @@ const shuffle = (array) => {
   return array
 }
 
+const generateMatches = (trials, nBack, matchChance) => {
+  if (nBack >= trials.length) {
+    return trials.map(() => false)
+  }
+  const matchableTrials = trials.length - nBack
+  const halfChance = matchChance / 2
+  const guaranteedMatches = matchableTrials * halfChance / 100
+  const rest = matchableTrials - guaranteedMatches
+  const restChance = 100 * guaranteedMatches / rest
+  let extraMatches = 0
+  for (let i = 0; i < rest; i++) {
+    if (Math.random() * 100 < restChance) {
+      extraMatches++
+    }
+  }
+  const totalMatches = Math.round(guaranteedMatches + extraMatches)
+  let matches = new Array(matchableTrials).fill(false)
+  for (let i = nBack; i < nBack + totalMatches && i < matches.length; i++) {
+    matches[i] = true
+  }
+  shuffle(matches)
+  const prefixMatches = new Array(nBack).fill(false)
+  return prefixMatches.concat(matches)
+}
+
 const generateStimuli = (trials, type, pool, nBack, matchChance, interference) => {
+  const matches = generateMatches(trials, nBack, matchChance)
   let stimuli = new Array(trials.length)
   for (let i = 0; i < stimuli.length; i++) {
     if (i < nBack) {
@@ -23,7 +49,7 @@ const generateStimuli = (trials, type, pool, nBack, matchChance, interference) =
       continue
     }
 
-    if (Math.random() * 100 < matchChance) {
+    if (matches[i]) {
       trials[i][type] = trials[i-nBack][type]
       trials[i].matches.push(type)
     } else {
