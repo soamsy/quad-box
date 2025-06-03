@@ -46,7 +46,7 @@ $: title = isPlaying ? gameInfo.title : game.meta.title
 
 const playTrial = async (i) => {
   if (i >= trials.length) {
-    await delay(1000)
+    await delay(700)
     await endGame('completed')
     return
   }
@@ -77,7 +77,7 @@ const startGame = async () => {
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   selectTrial(0)
   try {
-    await delay(1000)
+    await delay(700)
     await playTrial(0)
   } catch {
     // ignore
