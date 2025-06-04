@@ -123,7 +123,6 @@ export const LETTER_2_AUDIO_POOL = [
  `${LETTERS_2_PATH}z.opus`,
  `${LETTERS_2_PATH}b.opus`,
  `${LETTERS_2_PATH}e.opus`,
- `${LETTERS_2_PATH}h.opus`,
  `${LETTERS_2_PATH}j.opus`,
  `${LETTERS_2_PATH}n.opus`,
 ]
