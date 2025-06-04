@@ -47,7 +47,7 @@
       return
     }
     let className = getPercentColor(percent)
-    className += ' py-1 px-2 rounded'
+    className += ' rounded'
     className += $settings.theme === "light" ? " text-black" : " text-white"
     return className
   }
@@ -81,15 +81,15 @@
       <th>Date</th>
       <th>Game</th>
       <th>N</th>
-      <th>Score</th>
-      {#if $recentGamesState.filter !== "completed"}
-      <th>Status</th>
-      {/if}
-      <th>Position</th>
-      <th>Audio</th>
-      <th>Color</th>
-      <th>Shape</th>
+      <th class="text-center">Total</th>
+      <th class="text-center">Position</th>
+      <th class="text-center">Audio</th>
+      <th class="text-center">Color</th>
+      <th class="text-center">Shape</th>
       <th>Time</th>
+      {#if $recentGamesState.filter !== "completed"}
+        <th>Status</th>
+      {/if}
     </tr>
   </thead>
   <tbody>
@@ -98,12 +98,11 @@
         <td>{getDayLabel(game.timestamp)}</td>
         <td>{game.title.toUpperCase()}</td>
         <th>{game.nBack}</th>
-        <td><span class={getPercentClass(game?.total?.percent)}>{formatPercent(game?.total?.percent)}</span></td>
-
-        <td><span class={getPercentClass(game?.scores?.position?.percent)}>{formatPercent(game?.scores?.position?.percent)}</span></td>
-        <td><span class={getPercentClass(game?.scores?.audio?.percent)}>{formatPercent(game?.scores?.audio?.percent)}</span></td>
-        <td><span class={getPercentClass(game?.scores?.color?.percent)}>{formatPercent(game?.scores?.color?.percent)}</span></td>
-        <td><span class={getPercentClass(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}>{formatPercent(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}</span></td>
+        <td class="text-center border-r-1 border-[#FFFFFF22]"><span class={'py-1 px-2 ' + getPercentClass(game?.total?.percent)}>{formatPercent(game?.total?.percent)}</span></td>
+        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.position?.percent)}>{formatPercent(game?.scores?.position?.percent)}</span></td>
+        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.audio?.percent)}>{formatPercent(game?.scores?.audio?.percent)}</span></td>
+        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.color?.percent)}>{formatPercent(game?.scores?.color?.percent)}</span></td>
+        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}>{formatPercent(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}</span></td>
         <td>{formatSeconds(game.trialTime * game.completedTrials / 1000)}</td>
         {#if $recentGamesState.filter !== "completed"}
           <td><span class={getStatusClass(game.status)}>{game.status}</span></td>
@@ -112,7 +111,3 @@
     {/each}
   </tbody>
 </table>
-
-<style>
-
-</style>
