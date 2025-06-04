@@ -3,6 +3,7 @@ import Drawer from "./lib/Drawer.svelte"
 import Cube from "./lib/Cube.svelte"
 import LargeKey from "./lib/LargeKey.svelte"
 import SmallKey from "./lib/SmallKey.svelte"
+import ErrorDisplay from "./lib/ErrorDisplay.svelte"
 import { settings } from "./stores/settingsStore"
 import { feedback } from "./stores/feedbackStore"
 import { analytics } from "./stores/analyticsStore"
@@ -45,6 +46,10 @@ $: trialDisplay = $settings.feedback === 'show' ? game.trials.length - trialsInd
 $: title = isPlaying ? gameInfo.title : game.meta.title
 
 const playTrial = async (i) => {
+  if (!isPlaying) {
+    return
+  }
+
   if (i >= trials.length) {
     await delay(700)
     await endGame('completed')
@@ -79,8 +84,12 @@ const startGame = async () => {
   try {
     await delay(700)
     await playTrial(0)
-  } catch {
-    // ignore
+  } catch (e) {
+    if (e.message === 'Timeout cancelled') {
+      console.debug('Game cancelled', e)
+    } else {
+      throw e
+    }
   }
 }
 
@@ -111,6 +120,9 @@ const toggleGame = () => {
 }
 
 const detectMissedStimuli = () => {
+  if (!('tags' in gameInfo)) {
+    return
+  }
   let updates = {}
   for (const tag of gameInfo.tags) {
     if (currentTrial.matches.includes(tag) &&!(tag in scoresheet[trialsIndex])) {
@@ -242,7 +254,7 @@ $: cacheAudioFiles(audioSource)
 </script>
 
 <main data-theme={theme} class={$settings.theme}>
-
+<ErrorDisplay />
 <Drawer {title} {isPlaying}>
     <Cube trial={currentTrial} {presentation} />
     {#if isMobile}
