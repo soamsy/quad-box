@@ -59,17 +59,35 @@
     return (percent * 100).toFixed(0) + '%'
   }
 
-  const getDayLabel = (timestamp) => {
-    const today = new Date()
+  const getTimeLabel = (timestamp) => {
+    const now = new Date()
     const input = new Date(timestamp)
-    today.setHours(0, 0, 0, 0)
-    input.setHours(0, 0, 0, 0)
 
-    const diffDays = Math.round((today - input) / (1000 * 60 * 60 * 24))
+    const shiftMs = 4 * 60 * 60 * 1000  // 3 hours in milliseconds
 
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return '1 day ago'
-    return `${diffDays} days ago`
+    const shiftedNow = new Date(now.getTime() - shiftMs)
+    const shiftedInput = new Date(input.getTime() - shiftMs)
+
+    const diffMs = now - input
+    const diffSec = Math.floor(diffMs / 1000)
+    const diffMin = Math.floor(diffSec / 60)
+    const diffHr = Math.floor(diffMin / 60)
+
+    shiftedNow.setHours(0, 0, 0, 0)
+    shiftedInput.setHours(0, 0, 0, 0)
+    const diffDay = Math.round((shiftedNow - shiftedInput) / (1000 * 60 * 60 * 24))
+
+    if (diffSec < 60) return "Just now"
+    if (diffMin < 60) return `${diffMin} minute${diffMin === 1 ? '' : 's'} ago`
+    if (diffHr < 6)
+      return `${diffHr} hr${diffHr === 1 ? '' : 's'} ago`
+
+    if (diffDay === 0)
+      return `Today at ${input.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`
+    if (diffDay === 1)
+      return `1 day ago`
+
+    return `${diffDay} days ago`
   }
 
   $: filteredGames = $recentGamesState.filter === "completed" ? games.filter(game => game.status === "completed") : games.filter(game => ['completed', 'cancelled'].includes(game.status))
@@ -95,7 +113,7 @@
   <tbody>
     {#each filteredGames as game (game.id)}
       <tr>
-        <td>{getDayLabel(game.timestamp)}</td>
+        <td>{getTimeLabel(game.timestamp)}</td>
         <td>{game.title.toUpperCase()}</td>
         <th>{game.nBack}</th>
         <td class="text-center border-r-1 border-[#FFFFFF22]"><span class={'py-1 px-2 ' + getPercentClass(game?.total?.percent)}>{formatPercent(game?.total?.percent)}</span></td>
