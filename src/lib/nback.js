@@ -114,7 +114,7 @@ export const generateGame = (settings, globalSettings) => {
   }
 
   const game = {
-    meta: { nBack, numTrials, trialTime, title, tags, matchChance, interference, timestamp: Date.now() },
+    meta: { nBack, numTrials, trialTime, title, tags, matchChance, interference },
     trials: trials,
   }
   

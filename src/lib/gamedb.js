@@ -40,15 +40,17 @@ export async function getLastRecentGame() {
   const store = tx.objectStore(STORE_NAME)
   const index = store.index("timestamp")
 
-  const oneHourAgo = Date.now() - 60 * 60 * 1000
-  const keyRange = IDBKeyRange.lowerBound(oneHourAgo)
+  const twoHoursAgo = Date.now() - 120 * 60 * 1000
+  const keyRange = IDBKeyRange.lowerBound(twoHoursAgo)
 
   return new Promise((resolve, reject) => {
     const cursorRequest = index.openCursor(keyRange, "prev")
 
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
-      if (cursor) {
+      if (cursor && cursor.value.status !== "tombstone") {
+        cursor.continue()
+      } else if (cursor) {
         addScoreMetadata(cursor.value)
         resolve(cursor.value)
       } else {

@@ -99,6 +99,7 @@ const endGame = async (status) => {
   }
 
   if (trialsIndex > gameInfo.nBack) {
+    gameInfo.timestamp = Date.now()
     await analytics.scoreTrials(gameInfo, status === 'completed' ? scoresheet : scoresheet.slice(0, trialsIndex), status)
     if (status === 'completed') {
       await runAutoProgression(gameInfo)
