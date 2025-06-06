@@ -48,7 +48,7 @@ export async function getLastRecentGame() {
 
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
-      if (cursor && cursor.value.status !== "tombstone") {
+      if (cursor && cursor.value.status === "tombstone") {
         cursor.continue()
       } else if (cursor) {
         addScoreMetadata(cursor.value)
