@@ -1,6 +1,7 @@
 <script>
   import { gameSettings } from "../stores/gameSettingsStore"
   import { settings } from "../stores/settingsStore"
+  import { Info } from "@lucide/svelte"
 
   const clampNumber = (field, min, value, max) => {
     if (value < min || max < value) {
@@ -43,12 +44,31 @@
   <input id="num-trials" type="number" min="10" max="999" value={numTrials} on:input={(e) => clampNumber('numTrials', 10, +e.target.value, 999)} step="1" class="input" />
 </div>
 <div class="flex flex-col gap-1">
-  <label class="text-lg">Match chance: {$gameSettings.matchChance}%
+  <label class="text-lg">
+    <span class="flex items-center justify-between">
+      Match chance: {$gameSettings.matchChance}%
+      <div class="relative group inline-block">
+        <Info size="16" />
+        <div class="alert absolute right-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:block text-xs p-2 rounded shadow w-48 z-10">
+          Chance of a stimuli from n trials ago repeating.
+        </div>
+      </div>
+    </span>
     <input type="range" min="5" max="75" bind:value={$gameSettings.matchChance} step="1" class="range" />
   </label>
 </div>
 <div class="flex flex-col gap-1">
-  <label class="text-lg">Interference: {$gameSettings.interference}%
+  <label class="text-lg">
+    <span class="flex items-center justify-between">
+      Interference: {$gameSettings.interference}%
+      <div class="relative group inline-block">
+        <Info size="16" />
+        <div class="alert absolute right-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:block text-xs p-2 rounded shadow w-48 z-10">
+          Chance of using repeats from n±1 trials ago.<br><br>
+          Increases difficulty.
+        </div>
+      </div>
+    </span>
     <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />  
   </label>
 </div>
