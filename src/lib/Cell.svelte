@@ -8,18 +8,6 @@
   export let shapeOuterColor = null
   export let voronoi = null
 
-  const translationMap = {
-    'x-0': '-translate-x-[20.1svmin]',
-    'x-1': '-translate-x-0',
-    'x-2': 'translate-x-[20.1svmin]',
-    'y-0': '-translate-y-[20.1svmin]',
-    'y-1': '-translate-y-0',
-    'y-2': 'translate-y-[20.1svmin]',
-    'z-0': '-translate-z-[20.1svmin]',
-    'z-1': '-translate-z-0',
-    'z-2': 'translate-z-[20.1svmin]',
-  }
-
   const svgToDataUrl = (svgString) => {
     const encoded = encodeURIComponent(svgString)
       .replace(/'/g, '%27')
@@ -27,15 +15,12 @@
     return `data:image/svg+xml,${encoded}`
   }
 
-  const calculateBoxClassNames = (x, y, z, shapeName, show) => {
+  const calculateBoxClassNames = (position, shapeName, show) => {
     if (!show) {
       return 'hidden'
     }
 
-    let classNames = []
-    classNames.push(translationMap[`x-${x}`])
-    classNames.push(translationMap[`y-${y}`])
-    classNames.push(translationMap[`z-${z}`])
+    let classNames = ['p' + position]
     if (shapeName.includes('heart')) {
       classNames.push('heart')
     }
@@ -59,8 +44,7 @@
     return style
   }
 
-  $: [x, y, z] = (position ?? '0-0-0').split('-').map(Number)
-  $: boxClassNames = calculateBoxClassNames(x, y, z, shapeName, show)
+  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show)
   $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi)
 
 </script>
@@ -91,6 +75,88 @@
 
   .cell.heart .face {
     background-size: 100% 95%;
+  }
+
+  .p0-0-0 {
+    transform: translate3d(-20.1svmin, -20.1svmin, -20.1svmin);
+  }
+  .p0-0-1 {
+    transform: translate3d(-20.1svmin, -20.1svmin, 0);
+  }
+  .p0-0-2 {
+    transform: translate3d(-20.1svmin, -20.1svmin, 20.1svmin);
+  }
+  .p0-1-0 {
+    transform: translate3d(-20.1svmin, 0, -20.1svmin);
+  }
+  .p0-1-1 {
+    transform: translate3d(-20.1svmin, 0, 0);
+  }
+  .p0-1-2 {
+    transform: translate3d(-20.1svmin, 0, 20.1svmin);
+  }
+  .p0-2-0 {
+    transform: translate3d(-20.1svmin, 20.1svmin, -20.1svmin);
+  }
+  .p0-2-1 {
+    transform: translate3d(-20.1svmin, 20.1svmin, 0);
+  }
+  .p0-2-2 {
+    transform: translate3d(-20.1svmin, 20.1svmin, 20.1svmin);
+  }
+  .p1-0-0 {
+    transform: translate3d(0, -20.1svmin, -20.1svmin);
+  }
+  .p1-0-1 {
+    transform: translate3d(0, -20.1svmin, 0);
+  }
+  .p1-0-2 {
+    transform: translate3d(0, -20.1svmin, 20.1svmin);
+  }
+  .p1-1-0 {
+    transform: translate3d(0, 0, -20.1svmin);
+  }
+  .p1-1-1 {
+    transform: translate3d(0, 0, 0);
+  }
+  .p1-1-2 {
+    transform: translate3d(0, 0, 20.1svmin);
+  }
+  .p1-2-0 {
+    transform: translate3d(0, 20.1svmin, -20.1svmin);
+  }
+  .p1-2-1 {
+    transform: translate3d(0, 20.1svmin, 0);
+  }
+  .p1-2-2 {
+    transform: translate3d(0, 20.1svmin, 20.1svmin);
+  }
+  .p2-0-0 {
+    transform: translate3d(20.1svmin, -20.1svmin, -20.1svmin);
+  }
+  .p2-0-1 {
+    transform: translate3d(20.1svmin, -20.1svmin, 0);
+  }
+  .p2-0-2 {
+    transform: translate3d(20.1svmin, -20.1svmin, 20.1svmin);
+  }
+  .p2-1-0 {
+    transform: translate3d(20.1svmin, 0, -20.1svmin);
+  }
+  .p2-1-1 {
+    transform: translate3d(20.1svmin, 0, 0);
+  }
+  .p2-1-2 {
+    transform: translate3d(20.1svmin, 0, 20.1svmin);
+  }
+  .p2-2-0 {
+    transform: translate3d(20.1svmin, 20.1svmin, -20.1svmin);
+  }
+  .p2-2-1 {
+    transform: translate3d(20.1svmin, 20.1svmin, 0);
+  }
+  .p2-2-2 {
+    transform: translate3d(20.1svmin, 20.1svmin, 20.1svmin);
   }
 
 </style>

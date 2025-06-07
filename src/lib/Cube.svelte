@@ -2,7 +2,6 @@
   export let trial = {}
   export let presentation = {}
   import Cell from "./Cell.svelte"
-  import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
@@ -32,10 +31,11 @@
   $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
+  $: frameSrc = $settings.theme === 'dark' ? 'frame-dark.svg' : 'frame-light.svg'
 
 </script>
 
-<div class="flex absolute items-center justify-center w-full h-full select-none perspective-[65svmin]"
+<div class="flex absolute items-center justify-center w-full h-full select-none perspective-[65svmin] overflow-hidden"
   class:perspective-[100svmin]={$mobile}>
   <div class="scene absolute transform-3d"
   class:-translate-z-[10svmin]={!$mobile}
@@ -50,20 +50,22 @@
       {shapeName}
       {shapeOuterColor}
       voronoi={trial.shapeColor} />
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]"><Frame /></div>
+    <div class="absolute w-[60.3svmin] h-[60.3svmin] transform-3d">
+      <img src={frameSrc} class="absolute w-full h-full -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]">
+      <img src={frameSrc} class="absolute w-full h-full -translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]">
+      <img src={frameSrc} class="absolute w-full h-full translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]">
+      <img src={frameSrc} class="absolute w-full h-full translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]">
 
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90"><Frame /></div>
+      <img src={frameSrc} class="absolute w-full h-full -translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
+      <img src={frameSrc} class="absolute w-full h-full -translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
+      <img src={frameSrc} class="absolute w-full h-full translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
+      <img src={frameSrc} class="absolute w-full h-full translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
 
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] -translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
-    <div class="frame absolute w-[60.3svmin] h-[60.3svmin] translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90"><Frame /></div>
+      <img src={frameSrc} class="absolute w-full h-full -translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
+      <img src={frameSrc} class="absolute w-full h-full -translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
+      <img src={frameSrc} class="absolute w-full h-full translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
+      <img src={frameSrc} class="absolute w-full h-full translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
+    </div>
   </div>
 </div>
 
