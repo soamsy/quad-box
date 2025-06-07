@@ -1,44 +1,44 @@
-import { ALL_AUDIO } from "./constants"
+import { Howl } from "howler"
 
 class AudioPlayer {
-  constructor({ cache = true, volume = 1.0 } = {}) {
-    this.cache = cache
-    this.volume = volume
+  constructor() {
     this.audioCache = new Map()
     this.location = 'audio/'
   }
 
-  preload(url) {
-    if (this.cache && this.audioCache.has(url)) return
-    if (!ALL_AUDIO.includes(url)) return
-
-    const audio = new Audio(this.location + url)
-    audio.volume = this.volume
-    this.audioCache.set(url, audio)
-  }
-
-  play(url) {
-    return new Promise((resolve, reject) => {
-      if (!ALL_AUDIO.includes(url)) return
-
-      let audio
-      if (this.cache && this.audioCache.has(url)) {
-        audio = this.audioCache.get(url)
-      } else {
-        audio = new Audio(this.location + url)
-        audio.volume = this.volume
-        if (this.cache) this.audioCache.set(url, audio)
-      }
-
-      audio.onended = resolve
-      audio.onerror = reject
-
-      audio.play().catch(reject)
+  createHowl(url) {
+    const prefix = this.location + url
+    return new Howl({
+      src: [prefix + '.opus', prefix + '.mp3'],
+      volume: 1.0
     })
   }
 
-  setVolume(value) {
-    this.volume = value
+  preload(url) {
+    if (this.audioCache.has(url)) return
+    this.audioCache.set(url, this.createHowl(url))
+  }
+
+  async play(url) {
+    let howl
+    if (this.audioCache.has(url)) {
+      howl = this.audioCache.get(url)
+    } else {
+      howl = this.createHowl(url)
+      this.audioCache.set(url, howl)
+    }
+    await this.playSoundAsync(howl)
+  }
+
+  async playSoundAsync(howl) {
+    return new Promise((resolve, reject) => {
+      const id = howl.play()
+      if (id == null) return reject(new Error("Failed to play sound"))
+
+      howl.once('end', resolve, id)
+      howl.once('loaderror', reject, id)
+      howl.once('playerror', reject, id)
+    })
   }
 
   clearCache() {

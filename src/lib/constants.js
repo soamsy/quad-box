@@ -87,49 +87,43 @@ export const SHAPE_URLS = generateShapeUrls()
 
 const NATURAL_PATH = "Natural-Numbers/"
 export const NUMBER_AUDIO_POOL = [
-  `${NATURAL_PATH}1.opus`,
-  `${NATURAL_PATH}2.opus`,
-  `${NATURAL_PATH}3.opus`,
-  `${NATURAL_PATH}4.opus`,
-  `${NATURAL_PATH}5.opus`,
-  `${NATURAL_PATH}6.opus`,
-  `${NATURAL_PATH}7.opus`,
-  `${NATURAL_PATH}8.opus`,
+  `${NATURAL_PATH}1`,
+  `${NATURAL_PATH}2`,
+  `${NATURAL_PATH}3`,
+  `${NATURAL_PATH}4`,
+  `${NATURAL_PATH}5`,
+  `${NATURAL_PATH}6`,
+  `${NATURAL_PATH}7`,
+  `${NATURAL_PATH}8`,
 ]
 
 const LETTERS_PATH = "Letters/"
 export const LETTER_AUDIO_POOL = [
-  `${LETTERS_PATH}b.opus`,
-  `${LETTERS_PATH}c.opus`,
-  `${LETTERS_PATH}g.opus`,
-  `${LETTERS_PATH}i.opus`,
-  `${LETTERS_PATH}j.opus`,
-  `${LETTERS_PATH}m.opus`,
-  `${LETTERS_PATH}l.opus`,
-  `${LETTERS_PATH}t.opus`,
-  `${LETTERS_PATH}k.opus`,
+  `${LETTERS_PATH}b`,
+  `${LETTERS_PATH}c`,
+  `${LETTERS_PATH}g`,
+  `${LETTERS_PATH}i`,
+  `${LETTERS_PATH}j`,
+  `${LETTERS_PATH}m`,
+  `${LETTERS_PATH}l`,
+  `${LETTERS_PATH}t`,
+  `${LETTERS_PATH}k`,
 ]
 
 const LETTERS_2_PATH = "Letters2/"
 export const LETTER_2_AUDIO_POOL = [
- `${LETTERS_2_PATH}a.opus`,
- `${LETTERS_2_PATH}d.opus`,
- `${LETTERS_2_PATH}g.opus`,
- `${LETTERS_2_PATH}i.opus`,
- `${LETTERS_2_PATH}k.opus`,
- `${LETTERS_2_PATH}m.opus`,
- `${LETTERS_2_PATH}o.opus`,
- `${LETTERS_2_PATH}s.opus`,
- `${LETTERS_2_PATH}z.opus`,
- `${LETTERS_2_PATH}b.opus`,
- `${LETTERS_2_PATH}e.opus`,
- `${LETTERS_2_PATH}j.opus`,
-]
-
-export const ALL_AUDIO = [
-  ...NUMBER_AUDIO_POOL, 
-  ...LETTER_AUDIO_POOL,
-  ...LETTER_2_AUDIO_POOL,
+ `${LETTERS_2_PATH}a`,
+ `${LETTERS_2_PATH}d`,
+ `${LETTERS_2_PATH}g`,
+ `${LETTERS_2_PATH}i`,
+ `${LETTERS_2_PATH}k`,
+ `${LETTERS_2_PATH}m`,
+ `${LETTERS_2_PATH}o`,
+ `${LETTERS_2_PATH}s`,
+ `${LETTERS_2_PATH}z`,
+ `${LETTERS_2_PATH}b`,
+ `${LETTERS_2_PATH}e`,
+ `${LETTERS_2_PATH}j`,
 ]
 
 export const POSITION_POOL = [
