@@ -50,7 +50,7 @@
       <div class="relative group inline-block">
         <Info size="16" />
         <div class="alert absolute right-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:block text-xs p-2 rounded shadow w-48 z-10">
-          Chance of a stimuli from n trials ago repeating.
+          Chance of a stimulus from n trials ago repeating.
         </div>
       </div>
     </span>
