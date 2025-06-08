@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "./",
+  "start_url": "/quad-box/",
   "display": "fullscreen",
   "background_color": "#262626",
   "theme_color": "#121212"
