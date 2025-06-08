@@ -104,3 +104,32 @@ button.dark-late-failure {
 .help-box {
   @apply dark:border-black dark:border-4
 }
+
+/* ------------------------
+Address weird user agent styles being applied in older versions of Safari.
+From what I've seen, newer versions of safari don't do this, but BrowserStack's
+iPhones seem to run into it, suggesting they reflect unupdated iPhones.
+--------------------------- */
+.grid, .modal {
+  display: grid !important;
+}
+
+.flex, .divider {
+  display: flex !important;
+}
+
+.inline-block {
+  display: inline-block !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.group-hover\:block {
+  &:is(:where(.group):hover *) {
+    @media (hover: hover) {
+      display: block !important;
+    }
+  }
+}

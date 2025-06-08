@@ -20,7 +20,11 @@
 
 
 <style>
-.disabled {
-  display: none;
+.game-button.grid {
+  display: grid !important;
+}
+
+.game-button.disabled {
+  display: none !important;
 }
 </style>
