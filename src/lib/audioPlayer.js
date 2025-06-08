@@ -8,9 +8,11 @@ class AudioPlayer {
 
   createHowl(url) {
     const prefix = this.location + url
+    const isIOS = /iP(ad|hone|od)/.test(navigator.userAgent)
     return new Howl({
       src: [prefix + '.opus', prefix + '.mp3'],
-      volume: 1.0
+      volume: 1.0,
+      html5: isIOS,
     })
   }
 
