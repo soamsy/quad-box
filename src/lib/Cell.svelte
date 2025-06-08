@@ -60,7 +60,7 @@
 
 <style>
   .cell {
-    @apply absolute w-[20svmin] h-[20svmin] -left-[10.0svmin] -top-[10svmin];
+    @apply absolute w-[20svmin] h-[20svmin] left-[20.1svmin] top-[20.1svmin];
     transform-style: preserve-3d;
   }
 
@@ -77,86 +77,32 @@
     background-size: 100% 95%;
   }
 
-  .p0-0-0 {
-    transform: translate3d(-20.1svmin, -20.1svmin, -20.1svmin);
-  }
-  .p0-0-1 {
-    transform: translate3d(-20.1svmin, -20.1svmin, 0);
-  }
-  .p0-0-2 {
-    transform: translate3d(-20.1svmin, -20.1svmin, 20.1svmin);
-  }
-  .p0-1-0 {
-    transform: translate3d(-20.1svmin, 0, -20.1svmin);
-  }
-  .p0-1-1 {
-    transform: translate3d(-20.1svmin, 0, 0);
-  }
-  .p0-1-2 {
-    transform: translate3d(-20.1svmin, 0, 20.1svmin);
-  }
-  .p0-2-0 {
-    transform: translate3d(-20.1svmin, 20.1svmin, -20.1svmin);
-  }
-  .p0-2-1 {
-    transform: translate3d(-20.1svmin, 20.1svmin, 0);
-  }
-  .p0-2-2 {
-    transform: translate3d(-20.1svmin, 20.1svmin, 20.1svmin);
-  }
-  .p1-0-0 {
-    transform: translate3d(0, -20.1svmin, -20.1svmin);
-  }
-  .p1-0-1 {
-    transform: translate3d(0, -20.1svmin, 0);
-  }
-  .p1-0-2 {
-    transform: translate3d(0, -20.1svmin, 20.1svmin);
-  }
-  .p1-1-0 {
-    transform: translate3d(0, 0, -20.1svmin);
-  }
-  .p1-1-1 {
-    transform: translate3d(0, 0, 0);
-  }
-  .p1-1-2 {
-    transform: translate3d(0, 0, 20.1svmin);
-  }
-  .p1-2-0 {
-    transform: translate3d(0, 20.1svmin, -20.1svmin);
-  }
-  .p1-2-1 {
-    transform: translate3d(0, 20.1svmin, 0);
-  }
-  .p1-2-2 {
-    transform: translate3d(0, 20.1svmin, 20.1svmin);
-  }
-  .p2-0-0 {
-    transform: translate3d(20.1svmin, -20.1svmin, -20.1svmin);
-  }
-  .p2-0-1 {
-    transform: translate3d(20.1svmin, -20.1svmin, 0);
-  }
-  .p2-0-2 {
-    transform: translate3d(20.1svmin, -20.1svmin, 20.1svmin);
-  }
-  .p2-1-0 {
-    transform: translate3d(20.1svmin, 0, -20.1svmin);
-  }
-  .p2-1-1 {
-    transform: translate3d(20.1svmin, 0, 0);
-  }
-  .p2-1-2 {
-    transform: translate3d(20.1svmin, 0, 20.1svmin);
-  }
-  .p2-2-0 {
-    transform: translate3d(20.1svmin, 20.1svmin, -20.1svmin);
-  }
-  .p2-2-1 {
-    transform: translate3d(20.1svmin, 20.1svmin, 0);
-  }
-  .p2-2-2 {
-    transform: translate3d(20.1svmin, 20.1svmin, 20.1svmin);
-  }
+  .p0-0-0 { transform: translate3d(-20.1svmin, -20.1svmin, -20.1svmin); }
+  .p0-0-1 { transform: translate3d(-20.1svmin, -20.1svmin, 0         ); }
+  .p0-0-2 { transform: translate3d(-20.1svmin, -20.1svmin, 20.1svmin ); }
+  .p0-1-0 { transform: translate3d(-20.1svmin, 0         , -20.1svmin); }
+  .p0-1-1 { transform: translate3d(-20.1svmin, 0         , 0         ); }
+  .p0-1-2 { transform: translate3d(-20.1svmin, 0         , 20.1svmin ); }
+  .p0-2-0 { transform: translate3d(-20.1svmin, 20.1svmin , -20.1svmin); }
+  .p0-2-1 { transform: translate3d(-20.1svmin, 20.1svmin , 0         ); }
+  .p0-2-2 { transform: translate3d(-20.1svmin, 20.1svmin , 20.1svmin ); }
+  .p1-0-0 { transform: translate3d(0         , -20.1svmin, -20.1svmin); }
+  .p1-0-1 { transform: translate3d(0         , -20.1svmin, 0         ); }
+  .p1-0-2 { transform: translate3d(0         , -20.1svmin, 20.1svmin ); }
+  .p1-1-0 { transform: translate3d(0         , 0         , -20.1svmin); }
+  .p1-1-1 { transform: translate3d(0         , 0         , 0         ); }
+  .p1-1-2 { transform: translate3d(0         , 0         , 20.1svmin ); }
+  .p1-2-0 { transform: translate3d(0         , 20.1svmin , -20.1svmin); }
+  .p1-2-1 { transform: translate3d(0         , 20.1svmin , 0         ); }
+  .p1-2-2 { transform: translate3d(0         , 20.1svmin , 20.1svmin ); }
+  .p2-0-0 { transform: translate3d(20.1svmin , -20.1svmin, -20.1svmin); }
+  .p2-0-1 { transform: translate3d(20.1svmin , -20.1svmin, 0         ); }
+  .p2-0-2 { transform: translate3d(20.1svmin , -20.1svmin, 20.1svmin ); }
+  .p2-1-0 { transform: translate3d(20.1svmin , 0         , -20.1svmin); }
+  .p2-1-1 { transform: translate3d(20.1svmin , 0         , 0         ); }
+  .p2-1-2 { transform: translate3d(20.1svmin , 0         , 20.1svmin ); }
+  .p2-2-0 { transform: translate3d(20.1svmin , 20.1svmin , -20.1svmin); }
+  .p2-2-1 { transform: translate3d(20.1svmin , 20.1svmin , 0         ); }
+  .p2-2-2 { transform: translate3d(20.1svmin , 20.1svmin , 20.1svmin ); }
 
 </style>

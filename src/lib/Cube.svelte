@@ -37,7 +37,7 @@
 
 <div class="flex absolute items-center justify-center w-full h-full select-none perspective-[65svmin] overflow-hidden"
   class:perspective-[100svmin]={$mobile}>
-  <div class="scene absolute transform-3d"
+  <div class="scene absolute w-[60.3svmin] h-[60.3svmin] transform-3d"
   class:-translate-z-[10svmin]={!$mobile}
   class:-translate-z-[0svmin]={$mobile}
   class:mb-10={$mobile}
@@ -50,22 +50,20 @@
       {shapeName}
       {shapeOuterColor}
       voronoi={trial.shapeColor} />
-    <div class="absolute w-[60.3svmin] h-[60.3svmin] transform-3d">
-      <img src={frameSrc} class="absolute w-full h-full -translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]">
-      <img src={frameSrc} class="absolute w-full h-full -translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]">
-      <img src={frameSrc} class="absolute w-full h-full translate-z-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin]">
-      <img src={frameSrc} class="absolute w-full h-full translate-z-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin]">
+    <img src={frameSrc} class="absolute w-full h-full -translate-z-[30.15svmin]">
+    <img src={frameSrc} class="absolute w-full h-full -translate-z-[10.05svmin]">
+    <img src={frameSrc} class="absolute w-full h-full translate-z-[10.05svmin]">
+    <img src={frameSrc} class="absolute w-full h-full translate-z-[30.15svmin]">
 
-      <img src={frameSrc} class="absolute w-full h-full -translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
-      <img src={frameSrc} class="absolute w-full h-full -translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
-      <img src={frameSrc} class="absolute w-full h-full translate-y-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
-      <img src={frameSrc} class="absolute w-full h-full translate-y-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-x-90">
+    <img src={frameSrc} class="absolute w-full h-full -translate-y-[30.15svmin] rotate-x-90">
+    <img src={frameSrc} class="absolute w-full h-full -translate-y-[10.05svmin] rotate-x-90">
+    <img src={frameSrc} class="absolute w-full h-full translate-y-[10.05svmin] rotate-x-90">
+    <img src={frameSrc} class="absolute w-full h-full translate-y-[30.15svmin] rotate-x-90">
 
-      <img src={frameSrc} class="absolute w-full h-full -translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
-      <img src={frameSrc} class="absolute w-full h-full -translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
-      <img src={frameSrc} class="absolute w-full h-full translate-x-[10.05svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
-      <img src={frameSrc} class="absolute w-full h-full translate-x-[30.15svmin] -left-[30.15svmin] -top-[30.15svmin] rotate-y-90">
-    </div>
+    <img src={frameSrc} class="absolute w-full h-full -translate-x-[30.15svmin] rotate-y-90">
+    <img src={frameSrc} class="absolute w-full h-full -translate-x-[10.05svmin] rotate-y-90">
+    <img src={frameSrc} class="absolute w-full h-full translate-x-[10.05svmin] rotate-y-90">
+    <img src={frameSrc} class="absolute w-full h-full translate-x-[30.15svmin] rotate-y-90">
   </div>
 </div>
 
