@@ -1,13 +1,19 @@
 <script>
   import { CircleHelp } from '@lucide/svelte'
+  import { settings } from '../stores/settingsStore'
+  import { deleteDB } from './gamedb'
 
   let show = false
+  let tab = 'how-to-play'
+  let confirmResetAll = false
+  let isDeleting = false
   const openModal = async () => {
     show = true
   }
 
   const closeModal = () => {
     show = false
+    confirmResetAll = false
   }
 
   const handleKeydown = (event) => {
@@ -17,6 +23,23 @@
   const handleBackdropClick = (event) => {
     if (event.target.classList.contains('modal')) closeModal()
   }
+
+  const resetSettings = () => {
+    settings.reset()
+    alert("Settings reset to default.")
+    show = false
+  }
+
+  const resetAll = async () => {
+    isDeleting = true
+    await deleteDB()
+    settings.reset()
+    isDeleting = false
+    alert("App fully reset.")
+    confirmResetAll = false
+    show = false
+  }
+
 </script>
 
 <button class="flex items-center justify-center" on:click={openModal}>
@@ -25,8 +48,22 @@
 {#if show}
   <div class="modal modal-open" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
     <div class="modal-box help-box w-[90%] max-w-3xl">
-      <div class="prose max-w-none text-gray-800 dark:text-gray-200 text-sm sm:text-base md:text-lg">
-        <h2 class="text-xl md:text-2xl font-bold mb-2">How to Play</h2>
+      <div role="tablist" class="tabs tabs-lift relative">
+        <a role="tab" 
+          class="tab" 
+          class:tab-active={tab === 'how-to-play'} 
+          on:click={() => tab = 'how-to-play'}>
+          How to Play
+        </a>
+        <a role="tab" 
+          class="tab"
+          class:tab-active={tab === 'reset-app'}
+          on:click={() => tab = 'reset-app'}>
+          Reset App
+        </a>
+      </div>
+      {#if tab === 'how-to-play'}
+      <div class="prose max-w-none text-gray-800 dark:text-gray-200 text-sm sm:text-base md:text-lg overflow-y-auto h-[70svh] mt-2">
         <p>
           3D Quad N-Back is a working memory game. A cube will repeatedly flash in a 3D grid, and you must remember cues that appeared
           <strong>n steps ago</strong> across four different modalities:
@@ -54,7 +91,46 @@
           Stay focused and try to get as high a score as possible!
         </p>
       </div>
-      <div class="modal-action flex flex-row-reverse items-center justify-between">
+      {:else if tab === 'reset-app'}
+      <div class="prose text-gray-800 dark:text-gray-200 flex flex-col gap-2 overflow-y-auto h-[70svh] w-full mt-2">
+        <div class="mt-6">
+          <p class="mb-2">Reset all game settings to their default values.</p>
+          <p class="text-sm">
+            This will not affect your game history or performance data.
+          </p>
+          <button class="btn btn-info mt-4 text-xl" on:click={resetSettings}>
+            Reset Settings
+          </button>
+        </div>
+        <div class="divider" />
+        <div>
+          <p class="mb-2 text-red-600 dark:text-rose-500 font-semibold">Danger Zone</p>
+          <p class="text-sm">
+            This will erase all app data including settings and game history. This action is irreversible.
+          </p>
+
+          {#if !confirmResetAll}
+            <button class="btn btn-error mt-4 text-xl dark:bg-rose-500" on:click={() => confirmResetAll = true}>
+              Reset Entire App
+            </button>
+          {:else}
+            <div class="mt-4 space-y-2">
+              <p class="text-sm text-red-600 dark:text-rose-500 font-medium">Are you absolutely sure?</p>
+              <button class="btn btn-error dark:bg-rose-500 w-full" on:click={() => resetAll()}>
+                Yes, erase everything
+                {#if isDeleting}
+                  <span class="loading loading-spinner"></span>
+                {/if}
+              </button>
+              <button class="btn w-full" on:click={() => confirmResetAll = false}>
+                Cancel
+              </button>
+            </div>
+          {/if}
+        </div>
+      </div>
+      {/if}
+      <div class="modal-action flex flex-row-reverse items-center justify-between mt-2">
         <button class="btn" on:click={closeModal}>Close</button>
         <a class="link" href="https://github.com/soamsy/quad-box" target="_blank">Github</a>
       </div>

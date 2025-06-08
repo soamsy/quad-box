@@ -51,15 +51,17 @@ const defaultSettings = {
   audioSource: 'letters2',
 }
 
+const getDefaultSettings = () => structuredClone(defaultSettings)
+
 const loadSettings = () => {
-  if (typeof localStorage === 'undefined') return defaultSettings
+  if (typeof localStorage === 'undefined') return getDefaultSettings()
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     const savedSettings = raw ? JSON.parse(raw) : {}
-    return { ...defaultSettings, ...savedSettings }
+    return { ...getDefaultSettings(), ...savedSettings }
   } catch (e) {
     console.error('Failed to load settings from localStorage:', e)
-    return defaultSettings
+    return getDefaultSettings()
   }
 }
 
@@ -89,8 +91,8 @@ const createSettingsStore = () => {
       })
     },
     reset: () => {
-      set(defaultSettings)
-      saveSettings(defaultSettings)
+      set(getDefaultSettings())
+      saveSettings(getDefaultSettings())
     }
   }
 }

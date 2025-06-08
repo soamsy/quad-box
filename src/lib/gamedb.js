@@ -201,3 +201,12 @@ const addScoreMetadata = (game) => {
     game.ncalc = game.nBack + (game.total.percent - 0.5) * 2
   }
 }
+
+export const deleteDB = async () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(DB_NAME)
+    request.onsuccess = () => resolve()
+    request.onerror = () => reject(request.error)
+    request.onblocked = () => reject(new Error("Delete blocked: another tab may be using the database"))
+  })
+}
