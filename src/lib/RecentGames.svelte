@@ -90,6 +90,13 @@
     return `${diffDay} days ago`
   }
 
+  const getGameShortName = (game) => {
+    if (!game.title) {
+      return 'C' + game.nBack + 'B'
+    }
+    return game.title.charAt(0).toUpperCase() + game.nBack + 'B'
+  }
+
   $: filteredGames = $recentGamesState.filter === "completed" ? games.filter(game => game.status === "completed") : games.filter(game => ['completed', 'cancelled'].includes(game.status))
 </script>
 
@@ -98,7 +105,6 @@
     <tr>
       <th>Date</th>
       <th>Game</th>
-      <th>N</th>
       <th class="text-center">Total</th>
       <th class="text-center">Position</th>
       <th class="text-center">Audio</th>
@@ -114,8 +120,7 @@
     {#each filteredGames as game (game.id)}
       <tr>
         <td>{getTimeLabel(game.timestamp)}</td>
-        <td>{game.title.toUpperCase()}</td>
-        <th>{game.nBack}</th>
+        <td>{getGameShortName(game)}</td>
         <td class="text-center border-r-1 border-[#FFFFFF22]"><span class={'py-1 px-2 ' + getPercentClass(game?.total?.percent)}>{formatPercent(game?.total?.percent)}</span></td>
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.position?.percent)}>{formatPercent(game?.scores?.position?.percent)}</span></td>
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.audio?.percent)}>{formatPercent(game?.scores?.audio?.percent)}</span></td>
