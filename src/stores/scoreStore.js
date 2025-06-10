@@ -10,9 +10,11 @@ const createScoreStore = () => {
       return
     }
 
+    const game = $analytics.lastGame
+
     set({
-      ...$analytics.lastGame.scores,
-      total: $analytics.lastGame.total,
+      accuracy: game.hits / game.possible,
+      speed: (game.timestamp - game.start) / 1000 / game.completedTrials,
     })
   })
 

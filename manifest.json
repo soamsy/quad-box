@@ -1,6 +1,6 @@
 {
-  "name": "Quad Box",
-  "short_name": "Quad Box",
+  "name": "Push Box",
+  "short_name": "Push Box",
   "icons": [
     {
       "src": "icons/192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/quad-box/",
+  "start_url": "/",
   "display": "fullscreen",
   "background_color": "#262626",
   "theme_color": "#121212"

@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-const STORAGE_KEY = 'quad-box-settings'
+const STORAGE_KEY = 'push-box-settings'
 
 const defaultSettings = {
   version: "v1",
@@ -9,7 +9,7 @@ const defaultSettings = {
   gameSettings: {
     quad: {
       nBack: 2,
-      numTrials: 30,
+      numTrials: 100,
       trialTime: 2500,
       matchChance: 25,
       interference: 20,
@@ -20,7 +20,7 @@ const defaultSettings = {
     },
     dual: {
       nBack: 2,
-      numTrials: 30,
+      numTrials: 100,
       trialTime: 2500,
       matchChance: 30,
       interference: 20,
@@ -31,7 +31,7 @@ const defaultSettings = {
     },
     custom: {
       nBack: 2,
-      numTrials: 30,
+      numTrials: 100,
       trialTime: 2500,
       matchChance: 25,
       interference: 20,

@@ -1,21 +1,13 @@
 <script>
-  import { scores } from "../stores/scoreStore"
   import { feedback } from "../stores/feedbackStore"
   import { settings } from "../stores/settingsStore"
-  export let field = ''
+  export let count = 0
   export let display = ''
-  export let isPlaying = false
-  export let checkForMatch
-  $: score = $scores[field]
+  export let handleCount
 </script>
 
-<button class="game-button stimulus-button flex-1 h-full text-4xl grid grid-rows-[1fr 1fr 1fr] {$settings.theme}-{$feedback[field]} {$feedback[field]}" on:click={() => checkForMatch(field)}>
-  <div class="text-sm sm:text-xl">{display}</div>
+<button class="game-button stimulus-button flex-1 h-full text-4xl grid grid-rows-[1fr 1fr 1fr] {$settings.theme}-{$feedback[count]} {$feedback[count]}" on:click={() => handleCount(count)}>
   <slot></slot>
-  <div class="text-xl flex gap-4" class:invisible={!score || isPlaying}>
-    <div>{score?.hits}/{score?.possible}</div>
-    <div>{(score?.percent * 100).toFixed(0)}%</div>
-  </div>
 </button>
 
 

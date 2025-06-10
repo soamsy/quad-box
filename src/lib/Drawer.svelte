@@ -6,7 +6,6 @@ import { settings } from '../stores/settingsStore'
 import { scores } from '../stores/scoreStore'
 import { analytics } from '../stores/analyticsStore'
 import { mobile } from '../stores/mobileStore'
-import { autoProgression } from '../stores/autoProgressionStore'
 import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
@@ -66,21 +65,21 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         {/if}
       </div>
     </div>
-    <div class="justify-self-center flex gap-4 select-none px-6"
-      class:advance={$autoProgression.advance} 
-      class:fallback={$autoProgression.fallback}>
+    <div class="justify-self-center flex gap-4 select-none px-6">
       <div>N = {gameSettings.nBack}</div>
       <div>{title.toUpperCase()}</div>
-      {#if $scores.total && $mobile}
-      <div>{($scores.total.percent * 100).toFixed(0)}%</div>
+      {#if $scores.accuracy && $scores.speed && $mobile}
+      <div>{($scores.accuracy * 100).toFixed(0)}%</div>
+      <div>{($scores.speed).toFixed(2)}s/t</div>
       {/if}
     </div>
     <div class="justify-self-end flex items-center gap-4 pr-2">
       {#if !isPlaying && !$mobile && $analytics.playTime}
       <div>Today: {$analytics.playTime}</div>
       {/if}
-      {#if $scores.total && !isPlaying && !$mobile}
-      <div>Last: {($scores.total.percent * 100).toFixed(0)}%</div>
+      {#if $scores.accuracy && $scores.speed && !isPlaying && !$mobile}
+      <div>Acc: {($scores.accuracy * 100).toFixed(0)}%</div>
+      <div>{($scores.speed).toFixed(2)}s/t</div>
       {/if}
       <div class="flex">
         <InfoPopup />

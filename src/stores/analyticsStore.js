@@ -24,23 +24,15 @@ const createAnalyticsStore = () => {
         scores[tag] = { hits: 0, misses: 0 }
       }
 
-      for (const answers of scoresheet) {
-        for (const tag of gameInfo.tags) {
-          if (tag in answers) {
-            if (answers[tag]) {
-              scores[tag].hits++
-            } else {
-              scores[tag].misses++
-            }
-          }
-        }
-      }
+      const hits = scoresheet.filter(answers => answers.success).length
+      const possible = scoresheet.length - gameInfo.nBack
 
       await addGame({
         ...gameInfo,
-        scores,
+        hits,
+        possible,
         completedTrials: scoresheet.length,
-        status
+        status,
       })
       set(await loadAnalytics())
     }

@@ -4,19 +4,17 @@ import { settings } from './settingsStore'
 
 const createFeedbackStore = () => {
   const defaultFeedback = {
-    position: 'blank',
-    color: 'blank',
-    shape: 'blank',
-    shapeColor: 'blank',
-    audio: 'blank',
+    0: 'blank',
+    1: 'blank',
+    2: 'blank',
+    3: 'blank',
   }
 
   const updateDefaultFeedback = ($gameSettings) => {
-    defaultFeedback.position = 'blank'
-    defaultFeedback.color = $gameSettings.enableColor ? 'blank' : 'disabled'
-    defaultFeedback.shape = $gameSettings.enableShape ? 'blank' : 'disabled'
-    defaultFeedback.shapeColor = $gameSettings.enableShapeColor ? 'blank' : 'disabled'
-    defaultFeedback.audio = $gameSettings.enableAudio ? 'blank' : 'disabled'
+    defaultFeedback[0] = 'blank'
+    defaultFeedback[1] = 'blank'
+    defaultFeedback[2] = 'blank'
+    defaultFeedback[3] = 'blank'
   }
 
   updateDefaultFeedback(get(gameSettings))
@@ -64,23 +62,19 @@ const createFeedbackStore = () => {
       }
     })
 
-    if (Object.values(updates).includes('late-failure')) {
-      const currentTimeout = setTimeout(() => {
-        feedbackStore.update((current) => {
-          let updates = {}
-          for (const key in current) {
-            if (current[key] === 'late-failure') {
-              updates[key] = defaultFeedback[key]
-            }
-          }
-          return {
-            ...current,
-            ...updates,
-          }
-        })
-      }, 500)
-      timeouts.push(currentTimeout)
-    }
+    const currentTimeout = setTimeout(() => {
+      feedbackStore.update((current) => {
+        let updates = {}
+        for (const key in current) {
+          updates[key] = defaultFeedback[key]
+        }
+        return {
+          ...current,
+          ...updates,
+        }
+      })
+    }, 2000)
+    timeouts.push(currentTimeout)
   }
 
   return {

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @import 'tailwindcss/utilities';
 @plugin "daisyui" {
-  themes: black --dark, bumblebee --light;
+  themes: luxury --dark, cyberpunk --light;
 }
 
-@custom-variant dark (&:where([data-theme=black], [data-theme=black] *));
-@custom-variant light (&:where([data-theme=bumblebee], [data-theme=bumblebee] *));
+@custom-variant dark (&:where([data-theme=luxury], [data-theme=luxury] *));
+@custom-variant light (&:where([data-theme=cyberpunk], [data-theme=cyberpunk] *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

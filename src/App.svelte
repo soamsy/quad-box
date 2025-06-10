@@ -12,7 +12,6 @@ import { generateGame } from "./lib/nback"
 import { onMount, onDestroy } from "svelte"
 import { LETTER_AUDIO_POOL, LETTER_2_AUDIO_POOL, NUMBER_AUDIO_POOL } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
-import { runAutoProgression } from "./lib/autoProgression"
 
 let isPlaying
 let trials
@@ -20,7 +19,6 @@ let currentTrial
 let trialsIndex
 let scoresheet = []
 let gameInfo
-let presentation
 let timeoutCancelFns
 let gameId = 0
 
@@ -31,42 +29,25 @@ const resetRuntimeData = () => {
   trialsIndex = 0
   scoresheet = []
   gameInfo = {}
-  presentation = { highlight: false }
   timeoutCancelFns = []
   gameId++
 }
 
 resetRuntimeData()
 
-$: theme = $settings.theme === 'dark' ? 'black' : 'bumblebee'
+$: theme = $settings.theme === 'dark' ? 'luxury' : 'cyberpunk'
 $: isMobile = $mobile
 $: gameSettings = $settings.gameSettings[$settings.mode]
 $: game = generateGame(gameSettings, $settings, gameId)
 $: trialDisplay = $settings.feedback === 'show' ? game.trials.length - trialsIndex : ''
 $: title = isPlaying ? gameInfo.title : game.meta.title
-
-const playTrial = async (i) => {
-  if (!isPlaying) {
-    return
-  }
-
-  if (i >= trials.length) {
-    await delay(700)
-    await endGame('completed')
-    return
-  }
-
-  selectTrial(i)
-  presentation.highlight = true
-  const audioWait = currentTrial.audio ? audioPlayer.play(currentTrial.audio) : Promise.resolve()
-  const presentationWait = delay(Math.min(2000, gameInfo.trialTime - 350)).then(() => presentation.highlight = false)
-  const trialWait = delay(gameInfo.trialTime)
-  await Promise.all([audioWait, presentationWait, trialWait])
-  detectMissedStimuli()
-  await playTrial(i + 1)
-}
+$: presentation = isPlaying ? { highlight: true } : { highlight: false }
 
 const selectTrial = (i) => {
+  if (i >= trials.length) {
+    endGame('completed')
+    return
+  }
   currentTrial = trials[i]
   trialsIndex = i
 }
@@ -78,19 +59,10 @@ const startGame = async () => {
 
   isPlaying = true
   gameInfo = { ...game.meta }
+  gameInfo.start = Date.now()
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   selectTrial(0)
-  try {
-    await delay(700)
-    await playTrial(0)
-  } catch (e) {
-    if (e.message === 'Timeout cancelled') {
-      console.debug('Game cancelled', e)
-    } else {
-      throw e
-    }
-  }
 }
 
 const endGame = async (status) => {
@@ -101,9 +73,6 @@ const endGame = async (status) => {
   if (trialsIndex > gameInfo.nBack) {
     gameInfo.timestamp = Date.now()
     await analytics.scoreTrials(gameInfo, status === 'completed' ? scoresheet : scoresheet.slice(0, trialsIndex), status)
-    if (status === 'completed') {
-      await runAutoProgression(gameInfo)
-    }
   } else {
     console.debug('Game not recorded', trialsIndex, gameInfo, scoresheet, trials)
   }
@@ -120,32 +89,24 @@ const toggleGame = () => {
   }
 }
 
-const detectMissedStimuli = () => {
-  if (!('tags' in gameInfo)) {
-    return
-  }
-  let updates = {}
-  for (const tag of gameInfo.tags) {
-    if (currentTrial.matches.includes(tag) &&!(tag in scoresheet[trialsIndex])) {
-      scoresheet[trialsIndex][tag] = false
-      updates[tag] = 'late-failure'
-    } else {
-      updates[tag] = 'blank'
-    }
-  }
-  feedback.apply(updates)
-}
-
-const checkForMatch = (type) => {
-  if (!isPlaying || trialsIndex < gameInfo.nBack) {
+const handleCount = (count) => {
+  if (!isPlaying || scoresheet[trialsIndex].success !== undefined) {
     return
   }
 
-  if (type in currentTrial && !(type in scoresheet[trialsIndex])) {
-    const isSuccess = currentTrial.matches.includes(type)
-    scoresheet[trialsIndex][type] = isSuccess
-    feedback.apply({ [type]: isSuccess ? 'success' : 'failure' })
+  if (trialsIndex < gameInfo.nBack) {
+    selectTrial(trialsIndex + 1)
+    return
   }
+
+  feedback.reset()
+  scoresheet[trialsIndex].success = count === currentTrial.matches.length
+  if (scoresheet[trialsIndex].success) {
+    feedback.apply({ [count]: 'success' })
+  } else {
+    feedback.apply({ [count]: 'failure', [currentTrial.matches.length]: 'success' })
+  }
+  selectTrial(trialsIndex + 1)
 }
 
 const handleKey = (event) => {
@@ -153,42 +114,23 @@ const handleKey = (event) => {
     case 'Space':
       startGame()
       break
-    case 'KeyA':
-      checkForMatch('position')
+    case 'Digit0':
+    case 'Numpad0':
+      handleCount(0)
       break
-    case 'KeyF':
-      checkForMatch('color')
+    case 'Digit1':
+    case 'Numpad1':
+      handleCount(1)
       break
-    case 'KeyJ':
-      checkForMatch('shape')
-      checkForMatch('shapeColor')
+    case 'Digit2':
+    case 'Numpad2':
+      handleCount(2)
       break
-    case 'KeyL':
-      checkForMatch('audio')
+    case 'Digit3':
+    case 'Numpad3':
+      handleCount(3)
       break
   }
-}
-
-const delay = async (ms) => {
-  let timeoutId
-  let rejectFn
-
-  const promise = new Promise((resolve, reject) => {
-    rejectFn = reject
-    timeoutId = setTimeout(resolve, ms)
-  })
-
-  const cancel = () => {
-    if (timeoutId !== undefined) {
-      clearTimeout(timeoutId)
-      rejectFn(new Error('Timeout cancelled'))
-      timeoutId = undefined
-    }
-  }
-
-  timeoutCancelFns.push(cancel)
-
-  return promise
 }
 
 onMount(() => {
@@ -265,11 +207,10 @@ $: cacheAudioFiles(audioSource)
         <button class="game-button text-4xl p-8 md:p-10" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="grid grid-cols-[repeat(auto-fit,minmax(0,1fr))] grid-rows-1 max-w-full gap-1 row-start-3 md:mt-6">
-        <SmallKey field="position" display="Position" {isPlaying} {checkForMatch}>A</SmallKey>
-        <SmallKey field="color" display="Color" {isPlaying} {checkForMatch}>F</SmallKey>
-        <SmallKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</SmallKey>
-        <SmallKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}>J</SmallKey>
-        <SmallKey field="audio" display="Audio" {isPlaying} {checkForMatch}>L</SmallKey>
+        <SmallKey count={0} {handleCount}>0</SmallKey>
+        <SmallKey field={1} {handleCount}>1</SmallKey>
+        <SmallKey field={2} {handleCount}>2</SmallKey>
+        <SmallKey field={3} {handleCount}>3</SmallKey>
       </div>
     </div>
     {:else}
@@ -279,18 +220,12 @@ $: cacheAudioFiles(audioSource)
         <button class="game-button text-5xl px-12 py-10 max-w-[90%] mr-4" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
-        {#if !gameSettings.enableShapeColor}
-        <LargeKey field="color" display="Color" {isPlaying} {checkForMatch}>F</LargeKey>
-        {/if}
-        <LargeKey field="position" display="Position" {isPlaying} {checkForMatch}>A</LargeKey>
+        <LargeKey field={0} {handleCount}>0</LargeKey>
+        <LargeKey field={1} {handleCount}>1</LargeKey>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
-        {#if gameSettings.enableShapeColor}
-        <LargeKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}>J</LargeKey>
-        {:else}
-        <LargeKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</LargeKey>
-        {/if}
-        <LargeKey field="audio" display="Audio" {isPlaying} {checkForMatch}>L</LargeKey>
+        <LargeKey field={2} {handleCount}>2</LargeKey>
+        <LargeKey field={3} {handleCount}>3</LargeKey>
       </div>
       <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
     </div>

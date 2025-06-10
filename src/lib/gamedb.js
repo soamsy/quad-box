@@ -1,5 +1,5 @@
 
-const DB_NAME = "QuadBoxNBack"
+const DB_NAME = "PushBoxNBack"
 const DB_VERSION = 1
 const STORE_NAME = "games"
 
@@ -48,10 +48,7 @@ export async function getLastRecentGame() {
 
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
-      if (cursor && cursor.value.status === "tombstone") {
-        cursor.continue()
-      } else if (cursor) {
-        addScoreMetadata(cursor.value)
+      if (cursor) {
         resolve(cursor.value)
       } else {
         resolve(null)
@@ -81,7 +78,6 @@ export async function getAllCompletedGames() {
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor) {
-        addScoreMetadata(cursor.value)
         games.push(cursor.value)
         cursor.continue()
       } else {
@@ -120,7 +116,6 @@ export async function getGamesTimeRange(start, end) {
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor) {
-        addScoreMetadata(cursor.value)
         games.push(cursor.value)
         cursor.continue()
       } else {
@@ -159,9 +154,7 @@ export async function getPlayTimeSince4AM() {
     cursorRequest.onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor) {
-        if (cursor.value.status !== "tombstone") {
-          playTime.total += (cursor.value.trialTime * cursor.value.completedTrials) / 1000
-        }
+        playTime.total += (cursor.value.timestamp - cursor.value.start) / 1000
         cursor.continue()
       } else {
         db.close()
@@ -174,32 +167,6 @@ export async function getPlayTimeSince4AM() {
       reject(cursorRequest.error)
     }
   })
-}
-
-
-const addScoreMetadata = (game) => {
-  if (game.status === 'tombstone') {
-    return game
-  }
-  game.total = { hits: 0, misses: 0, percent: 0, possible: 0, ncalc: 0 }
-  for (const tag of game.tags) {
-    game.total.hits += game.scores[tag].hits
-    game.total.misses += game.scores[tag].misses
-    game.scores[tag].possible = game.scores[tag].hits + game.scores[tag].misses
-    game.scores[tag].percent = 0
-    if (game.scores[tag].hits > 0) {
-      game.scores[tag].percent = game.scores[tag].hits / game.scores[tag].possible
-    }
-  }
-
-  game.total.possible = game.total.hits + game.total.misses
-  if (game.total.hits > 0) {
-    game.total.percent = game.total.hits / game.total.possible
-  }
-
-  if (game.total.percent >= 0.4) {
-    game.ncalc = game.nBack + (game.total.percent - 0.5) * 2.5
-  }
 }
 
 export const deleteDB = async () => {

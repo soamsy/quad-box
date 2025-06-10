@@ -105,11 +105,8 @@
     <tr>
       <th>Date</th>
       <th>Game</th>
-      <th class="text-center">Total</th>
-      <th class="text-center">Position</th>
-      <th class="text-center">Audio</th>
-      <th class="text-center">Color</th>
-      <th class="text-center">Shape</th>
+      <th class="text-center">Accuracy</th>
+      <th class="text-center">Speed</th>
       <th>Time</th>
       {#if $recentGamesState.filter !== "completed"}
         <th>Status</th>
@@ -121,12 +118,9 @@
       <tr>
         <td>{getTimeLabel(game.timestamp)}</td>
         <td>{getGameShortName(game)}</td>
-        <td class="text-center border-r-1 border-[#FFFFFF22]"><span class={'py-1 px-2 ' + getPercentClass(game?.total?.percent)}>{formatPercent(game?.total?.percent)}</span></td>
-        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.position?.percent)}>{formatPercent(game?.scores?.position?.percent)}</span></td>
-        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.audio?.percent)}>{formatPercent(game?.scores?.audio?.percent)}</span></td>
-        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.color?.percent)}>{formatPercent(game?.scores?.color?.percent)}</span></td>
-        <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}>{formatPercent(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}</span></td>
-        <td>{formatSeconds(game.trialTime * game.completedTrials / 1000)}</td>
+        <td class="text-center border-r-1 border-[#FFFFFF22]"><span class={'py-1 px-2 ' + getPercentClass(game?.hits / game?.possible)}>{formatPercent(game?.hits / game?.possible)}</span></td>
+        <td class="text-center"><span class="text-sm px-1">{(game.timestamp - game.start) / game.completedTrials / 1000}s/t</span></td>
+        <td>{formatSeconds((game.timestamp - game.start) / 1000)}</td>
         {#if $recentGamesState.filter !== "completed"}
           <td><span class={getStatusClass(game.status)}>{game.status}</span></td>
         {/if}
