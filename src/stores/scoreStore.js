@@ -14,7 +14,7 @@ const createScoreStore = () => {
 
     set({
       accuracy: game.hits / game.possible,
-      speed: (game.timestamp - game.start) / 1000 / game.completedTrials,
+      speed: game.completedTrials / ((game.timestamp - game.start) / 1000),
     })
   })
 

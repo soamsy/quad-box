@@ -19,6 +19,7 @@ let currentTrial
 let trialsIndex
 let scoresheet = []
 let gameInfo
+let presentation
 let timeoutCancelFns
 let gameId = 0
 
@@ -29,6 +30,7 @@ const resetRuntimeData = () => {
   trialsIndex = 0
   scoresheet = []
   gameInfo = {}
+  presentation = { highlight: false, flash: false }
   timeoutCancelFns = []
   gameId++
 }
@@ -41,13 +43,47 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
 $: game = generateGame(gameSettings, $settings, gameId)
 $: trialDisplay = $settings.feedback === 'show' ? game.trials.length - trialsIndex : ''
 $: title = isPlaying ? gameInfo.title : game.meta.title
-$: presentation = isPlaying ? { highlight: true } : { highlight: false }
+
+const flashCube = async () => {
+  presentation.flash = true
+  try {
+    await delay(200)
+  } catch {
+    // ignore
+  }
+  presentation.flash = false
+}
+
+const delay = async (ms) => {
+  let timeoutId
+  let rejectFn
+
+  const promise = new Promise((resolve, reject) => {
+    rejectFn = reject
+    timeoutId = setTimeout(resolve, ms)
+  })
+
+  const cancel = () => {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId)
+      rejectFn(new Error('Timeout cancelled'))
+      timeoutId = undefined
+    }
+  }
+
+  timeoutCancelFns.push(cancel)
+
+  return promise
+}
 
 const selectTrial = (i) => {
+  timeoutCancelFns.forEach(fn => fn())
+  timeoutCancelFns = []
   if (i >= trials.length) {
     endGame('completed')
     return
   }
+  flashCube()
   currentTrial = trials[i]
   trialsIndex = i
 }
@@ -62,6 +98,7 @@ const startGame = async () => {
   gameInfo.start = Date.now()
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
+  presentation.highlight = true
   selectTrial(0)
 }
 

@@ -119,7 +119,7 @@
         <td>{getTimeLabel(game.timestamp)}</td>
         <td>{getGameShortName(game)}</td>
         <td class="text-center border-r-1 border-[#FFFFFF22]"><span class={'py-1 px-2 ' + getPercentClass(game?.hits / game?.possible)}>{formatPercent(game?.hits / game?.possible)}</span></td>
-        <td class="text-center"><span class="text-sm px-1">{(game.timestamp - game.start) / game.completedTrials / 1000}s/t</span></td>
+        <td class="text-center"><span class="text-sm px-1">{(game.completedTrials / ((game.timestamp - game.start) / 1000)).toFixed(3)}t/s</span></td>
         <td>{formatSeconds((game.timestamp - game.start) / 1000)}</td>
         {#if $recentGamesState.filter !== "completed"}
           <td><span class={getStatusClass(game.status)}>{game.status}</span></td>

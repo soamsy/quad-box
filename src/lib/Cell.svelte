@@ -2,6 +2,7 @@
   import { SHAPE_URLS } from "./constants"
   import { createVoronoiSvg } from "./voronoi"
   export let show = false
+  export let flash = false
   export let position = '0-0-0'
   export let boxColor = null
   export let shapeName = null
@@ -15,7 +16,7 @@
     return `data:image/svg+xml,${encoded}`
   }
 
-  const calculateBoxClassNames = (position, shapeName, show) => {
+  const calculateBoxClassNames = (position, shapeName, show, flash) => {
     if (!show) {
       return 'hidden'
     }
@@ -23,6 +24,9 @@
     let classNames = ['p' + position]
     if (shapeName.includes('heart')) {
       classNames.push('heart')
+    }
+    if (flash) {
+      classNames.push('flash')
     }
     return classNames.join(' ')
   }
@@ -44,7 +48,7 @@
     return style
   }
 
-  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show)
+  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash)
   $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi)
 
 </script>
@@ -71,6 +75,13 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 80% 80%;
+    transition: outline-color 0.1s ease-in-out;
+    outline-color: hsla(0, 0%, 0%, 0);
+  }
+
+  .flash .face {
+    @apply outline-2 outline-dotted;
+    outline-color: hsl(10, 10%, 90%, 0.5);
   }
 
   .cell.heart .face {

@@ -70,7 +70,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       <div>{title.toUpperCase()}</div>
       {#if $scores.accuracy && $scores.speed && $mobile}
       <div>{($scores.accuracy * 100).toFixed(0)}%</div>
-      <div>{($scores.speed).toFixed(2)}s/t</div>
+      <div>{($scores.speed).toFixed(2)}t/s</div>
       {/if}
     </div>
     <div class="justify-self-end flex items-center gap-4 pr-2">
@@ -79,7 +79,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
       {/if}
       {#if $scores.accuracy && $scores.speed && !isPlaying && !$mobile}
       <div>Acc: {($scores.accuracy * 100).toFixed(0)}%</div>
-      <div>{($scores.speed).toFixed(2)}s/t</div>
+      <div>{($scores.speed).toFixed(2)}t/s</div>
       {/if}
       <div class="flex">
         <InfoPopup />

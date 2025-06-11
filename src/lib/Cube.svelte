@@ -31,6 +31,7 @@
   $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
+  $: flash = presentation.flash
   $: frameSrc = $settings.theme === 'dark' ? 'frame-dark.svg' : 'frame-light.svg'
 
 </script>
@@ -45,6 +46,7 @@
   >
     <Cell
       show={trial.position && highlight}
+      flash={trial.position && flash}
       position={trial.position}
       {boxColor}
       {shapeName}
