@@ -9,11 +9,13 @@
   $: score = $scores[field]
 </script>
 
-<button tabindex="-1" disabled={$feedback[field] === 'disabled'} class="game-button-lg stimulus-button {$settings.theme}-{$feedback[field]}" on:click={() => checkForMatch(field)}>
-<slot></slot>
-<span class="game-button-lg-hint">{display}</span>
-{#if score && !isPlaying}
-  <span class="absolute top-[20%] text-xl">{score.hits} / {score.possible}</span>
-  <span class="absolute top-[30%] text-xl">{(score.percent * 100).toFixed(0)}%</span>
-{/if}
+<button tabindex="-1" disabled={$feedback[field] === 'disabled'} class="game-button-lg stimulus-button grid grid-rows-[1fr_2fr_1fr] {$settings.theme}-{$feedback[field]}" on:click={() => checkForMatch(field)}>
+  <span class="text-xl">{display}</span>
+  <slot></slot>
+  <div class="flex gap-4">
+    {#if score && !isPlaying}
+    <span class="text-xl">{score.hits}/{score.possible}</span>
+    <span class="text-xl">{(score.percent * 100).toFixed(0)}%</span>
+    {/if}
+  </div>
 </button>

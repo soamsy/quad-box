@@ -50,11 +50,7 @@ body {
 }
 
 .game-button-lg {
-  @apply game-button w-full text-8xl p-8 flex-auto relative;
-}
-
-.game-button-lg-hint {
-  @apply absolute top-[10%] text-xl;
+  @apply game-button w-full text-8xl p-6 flex-auto;
 }
 
 .game-button-lg-group {
