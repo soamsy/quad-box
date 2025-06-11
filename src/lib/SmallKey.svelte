@@ -9,7 +9,7 @@
   $: score = $scores[field]
 </script>
 
-<button class="game-button stimulus-button flex-1 h-full text-4xl grid grid-rows-[1fr 1fr 1fr] {$settings.theme}-{$feedback[field]} {$feedback[field]}" on:click={() => checkForMatch(field)}>
+<button tabindex="-1" class="game-button stimulus-button flex-1 h-full text-4xl grid grid-rows-[1fr 1fr 1fr] {$settings.theme}-{$feedback[field]} {$feedback[field]}" on:click={() => checkForMatch(field)}>
   <div class="text-sm sm:text-xl">{display}</div>
   <slot></slot>
   <div class="text-xl flex gap-4" class:invisible={!score || isPlaying}>

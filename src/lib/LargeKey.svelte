@@ -9,7 +9,7 @@
   $: score = $scores[field]
 </script>
 
-<button disabled={$feedback[field] === 'disabled'} class="game-button-lg stimulus-button {$settings.theme}-{$feedback[field]}" on:click={() => checkForMatch(field)}>
+<button tabindex="-1" disabled={$feedback[field] === 'disabled'} class="game-button-lg stimulus-button {$settings.theme}-{$feedback[field]}" on:click={() => checkForMatch(field)}>
 <slot></slot>
 <span class="game-button-lg-hint">{display}</span>
 {#if score && !isPlaying}
