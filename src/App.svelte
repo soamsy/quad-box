@@ -199,6 +199,9 @@ const handleKey = (event) => {
     case 'Space':
       startGame()
       break
+    case 'Escape':
+      endGame('cancelled')
+      break
     case 'KeyA':
       checkForMatch('position')
       break
