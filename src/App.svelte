@@ -151,6 +151,9 @@ const handleKey = (event) => {
     case 'Space':
       startGame()
       break
+    case 'Escape':
+      endGame('cancelled')
+      break
     case 'Digit0':
     case 'Numpad0':
       handleCount(0)
@@ -200,6 +203,10 @@ window.addEventListener('resize', onResize)
 window.addEventListener('orientationchange', onOrientationChange)
 document.addEventListener('keydown', handleKey)
 
+const suppressKey = (event) => {
+  event.preventDefault()
+}
+
 const handleTouchStart = (event) => {
   for (const touch of event.changedTouches) {
     const target = document.elementFromPoint(touch.clientX, touch.clientY)
@@ -241,7 +248,12 @@ $: cacheAudioFiles(audioSource)
     <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
       <div class="w-full h-full flex items-center justify-between row-start-1 p-8">
         <div class="text-4xl ml-2 select-none opacity-30" >{trialDisplay}</div>
-        <button class="game-button text-4xl p-8 md:p-10" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
+        <button class="game-button text-4xl p-8 md:p-10"
+          tabindex="-1"
+          on:keydown={suppressKey}
+          on:keypress={suppressKey}
+          on:keyup={suppressKey}
+          on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="grid grid-cols-[repeat(auto-fit,minmax(0,1fr))] grid-rows-1 max-w-full gap-1 row-start-3 md:mt-6">
         <SmallKey count={0} {handleCount}>0</SmallKey>
@@ -254,7 +266,12 @@ $: cacheAudioFiles(audioSource)
     <div class="stretch grid grid-cols-[1fr_3fr_3fr_1fr] grid-rows-[1fr_6fr_1fr]">
       <div class="w-full h-full flex items-center justify-between col-start-1 col-span-4 px-2">
         <div></div>
-        <button class="game-button text-5xl px-12 py-10 max-w-[90%] mr-4" on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
+        <button class="game-button text-5xl px-12 py-10 max-w-[90%] mr-4"
+          tabindex="-1"
+          on:keydown={suppressKey}
+          on:keypress={suppressKey}
+          on:keyup={suppressKey}
+          on:click={toggleGame}>{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
         <LargeKey field={0} {handleCount}>0</LargeKey>
