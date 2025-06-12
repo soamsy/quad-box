@@ -60,7 +60,7 @@
 
 <style>
   .cell {
-    @apply absolute w-[20svmin] h-[20svmin] left-[20.1svmin] top-[20.1svmin];
+    @apply absolute w-[20.1svmin] h-[20.1svmin] left-[20.1svmin] top-[20.1svmin];
     transform-style: preserve-3d;
   }
 
