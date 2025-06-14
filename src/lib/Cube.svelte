@@ -35,11 +35,8 @@
 
 </script>
 
-<div class="flex absolute items-center justify-center w-full h-full select-none perspective-[65svmin] overflow-hidden"
-  class:perspective-[85svmin]={$mobile}>
-  <div class="scene absolute w-[60.3svmin] h-[60.3svmin] transform-3d"
-  class:-translate-z-[10svmin]={!$mobile}
-  class:-translate-z-[5svmin]={$mobile}
+<div class="flex absolute items-center justify-center w-full h-full select-none perspective-[65svmin] overflow-hidden">
+  <div class="scene absolute w-[60.3svmin] h-[60.3svmin] transform-3d -translate-z-[10svmin]"
   class:mb-10={$mobile}
   style="animation-duration: {rotationTime}s;"
   >
