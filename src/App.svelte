@@ -138,6 +138,7 @@ const handleCount = (count) => {
 
   feedback.reset()
   scoresheet[trialsIndex].success = count === currentTrial.matches.length
+  scoresheet[trialsIndex].count = currentTrial.matches.length
   if (scoresheet[trialsIndex].success) {
     feedback.apply({ [count]: 'success' })
   } else {

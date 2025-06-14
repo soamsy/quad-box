@@ -24,8 +24,8 @@ const createAnalyticsStore = () => {
         scores[tag] = { hits: 0, misses: 0 }
       }
 
-      const hits = scoresheet.filter(answers => answers.success).length
-      const possible = scoresheet.length - gameInfo.nBack
+      const hits = scoresheet.filter(answers => answers.success && answers.count > 0).length
+      const possible = scoresheet.filter(answers => answers.count > 0 || ('success' in answers && answers.success === false)).length
 
       await addGame({
         ...gameInfo,
