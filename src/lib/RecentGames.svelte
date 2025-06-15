@@ -91,8 +91,15 @@
   }
 
   const getGameShortName = (game) => {
-    if (!game.title) {
-      return 'C' + game.nBack + 'B'
+    if (!game.title || game.title === 'custom') {
+      let order = ['position', 'color', 'shape', 'audio', 'shapeColor']
+      order.reverse()
+      let tags = game.tags.slice()
+      tags.sort((a, b) => order.indexOf(a) - order.indexOf(b))
+      tags.reverse()
+      tags = tags.map(tag => tag === 'shapeColor' ? 'image' : tag)
+      const prefix = tags.map(tag => tag.charAt(0).toUpperCase()).join('')
+      return prefix + game.nBack + 'B'
     }
     return game.title.charAt(0).toUpperCase() + game.nBack + 'B'
   }
