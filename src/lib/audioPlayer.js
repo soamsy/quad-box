@@ -1,4 +1,6 @@
 import { Howl } from "howler"
+import { settings } from '../stores/settingsStore'
+import { get } from 'svelte/store'
 
 class AudioPlayer {
   constructor() {
@@ -35,6 +37,7 @@ class AudioPlayer {
   async playSoundAsync(howl) {
     return new Promise((resolve, reject) => {
       const id = howl.play()
+      howl.rate(get(settings).audioSpeed ?? 1.0)
       if (id == null) return reject(new Error("Failed to play sound"))
 
       howl.once('end', resolve, id)

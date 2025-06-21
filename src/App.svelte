@@ -86,6 +86,9 @@ const selectTrial = (i) => {
   }
   flashCube()
   currentTrial = trials[i]
+  if (currentTrial.audio) {
+    audioPlayer.play(currentTrial.audio)
+  }
   trialsIndex = i
 }
 

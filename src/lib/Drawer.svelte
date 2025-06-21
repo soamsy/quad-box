@@ -124,6 +124,11 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
             <input type="range" min="0" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
           </label>
         </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-lg">Audio Speed: {$settings.audioSpeed.toFixed(1)}x
+            <input type="range" min="1" max="3" bind:value={$settings.audioSpeed} step="0.1" class="range" />
+          </label>
+        </div>
         <div class="divider"></div>
         <div class="grid grid-cols-[8fr_2fr] items-center">
           <label for="enable-auto-progression" class="text-lg">Auto progression:</label>

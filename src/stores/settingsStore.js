@@ -55,6 +55,7 @@ const defaultSettings = {
   },
   feedback: 'show',
   rotationSpeed: 35,
+  audioSpeed: 1.0,
   enableAutoProgression: true,
   successCriteria: 80,
   successComboRequired: 1,
@@ -86,11 +87,10 @@ const saveSettings = (settings) => {
 }
 
 const createSettingsStore = () => {
-  const { subscribe, get, set, update } = writable(loadSettings())
+  const { subscribe, set, update } = writable(loadSettings())
 
   return {
     subscribe,
-    get,
     set: (value) => {
       saveSettings(value)
       set(value)
