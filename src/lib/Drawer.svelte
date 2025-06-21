@@ -121,7 +121,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-lg">Rotation speed: {$settings.rotationSpeed}
-            <input type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
+            <input type="range" min="0" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
           </label>
         </div>
         <div class="divider"></div>

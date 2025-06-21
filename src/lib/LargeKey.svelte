@@ -7,5 +7,4 @@
 
 <button disabled={$feedback[field] === 'disabled'} class="game-button-lg stimulus-button {$settings.theme}-{$feedback[field]}" on:click={() => handleCount(field)}>
 <slot></slot>
-<span class="game-button-lg-hint"><slot></slot></span>
 </button>

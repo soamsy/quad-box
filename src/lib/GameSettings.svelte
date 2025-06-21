@@ -72,7 +72,7 @@
     <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />  
   </label>
 </div>
-{#if $settings.mode === 'custom'}
+{#if $settings.mode === 'custom' || $settings.mode === 'visual'}
 <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
   <label for="enable-audio" class="text-lg">Audio:</label>
   <input id="enable-audio" type="checkbox" bind:checked={$gameSettings.enableAudio} class="toggle" />
@@ -88,5 +88,16 @@
 <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
   <label for="enable-shape-color" class="text-lg">Pattern:</label>
   <input id="enable-shape-color" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
+</div>
+{/if}
+
+{#if $settings.mode === 'visual'}
+<div class="flex flex-col gap-1">
+  <label class="text-lg">
+    <span class="flex items-center justify-between">
+      VCount: {$gameSettings.vcount}
+    </span>
+    <input type="range" min="1" max="4" bind:value={$gameSettings.vcount} step="1" class="range" />  
+  </label>
 </div>
 {/if}

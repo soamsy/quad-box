@@ -6,13 +6,15 @@
   const darkColors = new Map([
     ['quad', 'bg-rose-900'],
     ['dual', 'bg-cyan-800'],
-    ['custom', 'bg-gray-700']
+    ['custom', 'bg-gray-700'],
+    ['visual', 'bg-purple-700'],
   ])
 
   const lightColors = new Map([
     ['quad', 'bg-rose-400'],
     ['dual', 'bg-cyan-400'],
-    ['custom', 'bg-gray-400']
+    ['custom', 'bg-gray-400'],
+    ['visual', 'bg-purple-400'],
   ])
 
   const modes = [...lightColors.keys()]

@@ -81,8 +81,21 @@ const getAudioPool = (globalSettings) => {
 }
 
 export const generateGame = (settings, globalSettings) => {
+  const isVisual = globalSettings.mode === 'visual'
   const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
+  if (isVisual) {
+    let tags = []
+    for (let i = 1; i <= settings.vcount; i++) {
+      tags.push(`visual${i}`)
+      generateStimuli(trials, `visual${i}`, createVoronoiPool(), nBack, matchChance, interference)
+    }
+    let title = 'visual'
+    return {
+      meta: { nBack, numTrials, trialTime, title, tags, matchChance, interference },
+      trials: trials,
+    }
+  }
   let tags = ['position']
   generateStimuli(trials, 'position', POSITION_POOL, nBack, matchChance, interference)
   if (enableAudio) {

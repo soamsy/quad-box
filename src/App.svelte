@@ -1,6 +1,7 @@
 <script>
 import Drawer from "./lib/Drawer.svelte"
 import Cube from "./lib/Cube.svelte"
+import Grid from "./lib/Grid.svelte"
 import LargeKey from "./lib/LargeKey.svelte"
 import SmallKey from "./lib/SmallKey.svelte"
 import ErrorDisplay from "./lib/ErrorDisplay.svelte"
@@ -171,6 +172,10 @@ const handleKey = (event) => {
     case 'Numpad3':
       handleCount(3)
       break
+    case 'Digit4':
+    case 'Numpad4':
+      handleCount(4)
+      break
   }
 }
 
@@ -244,7 +249,11 @@ $: cacheAudioFiles(audioSource)
 <main data-theme={theme} class={$settings.theme}>
 <ErrorDisplay />
 <Drawer {title} {isPlaying}>
+    {#if $settings.mode === 'visual'}
+    <Grid trial={currentTrial} {presentation} {trialsIndex} trialsCount={trials.length}/>
+    {:else}
     <Cube trial={currentTrial} {presentation} />
+    {/if}
     {#if isMobile}
     <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
       <div class="w-full h-full flex items-center justify-between row-start-1 p-8">
@@ -261,6 +270,7 @@ $: cacheAudioFiles(audioSource)
         <SmallKey field={1} {handleCount}>1</SmallKey>
         <SmallKey field={2} {handleCount}>2</SmallKey>
         <SmallKey field={3} {handleCount}>3</SmallKey>
+        <SmallKey field={4} {handleCount}>3</SmallKey>
       </div>
     </div>
     {:else}
@@ -277,10 +287,9 @@ $: cacheAudioFiles(audioSource)
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
         <LargeKey field={0} {handleCount}>0</LargeKey>
         <LargeKey field={1} {handleCount}>1</LargeKey>
-      </div>
-      <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
         <LargeKey field={2} {handleCount}>2</LargeKey>
         <LargeKey field={3} {handleCount}>3</LargeKey>
+        <LargeKey field={4} {handleCount}>4</LargeKey>
       </div>
       <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
     </div>
