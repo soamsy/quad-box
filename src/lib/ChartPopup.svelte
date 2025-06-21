@@ -5,6 +5,7 @@
   import ProgressChart from './ProgressChart.svelte'
   import { ChartColumn } from '@lucide/svelte'
   import RecentGames from './RecentGames.svelte'
+  import TimeStats from './TimeStats.svelte'
 
   let show = false
   let tab = 'recent-games'
@@ -50,7 +51,10 @@
         {#if tab === 'recent-games'}
         <RecentGames />
         {:else}
-        <ProgressChart />
+        <TimeStats />
+        <div class="h-[50svh]">
+          <ProgressChart />
+        </div>
         {/if}
       </div>
       <div class="flex flex-row-reverse items-center justify-between select-none">

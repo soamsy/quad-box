@@ -1,4 +1,4 @@
-
+import { getLocalDateString } from "./utils"
 const DB_NAME = "QuadBoxNBack"
 const DB_VERSION = 1
 const STORE_NAME = "games"
@@ -166,6 +166,52 @@ export async function getPlayTimeSince4AM() {
       } else {
         db.close()
         resolve(playTime.total)
+      }
+    }
+
+    cursorRequest.onerror = () => {
+      db.close()
+      reject(cursorRequest.error)
+    }
+  })
+}
+
+export const getYearOfPlayTime = async () => {
+  const db = await openDB()
+  const tx = db.transaction(STORE_NAME, "readonly")
+  const store = tx.objectStore(STORE_NAME)
+  const index = store.index("timestamp")
+
+  const now = new Date()
+  const oneYearAgo = new Date(now)
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
+  oneYearAgo.setHours(4, 0, 0, 0)
+
+  const lowerBound = oneYearAgo.getTime()
+  let games = {}
+
+  return new Promise((resolve, reject) => {
+    const range = IDBKeyRange.lowerBound(lowerBound)
+    const cursorRequest = index.openCursor(range)
+
+    cursorRequest.onsuccess = (event) => {
+      const cursor = event.target.result
+      if (cursor) {
+        if (cursor.value.status !== "tombstone") {
+          const date = new Date(cursor.value.timestamp)
+          if (date.getHours() < 4) {
+            date.setDate(date.getDate() - 1)
+          }
+          const day = getLocalDateString(date)
+          if (!games[day]) {
+            games[day] = 0
+          }
+          games[day] += (cursor.value.trialTime * cursor.value.completedTrials) / 1000 / 60
+        }
+        cursor.continue()
+      } else {
+        db.close()
+        resolve(games)
       }
     }
 

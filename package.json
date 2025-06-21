@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@lucide/svelte": "^0.511.0",
+    "@mariohamann/activity-graph": "^1.0.5",
     "@tailwindcss/vite": "^4.1.7",
     "chart.js": "^4.4.9",
     "chartjs-adapter-date-fns": "^3.0.0",
