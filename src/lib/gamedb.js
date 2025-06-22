@@ -101,8 +101,8 @@ export async function getLast48HoursGames() {
   return await getGamesTimeRange(new Date(Date.now() - 48 * 60 * 60 * 1000), new Date(Date.now() + 24 * 60 * 60 * 1000))
 }
 
-export async function getLastWeekGames() {
-  return await getGamesTimeRange(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date(Date.now() + 24 * 60 * 60 * 1000))
+export async function getLastMonthGames() {
+  return await getGamesTimeRange(new Date(Date.now() - 28 * 24 * 60 * 60 * 1000), new Date(Date.now() + 24 * 60 * 60 * 1000))
 }
 
 export async function getGamesTimeRange(start, end) {

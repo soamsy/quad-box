@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte"
-  import { getLastWeekGames } from "../lib/gamedb"
+  import { getLastMonthGames } from "../lib/gamedb"
   import { settings } from "../stores/settingsStore"
   import { recentGamesState } from "../stores/recentGamesStore"
   import { formatSeconds } from "./utils"
@@ -8,7 +8,7 @@
   let games = []
 
   onMount(async () => {
-    games = await getLastWeekGames()
+    games = await getLastMonthGames()
   })
 
   const getStatusColor = (status) => {
