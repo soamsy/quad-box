@@ -49,6 +49,12 @@ const defaultSettings = {
   failureCriteria: 50,
   failureComboRequired: 3,
   audioSource: 'letters2',
+  hotkeys: {
+    'position': 'A',
+    'color': 'F',
+    'shape': 'J',
+    'audio': 'L',
+  }
 }
 
 const getDefaultSettings = () => structuredClone(defaultSettings)

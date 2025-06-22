@@ -11,6 +11,7 @@ import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
 import ChartPopup from "./ChartPopup.svelte"
+import KeybindingsPopup from "./KeybindingsPopup.svelte"
 import InfoPopup from './InfoPopup.svelte'
 export let isPlaying = false
 let open = false
@@ -150,6 +151,8 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
             <input disabled={!$settings.enableAutoProgression} type="range" min="1" max="9" bind:value={$settings.failureComboRequired} step="1" class="range" />
           </label>
         </div>
+        <div class="my-1"></div>
+        <KeybindingsPopup />
       </div>
       <div class="my-10"></div>
     </nav>

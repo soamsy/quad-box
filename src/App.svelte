@@ -202,19 +202,16 @@ const handleKey = (event) => {
     case 'Escape':
       endGame('cancelled')
       break
-    case 'KeyA':
-      checkForMatch('position')
-      break
-    case 'KeyF':
-      checkForMatch('color')
-      break
-    case 'KeyJ':
-      checkForMatch('shape')
-      checkForMatch('shapeColor')
-      break
-    case 'KeyL':
-      checkForMatch('audio')
-      break
+  }
+
+  const hotkeys = $settings.hotkeys
+  for (const [action, key] of Object.entries(hotkeys)) {
+    if (key.toUpperCase() === event.key.toUpperCase()) {
+      checkForMatch(action)
+      if (action === 'shape') {
+        checkForMatch('shapeColor')
+      }
+    }
   }
 }
 
@@ -278,11 +275,11 @@ $: cacheAudioFiles(audioSource)
         >{#if isPlaying} Stop {:else} Play {/if}</button>
       </div>
       <div class="grid grid-cols-[repeat(auto-fit,minmax(0,1fr))] grid-rows-1 max-w-full gap-1 row-start-3 md:mt-6">
-        <SmallKey field="position" display="Position" {isPlaying} {checkForMatch}>A</SmallKey>
-        <SmallKey field="color" display="Color" {isPlaying} {checkForMatch}>F</SmallKey>
-        <SmallKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</SmallKey>
-        <SmallKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}>J</SmallKey>
-        <SmallKey field="audio" display="Audio" {isPlaying} {checkForMatch}>L</SmallKey>
+        <SmallKey field="position" display="Position" {isPlaying} {checkForMatch}></SmallKey>
+        <SmallKey field="color" display="Color" {isPlaying} {checkForMatch}></SmallKey>
+        <SmallKey field="shape" display="Shape" {isPlaying} {checkForMatch}></SmallKey>
+        <SmallKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}></SmallKey>
+        <SmallKey field="audio" display="Audio" {isPlaying} {checkForMatch}></SmallKey>
       </div>
     </div>
     {:else}
@@ -299,17 +296,17 @@ $: cacheAudioFiles(audioSource)
       </div>
       <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
         {#if !gameSettings.enableShapeColor}
-        <LargeKey field="color" display="Color" {isPlaying} {checkForMatch}>F</LargeKey>
+        <LargeKey field="color" display="Color" {isPlaying} {checkForMatch}></LargeKey>
         {/if}
-        <LargeKey field="position" display="Position" {isPlaying} {checkForMatch}>A</LargeKey>
+        <LargeKey field="position" display="Position" {isPlaying} {checkForMatch}></LargeKey>
       </div>
       <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
         {#if gameSettings.enableShapeColor}
-        <LargeKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}>J</LargeKey>
+        <LargeKey field="shapeColor" display="Pattern" {isPlaying} {checkForMatch}></LargeKey>
         {:else}
-        <LargeKey field="shape" display="Shape" {isPlaying} {checkForMatch}>J</LargeKey>
+        <LargeKey field="shape" display="Shape" {isPlaying} {checkForMatch}></LargeKey>
         {/if}
-        <LargeKey field="audio" display="Audio" {isPlaying} {checkForMatch}>L</LargeKey>
+        <LargeKey field="audio" display="Audio" {isPlaying} {checkForMatch}></LargeKey>
       </div>
       <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
     </div>

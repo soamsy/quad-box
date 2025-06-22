@@ -7,6 +7,7 @@
   export let isPlaying = false
   export let checkForMatch
   $: score = $scores[field]
+  $: hotkeyField = field === 'shapeColor' ? 'shape' : field
 </script>
 
 <button tabindex="-1" disabled={$feedback[field] === 'disabled'} class="game-button-lg stimulus-button grid grid-rows-[4fr_2fr_10fr_6fr] {$settings.theme}-{$feedback[field]}" on:click={() => checkForMatch(field)}>
@@ -17,5 +18,5 @@
     <span class="text-xl">{(score.percent * 100).toFixed(0)}%</span>
     {/if}
   </div>
-  <slot></slot>
+  {$settings.hotkeys[hotkeyField]}
 </button>
