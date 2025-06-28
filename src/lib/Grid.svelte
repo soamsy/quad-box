@@ -30,9 +30,15 @@
     if ($settings.rotationSpeed === 0) {
       return ''
     }
+
     const ticks = Math.floor(2000 / $settings.rotationSpeed)
-    const deg = (trialsIndex % ticks) * 360 / ticks
-    return `transform: rotate(${deg}deg);`
+    const angle = (trialsIndex % ticks) * 2 * Math.PI / ticks
+
+    const radius = 100
+    const x = Math.cos(angle) * radius
+    const y = Math.sin(angle) * radius
+
+    return `transform: translate(${x}px, ${y}px);`
   }
 
   $: highlight = presentation.highlight
