@@ -75,8 +75,8 @@ const startGame = async () => {
   if (isPlaying) {
     return
   }
-
   isPlaying = true
+  cacheAudioFiles()
   gameInfo = { ...game.meta }
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
@@ -174,7 +174,8 @@ onMount(() => {
   setMobile()
 })
 
-const cacheAudioFiles = (audioSource) => {
+const cacheAudioFiles = () => {
+  const audioSource = $settings.audioSource
   switch (audioSource) {
     case 'letters':
       LETTER_AUDIO_POOL.forEach(audio => {
@@ -252,9 +253,6 @@ onDestroy(async () => {
   document.removeEventListener('touchstart', handleTouchStart)
   document.removeEventListener('touchmove', handleTouchMove)
 })
-
-$: audioSource = $settings.audioSource
-$: cacheAudioFiles(audioSource)
 
 </script>
 
