@@ -51,6 +51,7 @@ const defaultSettings = {
       enableColor: false,
       enableShapeColor: true,
       vcount: 4,
+      vplus: false,
     },
   },
   feedback: 'show',

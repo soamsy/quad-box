@@ -216,32 +216,11 @@ const suppressKey = (event) => {
   event.preventDefault()
 }
 
-const handleTouchStart = (event) => {
-  for (const touch of event.changedTouches) {
-    const target = document.elementFromPoint(touch.clientX, touch.clientY)
-    if (target?.classList.contains('stimulus-button')) {
-      target.click()
-    }
-  }
-}
-document.addEventListener('touchstart', handleTouchStart)
-const handleTouchMove = (event) => {
-  for (const touch of event.touches) {
-    const target = document.elementFromPoint(touch.clientX, touch.clientY)
-    if (target?.classList.contains('stimulus-button')) {
-      target.click()
-    }
-  }
-}
-document.addEventListener('touchmove', handleTouchMove)
-
 onDestroy(async () => {
   await endGame('cancelled')
   window.removeEventListener('resize', onResize)
   window.removeEventListener('orientationchange', onOrientationChange)
   document.removeEventListener('keydown', handleKey)
-  document.removeEventListener('touchstart', handleTouchStart)
-  document.removeEventListener('touchmove', handleTouchMove)
 })
 
 $: audioSource = $settings.audioSource
@@ -273,7 +252,7 @@ $: cacheAudioFiles(audioSource)
         <SmallKey field={1} {handleCount}>1</SmallKey>
         <SmallKey field={2} {handleCount}>2</SmallKey>
         <SmallKey field={3} {handleCount}>3</SmallKey>
-        <SmallKey field={4} {handleCount}>3</SmallKey>
+        <SmallKey field={4} {handleCount}>4</SmallKey>
       </div>
     </div>
     {:else}

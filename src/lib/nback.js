@@ -40,10 +40,14 @@ const generateMatches = (trials, nBack, matchChance) => {
   return prefixMatches.concat(matches)
 }
 
-const generateStimuli = (trials, type, pool, nBack, matchChance, interference) => {
+const generateStimuli = (trials, type, pool, nBack, matchChance, interference, step=1) => {
   const matches = generateMatches(trials, nBack, matchChance)
   let stimuli = new Array(trials.length)
   for (let i = 0; i < stimuli.length; i++) {
+    if (i % step !== 0) {
+      continue
+    }
+
     if (i < nBack) {
       trials[i][type] = pick(pool)
       continue
@@ -89,6 +93,10 @@ export const generateGame = (settings, globalSettings) => {
     for (let i = 1; i <= settings.vcount; i++) {
       tags.push(`visual${i}`)
       generateStimuli(trials, `visual${i}`, createVoronoiPool(), nBack, matchChance, interference)
+    }
+    if (settings.vplus) {
+      tags.push(`visual${settings.vcount+1}`)
+      generateStimuli(trials, `visual${settings.vcount+1}`, createVoronoiPool(), nBack, matchChance, interference, nBack)
     }
     let title = 'visual'
     return {

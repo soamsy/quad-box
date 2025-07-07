@@ -100,4 +100,12 @@
     <input type="range" min="1" max="4" bind:value={$gameSettings.vcount} step="1" class="range" />  
   </label>
 </div>
+<div class="flex flex-col gap-1">
+  <label class="text-lg">
+    <span class="flex items-center justify-between">
+      VPlus: {$gameSettings.vplus}
+    </span>
+    <input type="checkbox" bind:checked={$gameSettings.vplus} class="toggle" />  
+  </label>
+</div>
 {/if}

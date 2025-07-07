@@ -53,7 +53,7 @@
 
 <div class="flex absolute items-center justify-center w-full h-full select-none overflow-hidden"
   class:perspective-[85svmin]={$mobile}>
-  <div class="scene absolute w-[60.3svmin] h-[60.3svmin]"
+  <div class="scene absolute w-[55svmin] h-[55svmin]"
   class:mb-10={$mobile}
   >
     <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full h-full" style="{createFaceStyle($settings.theme) + rotationStyle}">
