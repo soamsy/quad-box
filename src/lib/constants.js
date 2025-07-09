@@ -126,6 +126,49 @@ export const LETTER_2_AUDIO_POOL = [
  `${LETTERS_2_PATH}j`,
 ]
 
+const NATO_PATH = "Nato/"
+export const NATO_AUDIO_POOL = [
+ `${NATO_PATH}a`,
+ `${NATO_PATH}b`,
+ `${NATO_PATH}c`,
+ `${NATO_PATH}d`,
+ `${NATO_PATH}e`,
+ `${NATO_PATH}f`,
+ `${NATO_PATH}g`,
+ `${NATO_PATH}h`,
+ `${NATO_PATH}i`,
+ `${NATO_PATH}j`,
+ `${NATO_PATH}k`,
+ `${NATO_PATH}l`,
+ `${NATO_PATH}m`,
+ `${NATO_PATH}n`,
+ `${NATO_PATH}o`,
+ `${NATO_PATH}p`,
+ `${NATO_PATH}q`,
+ `${NATO_PATH}r`,
+ `${NATO_PATH}s`,
+ `${NATO_PATH}t`,
+ `${NATO_PATH}u`,
+ `${NATO_PATH}v`,
+ `${NATO_PATH}w`,
+ `${NATO_PATH}x`,
+ `${NATO_PATH}y`,
+ `${NATO_PATH}z`,
+]
+
+export const getAudioPool = (audioSource) => {
+  switch (audioSource) {
+    case 'letters':
+      return LETTER_AUDIO_POOL
+    case 'numbers':
+      return NUMBER_AUDIO_POOL
+    case 'nato':
+      return NATO_AUDIO_POOL
+    default:
+      return LETTER_2_AUDIO_POOL
+  }
+}
+
 export const POSITION_POOL = [
   '0-0-0',
   '0-0-1',

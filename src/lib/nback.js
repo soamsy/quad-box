@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, NUMBER_AUDIO_POOL, LETTER_AUDIO_POOL, LETTER_2_AUDIO_POOL, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, getAudioPool, POSITION_POOL } from "./constants"
 import { createVoronoiPool } from "./voronoi"
 
 const pick = (pool) => {
@@ -69,17 +69,6 @@ const generateStimuli = (trials, type, pool, nBack, matchChance, interference) =
   }
 }
 
-const getAudioPool = (globalSettings) => {
-  switch (globalSettings.audioSource) {
-    case 'letters':
-      return LETTER_AUDIO_POOL
-    case 'numbers':
-      return NUMBER_AUDIO_POOL
-    default:
-      return LETTER_2_AUDIO_POOL
-  }
-}
-
 export const generateGame = (settings, globalSettings) => {
   const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
@@ -87,7 +76,7 @@ export const generateGame = (settings, globalSettings) => {
   generateStimuli(trials, 'position', POSITION_POOL, nBack, matchChance, interference)
   if (enableAudio) {
     tags.push('audio')
-    generateStimuli(trials, 'audio', getAudioPool(globalSettings), nBack, matchChance, interference)
+    generateStimuli(trials, 'audio', getAudioPool(globalSettings.audioSource), nBack, matchChance, interference)
   }
   if (enableShape) {
     tags.push('shape')

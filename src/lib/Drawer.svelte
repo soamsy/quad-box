@@ -119,6 +119,7 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
             <option value="letters2">Letters A</option>
             <option value="letters">Letters B</option>
             <option value="numbers">Numbers</option>
+            <option value="nato">NATO</option>
           </select>
         </div>
         <div class="flex flex-col gap-1">

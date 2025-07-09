@@ -10,7 +10,7 @@ import { analytics } from "./stores/analyticsStore"
 import { mobile, setMobile } from "./stores/mobileStore"
 import { generateGame } from "./lib/nback"
 import { onMount, onDestroy } from "svelte"
-import { LETTER_AUDIO_POOL, LETTER_2_AUDIO_POOL, NUMBER_AUDIO_POOL } from "./lib/constants"
+import { getAudioPool } from "./lib/constants"
 import { audioPlayer } from "./lib/audioPlayer"
 import { runAutoProgression } from "./lib/autoProgression"
 
@@ -175,24 +175,9 @@ onMount(() => {
 })
 
 const cacheAudioFiles = () => {
-  const audioSource = $settings.audioSource
-  switch (audioSource) {
-    case 'letters':
-      LETTER_AUDIO_POOL.forEach(audio => {
-        audioPlayer.preload(audio)
-      })
-      break
-    case 'numbers':
-      NUMBER_AUDIO_POOL.forEach(audio => {
-        audioPlayer.preload(audio)
-      })
-      break
-    default:
-      LETTER_2_AUDIO_POOL.forEach(audio => {
-        audioPlayer.preload(audio)
-      })
-      break
-  }
+  getAudioPool($settings.audioSource).forEach(audio => {
+    audioPlayer.preload(audio)
+  })
 }
 
 const handleKey = (event) => {
