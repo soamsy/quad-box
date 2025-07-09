@@ -67,7 +67,7 @@
           },
           title: {
             display: true,
-            text: 'Score',
+            text: 'Average Score',
             color: isDark ? '#eee' : '#111'
           }
         }
