@@ -93,24 +93,24 @@
   const getDailyAveragesByTitle = (games) => {
     const grouped = {}
 
-    for (const { ncalc, timestamp, title } of games) {
+    for (const { ncalc, title, dayTimestamp } of games) {
       if (!title) continue
 
-      const day = new Date(timestamp)
-      day.setHours(0, 0, 0, 0)
-      const key = day.getTime()
-
       if (!grouped[title]) grouped[title] = {}
-      if (!grouped[title][key]) grouped[title][key] = []
+      if (!grouped[title][dayTimestamp]) grouped[title][dayTimestamp] = []
 
-      grouped[title][key].push(ncalc)
+      grouped[title][dayTimestamp].push(ncalc)
     }
 
     const datasets = Object.entries(grouped).map(([title, dayGroup]) => {
-      const data = Object.entries(dayGroup).map(([ts, vals]) => ({
-        x: new Date(Number(ts)),
-        y: vals.reduce((a, b) => a + b, 0) / vals.length,
-      }))
+      const data = Object.entries(dayGroup).map(([ts, vals]) => {
+        const date = new Date(new Number(ts))
+        date.setHours(0, 0, 0, 0)
+        return {
+          x: date,
+          y: vals.reduce((a, b) => a + b, 0) / vals.length,
+        }
+      })
 
       return {
         label: title,

@@ -14,6 +14,20 @@ export const formatSeconds = (seconds) => {
   }
 }
 
+export const getTruncatedDate = (timestamp) => {
+  const date = new Date(timestamp)
+  if (date.getHours() < 4) {
+    date.setDate(date.getDate() - 1)
+  }
+  date.setHours(0,0,0,0)
+  return date
+}
+
+export const getGameDay = (timestamp) => {
+  const truncatedDate = getTruncatedDate(timestamp)
+  return getLocalDateString(truncatedDate)
+}
+
 export const getLocalDateString = (date) => {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')

@@ -3,8 +3,7 @@ import "@mariohamann/activity-graph"
 import { settings } from "../stores/settingsStore"
 import { getYearOfPlayTime } from "../lib/gamedb"
 import { onMount } from "svelte"
-import { getLocalDateString } from "../lib/utils"
-
+import { getGameDay, getLocalDateString } from "../lib/utils"
 
 let activity = []
 onMount(async () => {
@@ -12,12 +11,11 @@ onMount(async () => {
   let days = []
   for (let i = 0; i < 365; i++) {
     let date = new Date(Date.now() + (-364 + i) * 24 * 60 * 60 * 1000)
-    const day = getLocalDateString(date)
+    const day = getGameDay(date)
     if (day in playTime) {
       date.setDate(date.getDate() + 1)
-      const displayDay = getLocalDateString(date)
       for (let j = 0; j < playTime[day] && j < 300; j += 1) {
-        days.push(displayDay)
+        days.push(getGameDay(date))
       }
     }
   }

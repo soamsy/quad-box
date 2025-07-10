@@ -1,4 +1,4 @@
-import { getLocalDateString } from "./utils"
+import { getGameDay, getTruncatedDate } from "./utils"
 const DB_NAME = "QuadBoxNBack"
 const DB_VERSION = 1
 const STORE_NAME = "games"
@@ -198,11 +198,7 @@ export const getYearOfPlayTime = async () => {
       const cursor = event.target.result
       if (cursor) {
         if (cursor.value.status !== "tombstone") {
-          const date = new Date(cursor.value.timestamp)
-          if (date.getHours() < 4) {
-            date.setDate(date.getDate() - 1)
-          }
-          const day = getLocalDateString(date)
+          const day = getGameDay(cursor.value.timestamp)
           if (!games[day]) {
             games[day] = 0
           }
@@ -227,6 +223,7 @@ const addScoreMetadata = (game) => {
   if (game.status === 'tombstone') {
     return game
   }
+  game.dayTimestamp = getTruncatedDate(game.timestamp).getTime()
   game.total = { hits: 0, misses: 0, percent: 0, possible: 0, ncalc: 0 }
   for (const tag of game.tags) {
     game.total.hits += game.scores[tag].hits
