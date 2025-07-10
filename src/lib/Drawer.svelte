@@ -123,9 +123,11 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
           </select>
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-lg">Rotation speed: {$settings.rotationSpeed}
-            <input type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
-          </label>
+          <div class="grid grid-cols-[3fr_1fr] items-center">
+            <label for="rotation-speed-range" class="text-lg">Rotation speed:</label>
+            <input type="number" min="0" max="999" bind:value={$settings.rotationSpeed} step="1" class="input" />
+          </div>
+          <input id="rotation-speed-range" type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
         </div>
         <div class="divider"></div>
         <div class="grid grid-cols-[8fr_2fr] items-center">
