@@ -15,6 +15,7 @@
   }
 
   const handleBackdropClick = (event) => {
+    event.stopPropagation()
     if (event.target.classList.contains('modal')) closeModal()
   }
 </script>
