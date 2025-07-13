@@ -160,7 +160,8 @@ export async function getPlayTimeSince4AM() {
       const cursor = event.target.result
       if (cursor) {
         if (cursor.value.status !== "tombstone") {
-          playTime.total += (cursor.value.trialTime * cursor.value.completedTrials) / 1000
+          addScoreMetadata(cursor.value)
+          playTime.total += cursor.value.elapsedSeconds
         }
         cursor.continue()
       } else {
@@ -198,11 +199,12 @@ export const getYearOfPlayTime = async () => {
       const cursor = event.target.result
       if (cursor) {
         if (cursor.value.status !== "tombstone") {
+          addScoreMetadata(cursor.value)
           const day = getGameDay(cursor.value.timestamp)
           if (!games[day]) {
             games[day] = 0
           }
-          games[day] += (cursor.value.trialTime * cursor.value.completedTrials) / 1000 / 60
+          games[day] += cursor.value.elapsedSeconds / 60
         }
         cursor.continue()
       } else {
@@ -223,15 +225,30 @@ const addScoreMetadata = (game) => {
   if (game.status === 'tombstone') {
     return game
   }
+  if ('start' in game) {
+    game.elapsedSeconds = (game.timestamp - game.start) / 1000
+  } else {
+    game.elapsedSeconds = game.trialTime * game.completedTrials / 1000
+  }
   game.dayTimestamp = getTruncatedDate(game.timestamp).getTime()
   game.total = { hits: 0, misses: 0, percent: 0, possible: 0, ncalc: 0 }
-  for (const tag of game.tags) {
-    game.total.hits += game.scores[tag].hits
-    game.total.misses += game.scores[tag].misses
-    game.scores[tag].possible = game.scores[tag].hits + game.scores[tag].misses
-    game.scores[tag].percent = 0
-    if (game.scores[tag].hits > 0) {
-      game.scores[tag].percent = game.scores[tag].hits / game.scores[tag].possible
+  if (game?.mode === 'tally') {
+    game.total.hits = game.scores.tally.hits
+    game.total.possible = game.scores.tally.possible
+    game.total.misses = game.scores.tally.possible - game.scores.tally.hits
+    game.total.percent = 0
+    if (game.scores.tally.hits > 0) {
+      game.total.percent = game.scores.tally.hits / game.scores.tally.possible
+    }
+  } else {
+    for (const tag of game.tags) {
+      game.total.hits += game.scores[tag].hits
+      game.total.misses += game.scores[tag].misses
+      game.scores[tag].possible = game.scores[tag].hits + game.scores[tag].misses
+      game.scores[tag].percent = 0
+      if (game.scores[tag].hits > 0) {
+        game.scores[tag].percent = game.scores[tag].hits / game.scores[tag].possible
+      }
     }
   }
 
@@ -240,8 +257,12 @@ const addScoreMetadata = (game) => {
     game.total.percent = game.total.hits / game.total.possible
   }
 
-  if (game.total.percent >= 0.4) {
+  if (game.total.percent >= 0.4 && game?.mode !== 'tally') {
     game.ncalc = game.nBack + (game.total.percent - 0.5) * 2.5
+  }
+
+  if (game?.mode === 'tally') {
+    game.total.averageTrialTime = (game.timestamp - game.start) / game.completedTrials
   }
 }
 

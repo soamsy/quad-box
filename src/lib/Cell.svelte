@@ -2,11 +2,13 @@
   import { SHAPE_URLS } from "./constants"
   import { createVoronoiSvg } from "./voronoi"
   export let show = false
+  export let flash = false
   export let position = '0-0-0'
   export let boxColor = null
   export let shapeName = null
   export let shapeOuterColor = null
   export let voronoi = null
+  export let opacity = 1.0
 
   const svgToDataUrl = (svgString) => {
     const encoded = encodeURIComponent(svgString)
@@ -15,7 +17,7 @@
     return `data:image/svg+xml,${encoded}`
   }
 
-  const calculateBoxClassNames = (position, shapeName, show) => {
+  const calculateBoxClassNames = (position, shapeName, show, flash) => {
     if (!show) {
       return 'hidden'
     }
@@ -23,6 +25,9 @@
     let classNames = ['p' + position]
     if (shapeName.includes('heart')) {
       classNames.push('heart')
+    }
+    if (flash) {
+      classNames.push('flash')
     }
     return classNames.join(' ')
   }
@@ -41,11 +46,14 @@
       const [id, splits] = voronoi.split('-')
       style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
     }
+    if (opacity < 0.9999) {
+      style += `--face-opacity: ${opacity};`
+    }
     return style
   }
 
-  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show)
-  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi)
+  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash)
+  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi, opacity)
 
 </script>
 
@@ -68,9 +76,14 @@
     @apply absolute w-full h-full;
     background-color: var(--face-bg-color);
     background-image: var(--shape-url);
+    opacity: var(--face-opacity, 1.0);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 80% 80%;
+  }
+
+  .flash .face {
+    outline: 2px solid #7774;
   }
 
   .cell.heart .face {

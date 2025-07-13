@@ -43,6 +43,21 @@ const createAnalyticsStore = () => {
         status
       })
       set(await loadAnalytics())
+    },
+
+    scoreTallyTrials: async (gameInfo, scoresheet, status) => {
+      const scores = { tally: { hits: 0, misses: 0 } }
+
+      scores.tally.hits = scoresheet.filter(answers => answers.success && answers.count > 0).length
+      scores.tally.possible = scoresheet.filter(answers => answers.count > 0 || ('success' in answers && answers.success === false)).length
+
+      await addGame({
+        ...gameInfo,
+        scores,
+        completedTrials: scoresheet.length,
+        status,
+      })
+      set(await loadAnalytics())
     }
   }
 }
