@@ -4,6 +4,7 @@
   import Cell from "./Cell.svelte"
   import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
+  import { gameInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
 
@@ -27,11 +28,14 @@
     }
   }
 
+  const range = (n) => Array.from({ length: n }, (_, i) => i)
+
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
   $: shapeName = findShapeName(trial)
   $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
+  $: flash = presentation.flash
 </script>
 
 <div class="flex absolute items-center justify-center w-full h-full select-none perspective-[60svmin] overflow-hidden">
@@ -39,6 +43,21 @@
   class:mb-10={$mobile}
   style="animation-duration: {rotationTime}s;"
   >
+    {#if trial.position0}
+      {#each range(gameInfo.getMaxWidth()) as i (i)}
+        {#if trial[`position${i}`]}
+        <Cell
+          show={true}
+          flash={flash}
+          position={trial[`position${i}`]}
+          {boxColor}
+          {shapeName}
+          {shapeOuterColor}
+          voronoi={trial[`shapeColor`]}
+           />
+        {/if}
+      {/each}
+    {:else}
     <Cell
       show={trial.position && highlight}
       position={trial.position}
@@ -46,6 +65,7 @@
       {shapeName}
       {shapeOuterColor}
       voronoi={trial.shapeColor} />
+    {/if}
     <Frame class="-translate-z-[30.15svmin]" />
     <Frame class="-translate-z-[10.05svmin]" />
     <Frame class="translate-z-[10.05svmin]" />

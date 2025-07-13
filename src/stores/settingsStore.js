@@ -39,6 +39,19 @@ const defaultSettings = {
       enableShape: false,
       enableColor: true,
       enableShapeColor: false,
+    },
+    tally: {
+      nBack: 2,
+      numTrials: 100,
+      matchChance: 25,
+      interference: 20,
+      positionWidth: 2,
+      enablePositionWidthSequence: false,
+      positionWidthSequence: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      enableAudio: true,
+      enableShape: false,
+      enableColor: false,
+      enableShapeColor: false,
     }
   },
   feedback: 'show',
@@ -54,17 +67,33 @@ const defaultSettings = {
     'color': 'F',
     'shape': 'J',
     'audio': 'L',
-  }
+  },
+  enableTallyBeta: false,
 }
 
 const getDefaultSettings = () => structuredClone(defaultSettings)
+
+const deepMerge = (target, source) => {
+  if (Array.isArray(source)) return source.slice()
+  if (typeof target !== 'object' || target === null) return source
+  if (typeof source !== 'object' || source === null) return source
+
+  const result = Array.isArray(target) ? [] : { ...target }
+
+  for (const key of Object.keys(source)) {
+    result[key] =
+      key in target ? deepMerge(target[key], source[key]) : source[key]
+  }
+
+  return result
+}
 
 const loadSettings = () => {
   if (typeof localStorage === 'undefined') return getDefaultSettings()
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     const savedSettings = raw ? JSON.parse(raw) : {}
-    return { ...getDefaultSettings(), ...savedSettings }
+    return deepMerge(getDefaultSettings(), savedSettings)
   } catch (e) {
     console.error('Failed to load settings from localStorage:', e)
     return getDefaultSettings()
@@ -80,7 +109,8 @@ const saveSettings = (settings) => {
 }
 
 const createSettingsStore = () => {
-  const { subscribe, get, set, update } = writable(loadSettings())
+  const loadedSettings = loadSettings()
+  const { subscribe, get, set, update } = writable(loadedSettings)
 
   return {
     subscribe,

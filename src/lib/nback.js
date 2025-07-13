@@ -40,56 +40,78 @@ const generateMatches = (trials, nBack, matchChance) => {
   return prefixMatches.concat(matches)
 }
 
-const generateStimuli = (trials, type, pool, nBack, matchChance, interference) => {
-  const matches = generateMatches(trials, nBack, matchChance)
-  let stimuli = new Array(trials.length)
-  for (let i = 0; i < stimuli.length; i++) {
-    if (i < nBack) {
-      trials[i][type] = pick(pool)
-      continue
+const generateStimuli = (trials, tags, types, stimulusPool, nBack, matchChance, interference, sequence) => {
+  for (const type of types) {
+    if (!tags.includes(type)) {
+      tags.push(type)
     }
+  }
 
-    if (matches[i]) {
-      trials[i][type] = trials[i-nBack][type]
-      trials[i].matches.push(type)
-    } else {
-      const available = pool.filter(stimulus => stimulus !== trials[i-nBack][type])
-      let difficultStimuli = [trials[i-nBack+1][type]]
-      if (0 <= i-nBack-1) {
-        difficultStimuli.push(trials[i-nBack-1][type])
+  if (!sequence) {
+    sequence = [1]
+  }
+
+  const type_matches = types.map(_ => generateMatches(trials, nBack, matchChance))
+  let stimuli = new Array(trials.length)
+  for (let i = 0; i < stimuli.length; i += 1) {
+    const width = sequence[i % sequence.length]
+    types.forEach((type, typeIndex) => {
+      if (typeIndex >= width) {
+        return
       }
-      difficultStimuli = difficultStimuli.filter(stimulus => available.includes(stimulus))
-      shuffle(difficultStimuli)
-      if (Math.random() * 100 < interference && difficultStimuli.length > 0) {
-        trials[i][type] = difficultStimuli[0]
+      const matches = type_matches[typeIndex]
+      const otherTypes = types.filter(otherType => otherType !== type)
+      let banned = otherTypes.map(otherType => trials[i][otherType]).filter(stimulus => stimulus)
+      let pool = stimulusPool.filter(stimulus => !banned.includes(stimulus))
+      if (i < nBack) {
+        trials[i][type] = pick(pool)
+        return
+      }
+      banned = banned.concat(otherTypes.map(otherType => trials[i-nBack][otherType]).filter(stimulus => stimulus))
+      pool = pool.filter(stimulus => !banned.includes(stimulus))
+
+      if (matches[i]) {
+        trials[i][type] = trials[i-nBack][type]
+        trials[i].matches.push(type)
       } else {
-        trials[i][type] = pick(available)
+        const available = pool.filter(stimulus => stimulus !== trials[i-nBack][type])
+        let difficultStimuli = [trials[i-nBack+1][type]]
+        if (0 <= i-nBack-1) {
+          difficultStimuli.push(trials[i-nBack-1][type])
+        }
+        difficultStimuli = difficultStimuli.filter(stimulus => available.includes(stimulus))
+        shuffle(difficultStimuli)
+        if (Math.random() * 100 < interference && difficultStimuli.length > 0) {
+          trials[i][type] = difficultStimuli[0]
+        } else {
+          trials[i][type] = pick(available)
+        }
       }
-    }
+    })
+  }
+}
+
+const generateSingleWidthStimuli = (trials, tags, { nBack, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference }, globalSettings) => {
+  if (enableAudio) {
+    generateStimuli(trials, tags, ['audio'], getAudioPool(globalSettings.audioSource), nBack, matchChance, interference)
+  }
+  if (enableShape) {
+    generateStimuli(trials, tags, ['shape'], SHAPE_POOL, nBack, matchChance, interference)
+  }
+  if (enableShapeColor) {
+    generateStimuli(trials, tags, ['shapeColor'], createVoronoiPool(), nBack, matchChance, interference)
+  }
+  if (enableColor) {
+    generateStimuli(trials, tags, ['color'], COLOR_POOL, nBack, matchChance, interference)
   }
 }
 
 export const generateGame = (settings, globalSettings) => {
   const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
-  let tags = ['position']
-  generateStimuli(trials, 'position', POSITION_POOL, nBack, matchChance, interference)
-  if (enableAudio) {
-    tags.push('audio')
-    generateStimuli(trials, 'audio', getAudioPool(globalSettings.audioSource), nBack, matchChance, interference)
-  }
-  if (enableShape) {
-    tags.push('shape')
-    generateStimuli(trials, 'shape', SHAPE_POOL, nBack, matchChance, interference)
-  }
-  if (enableShapeColor) {
-    tags.push('shapeColor')
-    generateStimuli(trials, 'shapeColor', createVoronoiPool(), nBack, matchChance, interference)
-  }
-  if (enableColor) {
-    tags.push('color')
-    generateStimuli(trials, 'color', COLOR_POOL, nBack, matchChance, interference)
-  }
+  let tags = []
+  generateStimuli(trials, tags, ['position'], POSITION_POOL, nBack, matchChance, interference)
+  generateSingleWidthStimuli(trials, tags, settings, globalSettings)
   let title = tags.join('-')
 
   if (enableAudio && !enableShape && !enableColor && !enableShapeColor) {
@@ -107,5 +129,46 @@ export const generateGame = (settings, globalSettings) => {
     trials: trials,
   }
   
+  return game
+}
+
+export const generateTallyGame = (settings, globalSettings) => {
+  const { nBack, numTrials, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference, positionWidth, enablePositionWidthSequence, positionWidthSequence } = settings
+  let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
+  let tags = []
+  if (settings.enablePositionWidthSequence) {
+    const sequence = settings.positionWidthSequence.slice(0, settings.nBack)
+    const maxWidth = sequence.reduce((a, b) => Math.max(a, b), 1)
+    let allPositionStimuli = []
+    for (let i = 0; i < maxWidth; i++) {
+      allPositionStimuli.push(`position${i}`)
+    }
+    generateStimuli(trials, tags, allPositionStimuli, POSITION_POOL, nBack, matchChance, interference, sequence)
+  } else {
+    const width = settings.positionWidth
+    let allPositionStimuli = []
+    for (let i = 0; i < width; i++) {
+      allPositionStimuli.push(`position${i}`)
+    }
+    generateStimuli(trials, tags, allPositionStimuli, POSITION_POOL, nBack, matchChance, interference, [width])
+  }
+  generateSingleWidthStimuli(trials, tags, settings, globalSettings)
+  let title = tags.join('-')
+
+  if (enableAudio && !enableShape && !enableColor && !enableShapeColor) {
+    title = 'tally dual'
+  } else if (enableAudio && enableShape && enableColor) {
+    title = 'tally quad'
+  } else if (enableAudio && (enableColor != enableShape || enableShapeColor)) {
+    title = 'tally tri'
+  } else {
+    title = 'tally custom'
+  }
+
+  const game = {
+    meta: { nBack, numTrials, title, tags, matchChance, interference, positionWidth, enablePositionWidthSequence, positionWidthSequence, mode: 'tally' },
+    trials: trials,
+  }
+
   return game
 }

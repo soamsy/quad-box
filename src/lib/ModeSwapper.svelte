@@ -6,17 +6,18 @@
   const darkColors = new Map([
     ['quad', 'bg-rose-900'],
     ['dual', 'bg-cyan-800'],
-    ['custom', 'bg-gray-700']
+    ['custom', 'bg-gray-700'],
+    ['tally', 'bg-indigo-800'],
   ])
 
   const lightColors = new Map([
     ['quad', 'bg-rose-400'],
     ['dual', 'bg-cyan-400'],
-    ['custom', 'bg-gray-400']
+    ['custom', 'bg-gray-400'],
+    ['tally', 'bg-indigo-400'],
   ])
 
-  const modes = [...lightColors.keys()]
-
+  $: modes = [...lightColors.keys().filter(mode => mode !== 'tally' || $settings.enableTallyBeta)]
   $: bg = $settings.theme === 'light' ? lightColors.get(mode) : darkColors.get(mode)
 
   const nextMode = () => {

@@ -57,9 +57,9 @@
         </a>
         <a role="tab" 
           class="tab"
-          class:tab-active={tab === 'reset-app'}
-          on:click={() => tab = 'reset-app'}>
-          Reset App
+          class:tab-active={tab === 'misc'}
+          on:click={() => tab = 'misc'}>
+          Misc.
         </a>
       </div>
       {#if tab === 'how-to-play'}
@@ -91,7 +91,7 @@
           Stay focused and try to get as high a score as possible!
         </p>
       </div>
-      {:else if tab === 'reset-app'}
+      {:else if tab === 'misc'}
       <div class="prose text-gray-800 dark:text-gray-200 flex flex-col gap-2 overflow-y-auto h-[70svh] w-full mt-2">
         <div class="mt-6">
           <p class="mb-2">Reset all game settings to their default values.</p>
@@ -127,6 +127,16 @@
               </button>
             </div>
           {/if}
+        </div>
+        <div class="divider" />
+        <div class="mt-4 flex flex-col gap-2 text-xl">
+          <p class="mb-2 font-semibold">Betas</p>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="tallyMode" bind:checked={$settings.enableTallyBeta} class="checkbox" />
+            <label for="tallyMode" class="text-sm font-medium">
+              Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
+            </label>
+          </div>
         </div>
       </div>
       {/if}
