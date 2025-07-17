@@ -1,4 +1,4 @@
-import { derived, writable } from 'svelte/store'
+import { derived, writable, get } from 'svelte/store'
 
 export const isPlaying = writable(false)
 const createGameInfo = () => {
@@ -20,9 +20,9 @@ const createGameInfo = () => {
       return max
     },
     getNumberKeys: () => {
-      const max = gameInfo.getMaxWidth()
+      const current = get(gameInfo)
       let keys = []
-      for (let i = 0; i <= max; i++) {
+      for (let i = 0; i <= current.tags.length; i++) {
         keys.push(i)
       }
       return keys
