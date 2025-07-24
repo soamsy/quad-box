@@ -156,6 +156,56 @@ export const NATO_AUDIO_POOL = [
  `${NATO_PATH}z`,
 ]
 
+const SYL_5_PATH = "syl5/"
+export const SYL_5_AUDIO_POOL = [
+  `${SYL_5_PATH}a`,
+  `${SYL_5_PATH}c`,
+  `${SYL_5_PATH}e`,
+  `${SYL_5_PATH}g`,
+  `${SYL_5_PATH}i`,
+  `${SYL_5_PATH}k`,
+  `${SYL_5_PATH}m`,
+  `${SYL_5_PATH}o`,
+  `${SYL_5_PATH}q`,
+  `${SYL_5_PATH}s`,
+  `${SYL_5_PATH}u`,
+  `${SYL_5_PATH}b`,
+  `${SYL_5_PATH}d`,
+  `${SYL_5_PATH}f`,
+  `${SYL_5_PATH}h`,
+  `${SYL_5_PATH}j`,
+  `${SYL_5_PATH}l`,
+  `${SYL_5_PATH}n`,
+  `${SYL_5_PATH}p`,
+  `${SYL_5_PATH}r`,
+  `${SYL_5_PATH}t`,
+  `${SYL_5_PATH}v`,
+]
+
+const SYL_10_PATH = "syl10/"
+export const SYL_10_AUDIO_POOL = [
+  `${SYL_10_PATH}a`,
+  `${SYL_10_PATH}d`,
+  `${SYL_10_PATH}f`,
+  `${SYL_10_PATH}h`,
+  `${SYL_10_PATH}j`,
+  `${SYL_10_PATH}l`,
+  `${SYL_10_PATH}n`,
+  `${SYL_10_PATH}p`,
+  `${SYL_10_PATH}r`,
+  `${SYL_10_PATH}t`,
+  `${SYL_10_PATH}b`,
+  `${SYL_10_PATH}e`,
+  `${SYL_10_PATH}g`,
+  `${SYL_10_PATH}i`,
+  `${SYL_10_PATH}k`,
+  `${SYL_10_PATH}m`,
+  `${SYL_10_PATH}o`,
+  `${SYL_10_PATH}q`,
+  `${SYL_10_PATH}s`,
+  `${SYL_10_PATH}u`,
+]
+
 export const getAudioPool = (audioSource) => {
   switch (audioSource) {
     case 'letters':
@@ -164,6 +214,10 @@ export const getAudioPool = (audioSource) => {
       return NUMBER_AUDIO_POOL
     case 'nato':
       return NATO_AUDIO_POOL
+    case 'syl5':
+      return SYL_5_AUDIO_POOL
+    case 'syl10':
+      return SYL_10_AUDIO_POOL
     default:
       return LETTER_2_AUDIO_POOL
   }
