@@ -2,10 +2,11 @@
 import "@mariohamann/activity-graph"
 import { settings } from "../stores/settingsStore"
 import { getYearOfPlayTime } from "../lib/gamedb"
-import { onMount } from "svelte"
+import { onMount, tick } from "svelte"
 import { getGameDay, getLocalDateString } from "../lib/utils"
 
 let activity = []
+let scrollContainer
 onMount(async () => {
   const playTime = await getYearOfPlayTime()
   let days = []
@@ -20,13 +21,17 @@ onMount(async () => {
     }
   }
   activity = days
+
+  await tick()
+
+  scrollContainer.scrollLeft = scrollContainer.scrollWidth / 2
 })
 
 const start = getLocalDateString(new Date(Date.now() - 363 * 24 * 60 * 60 * 1000))
 const end = getLocalDateString(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000))
 </script>
 
-<div class="flex items-center justify-center w-full overflow-x-auto">
+<div bind:this={scrollContainer} class="flex items-center justify-center w-full overflow-x-auto">
 <activity-graph 
 class:activity-graph-dark={$settings.theme === 'dark'}
 activity-data={activity}
