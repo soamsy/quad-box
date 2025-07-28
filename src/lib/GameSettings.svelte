@@ -82,6 +82,15 @@
     <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />  
   </label>
 </div>
+<div class="flex flex-col gap-1">
+  <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
+    <span class="text-lg">Grid:</span>
+    <select bind:value={$gameSettings.grid} id="feedback-select" class="select">
+      <option value="rotate3D">3D</option>
+      <option value="static2D">2D</option>
+    </select>
+  </div>
+</div>
 {#if $settings.mode === 'tally'}
   <div class="grid grid-cols-[82fr_18fr] items-center gap-4">
     <label for="enable-position-width-sequence">Define position chain:</label>

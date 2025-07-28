@@ -4,6 +4,7 @@
   import Cell from "./Cell.svelte"
   import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
+  import { gameSettings } from "../stores/gameSettingsStore"
   import { gameInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
@@ -36,8 +37,44 @@
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
   $: flash = presentation.flash
+  $: grid = gameInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
 </script>
 
+{#if grid === 'static2D'}
+<div class="flex absolute items-center justify-center w-full h-full select-none overflow-hidden">
+  <div class="absolute w-[81.3svmin] h-[81.3svmin]"
+  class:mb-10={$mobile}
+  >
+    {#if trial.position0}
+      {#each range(gameInfo.getMaxWidth()) as i (i)}
+        {#if trial[`position${i}`]}
+        <Cell
+          show={true}
+          flash={flash}
+          position={trial[`position${i}`]}
+          {boxColor}
+          {shapeName}
+          {shapeOuterColor}
+          voronoi={trial[`shapeColor`]}
+          grid={grid}
+          />
+        {/if}
+      {/each}
+    {:else}
+    <Cell
+      show={trial.position && highlight}
+      position={trial.position}
+      {boxColor}
+      {shapeName}
+      {shapeOuterColor}
+      voronoi={trial.shapeColor}
+      grid={grid}
+      />
+    {/if}
+    <Frame />
+  </div>
+</div>
+{:else}
 <div class="flex absolute items-center justify-center w-full h-full select-none perspective-[60svmin] overflow-hidden">
   <div class="scene absolute w-[60.3svmin] h-[60.3svmin] transform-3d -translate-z-[10svmin]"
   class:mb-10={$mobile}
@@ -82,6 +119,7 @@
     <Frame class="translate-x-[30.15svmin] rotate-y-90" />
   </div>
 </div>
+{/if}
 
 <style>
   .scene {

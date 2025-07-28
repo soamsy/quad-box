@@ -17,6 +17,7 @@ const defaultSettings = {
       enableShape: true,
       enableColor: true,
       enableShapeColor: false,
+      grid: 'rotate3D',
     },
     dual: {
       nBack: 2,
@@ -28,6 +29,7 @@ const defaultSettings = {
       enableShape: false,
       enableColor: false,
       enableShapeColor: false,
+      grid: 'rotate3D',
     },
     custom: {
       nBack: 2,
@@ -39,6 +41,7 @@ const defaultSettings = {
       enableShape: false,
       enableColor: true,
       enableShapeColor: false,
+      grid: 'rotate3D',
     },
     tally: {
       nBack: 2,
@@ -52,6 +55,7 @@ const defaultSettings = {
       enableShape: false,
       enableColor: false,
       enableShapeColor: false,
+      grid: 'rotate3D',
     }
   },
   feedback: 'show',

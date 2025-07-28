@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, getAudioPool, POSITION_POOL } from "./constants"
+import { COLOR_POOL, SHAPE_POOL, getAudioPool, POSITION_POOL, POSITION_POOL_2D } from "./constants"
 import { createVoronoiPool } from "./voronoi"
 
 const pick = (pool) => {
@@ -13,6 +13,14 @@ const shuffle = (array) => {
     array[j] = tmp
   }
   return array
+}
+
+const getPositionPool = (settings) => {
+  if (settings.grid?.includes('2D')) {
+    return POSITION_POOL_2D
+  } else {
+    return POSITION_POOL
+  }
 }
 
 const generateMatches = (trials, nBack, matchChance) => {
@@ -110,7 +118,7 @@ export const generateGame = (settings, globalSettings) => {
   const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
   let tags = []
-  generateStimuli(trials, tags, ['position'], POSITION_POOL, nBack, matchChance, interference)
+  generateStimuli(trials, tags, ['position'], getPositionPool(settings), nBack, matchChance, interference)
   generateSingleWidthStimuli(trials, tags, settings, globalSettings)
   let title = tags.join('-')
 
@@ -143,14 +151,14 @@ export const generateTallyGame = (settings, globalSettings) => {
     for (let i = 0; i < maxWidth; i++) {
       allPositionStimuli.push(`position${i}`)
     }
-    generateStimuli(trials, tags, allPositionStimuli, POSITION_POOL, nBack, matchChance, interference, sequence)
+    generateStimuli(trials, tags, allPositionStimuli, getPositionPool(settings), nBack, matchChance, interference, sequence)
   } else {
     const width = settings.positionWidth
     let allPositionStimuli = []
     for (let i = 0; i < width; i++) {
       allPositionStimuli.push(`position${i}`)
     }
-    generateStimuli(trials, tags, allPositionStimuli, POSITION_POOL, nBack, matchChance, interference, [width])
+    generateStimuli(trials, tags, allPositionStimuli, getPositionPool(settings), nBack, matchChance, interference, [width])
   }
   generateSingleWidthStimuli(trials, tags, settings, globalSettings)
   let title = tags.join('-')
