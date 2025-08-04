@@ -193,7 +193,7 @@ onDestroy(async () => {
       tabindex="-1"
     >{#if $isPlaying} Stop {:else} Play {/if}</button>
   </div>
-  <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
+  <div class="w-full h-full flex gap-2 items-center justify-around py-1 row-start-4 col-start-2 col-span-2 pr-24">
     {#each keys as key (key)}
       <NumberKey count={key} {handleCount}>{key}</NumberKey>
     {/each}
