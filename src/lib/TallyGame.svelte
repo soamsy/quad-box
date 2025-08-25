@@ -193,10 +193,10 @@ onDestroy(async () => {
       tabindex="-1"
     >{#if $isPlaying} Stop {:else} Play {/if}</button>
   </div>
-  <div class="w-full h-full flex gap-2 items-center justify-around py-1 row-start-4 col-start-2 col-span-2 pr-24">
+  <div class="w-full h-full flex gap-2 items-center justify-around py-1 row-start-4 col-start-1 col-span-4">
     {#each keys as key (key)}
       <NumberKey count={key} {handleCount}>{key}</NumberKey>
     {/each}
   </div>
-  <div class="w-full h-full flex items-center justify-center text-6xl ml-6 row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
+  <div class="w-full h-full flex items-center justify-center text-6xl row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
 </div>

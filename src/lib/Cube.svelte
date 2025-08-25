@@ -51,6 +51,7 @@
         <Cell
           show={true}
           flash={flash}
+          transparent={trial.position1 ? true : false}
           position={trial[`position${i}`]}
           {boxColor}
           {shapeName}
@@ -86,6 +87,7 @@
         <Cell
           show={true}
           flash={flash}
+          transparent={trial.position1 ? true : false}
           position={trial[`position${i}`]}
           {boxColor}
           {shapeName}

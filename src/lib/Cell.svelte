@@ -3,12 +3,12 @@
   import { createVoronoiSvg } from "./voronoi"
   export let show = false
   export let flash = false
+  export let transparent = false
   export let position = '0-0-0'
   export let boxColor = null
   export let shapeName = null
   export let shapeOuterColor = null
   export let voronoi = null
-  export let opacity = 1.0
   export let grid = 'rotate3D'
 
   const svgToDataUrl = (svgString) => {
@@ -18,7 +18,8 @@
     return `data:image/svg+xml,${encoded}`
   }
 
-  const calculateBoxClassNames = (position, shapeName, show, flash) => {
+  const calculateBoxClassNames = (position, shapeName, show, flash, transparent) => {
+    console.log('1', transparent)
     if (!show) {
       return 'hidden'
     }
@@ -30,15 +31,19 @@
     if (flash) {
       classNames.push('flash')
     }
+    if (transparent) {
+      classNames.push('see-through')
+    }
     return classNames.join(' ')
   }
 
-  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi) => {
+  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi, transparent) => {
+    console.log('2', transparent)
     let style = ''
     if (boxColor) {
-      style += `--face-bg-color: ${boxColor};`
+      style += `--face-bg-color: ${boxColor}${transparent ? '3A' : ''};`
     } else if (shapeOuterColor) {
-      style += `--face-bg-color: ${shapeOuterColor};`
+      style += `--face-bg-color: ${shapeOuterColor}${transparent ? '2A' : ''};`
     }
 
     if (shapeName) {
@@ -47,14 +52,11 @@
       const [id, splits] = voronoi.split('-')
       style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
     }
-    if (opacity < 0.9999) {
-      style += `--face-opacity: ${opacity};`
-    }
     return style
   }
 
-  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash)
-  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi, opacity)
+  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash, transparent)
+  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi, transparent)
 
 </script>
 
@@ -90,10 +92,15 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 80% 80%;
+    transition: filter 0.05s ease-out;
   }
 
   .flash .face {
-    outline: 2px solid #7774;
+    filter: drop-shadow(0 0 8px #FFFFFF);
+  }
+
+  .see-through .face {
+    outline: 4px solid #FFF9;
   }
 
   .cell.heart .face {
