@@ -1,6 +1,7 @@
 <script>
   import { settings } from '../stores/settingsStore'
   import { Triangle } from '@lucide/svelte'
+  import { onDestroy } from 'svelte'
   $: mode = $settings.mode
 
   const darkColors = new Map([
@@ -35,6 +36,23 @@
     }
     settings.update('mode', modes[prevIndex])
   }
+
+  const handleKey = (event) => {
+    switch (event.code) {
+      case 'PageUp':
+        prevMode()
+        break
+      case 'PageDown':
+        nextMode()
+        break
+    }
+  }
+
+  document.addEventListener('keydown', handleKey)
+
+  onDestroy(async () => {
+    document.removeEventListener('keydown', handleKey)
+  })
 </script>
 
 <div class="flex bg- items-center justify-around">
