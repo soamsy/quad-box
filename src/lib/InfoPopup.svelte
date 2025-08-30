@@ -2,6 +2,7 @@
   import { CircleHelp } from '@lucide/svelte'
   import { settings } from '../stores/settingsStore'
   import { deleteDB } from './gamedb'
+  import { get } from 'svelte/store'
 
   let show = false
   let tab = 'how-to-play'
@@ -40,13 +41,24 @@
     show = false
   }
 
+  const applyTallyBeta = (event) => {
+    settings.update('enableTallyBeta', event.target.checked)
+    if (event.target.checked) {
+      settings.update('mode', 'tally')
+    } else {
+      if (get(settings).mode === 'tally') {
+        settings.update('mode', 'quad')
+      }
+    }
+  }
+
 </script>
 
 <button class="flex items-center justify-center" on:click={openModal}>
   <CircleHelp class="btn btn-square btn-ghost h-8 lg:h-6" />
 </button>
 {#if show}
-  <div class="modal modal-open" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
+  <div class="modal modal-open whitespace-normal" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
     <div class="modal-box help-box w-[90%] max-w-3xl">
       <div role="tablist" class="tabs tabs-lift relative">
         <a role="tab" 
@@ -132,7 +144,7 @@
         <div class="mt-4 flex flex-col gap-2 text-xl">
           <p class="mb-2 font-semibold">Betas</p>
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="tallyMode" bind:checked={$settings.enableTallyBeta} class="checkbox" />
+            <input type="checkbox" id="tallyMode" checked={$settings.enableTallyBeta} on:click={applyTallyBeta} class="checkbox" />
             <label for="tallyMode" class="text-sm font-medium">
               Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
             </label>
