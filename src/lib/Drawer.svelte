@@ -79,7 +79,7 @@ onMount(() => {
         {/if}
       </div>
     </div>
-    <div class="justify-self-center flex gap-4 select-none px-6"
+    <div class="justify-self-center flex gap-4 select-none px-6 whitespace-nowrap"
       class:advance={$autoProgression.advance} 
       class:fallback={$autoProgression.fallback}>
       <div>N = {$gameSettings.nBack}</div>
@@ -94,7 +94,7 @@ onMount(() => {
         {/if}
       {/if}
     </div>
-    <div class="justify-self-end flex items-center gap-4 pr-2">
+    <div class="justify-self-end flex items-center gap-4 pr-2 whitespace-nowrap">
       {#if !$isPlaying && !$mobile && $analytics.playTime}
       <div>Today: {$analytics.playTime}</div>
       {/if}
