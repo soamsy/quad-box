@@ -568,7 +568,7 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
   const styleA = [...repeat(cubeElement, range(1, 2)), ...repeat(squiggleElement, range(0, 1))]
   const styleB = repeat(squiggleElement, range(3, 5))
   const styleC = repeat(organicElement, range(2, 3))
-  const styleD = [...repeat(dotElement, range(1, 1)), ...repeat(spiralElement, range(1, 1))]
+  const styleD = [...repeat(dotElement, range(1, 1)), ...repeat(spiralElement, range(1, 1)), ...repeat(organicElement, range(1, 2))]
   const styleE = [...repeat(dotElement, range(1, 2)), ...repeat(squiggleElement, range(2, 3))]
   const styleF = [...repeat(spiralElement, range(1, 1)), ...repeat(organicElement, range(1, 2))]
   const styleG = [...repeat(polygonElement, range(2, 4)), ...repeat(starElement, range(1, 3))]
@@ -594,9 +594,9 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
   ]
   
   const styleMinimal = [
-    ...repeat(organicElement, range(1, 2)),
+    ...repeat(textureElement, range(3, 4)),
     ...repeat(gradientElement, range(1, 1)),
-    ...repeat(pyramidElement, range(0, 1))
+    ...repeat(pyramidElement, range(1, 1))
   ]
   
   const styles = [styleA, styleB, styleC, styleD, styleE, styleF, styleG, styleH, styleI, styleJ, styleK, styleL, styleM, styleN, styleChaos, styleMinimal]
@@ -615,7 +615,7 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     }
   }
 
-  const useGradientBackground = random() < 0.5
+  const useGradientBackground = random() < 0.65
   const bgGradientId = `bg-gradient-${random()}`
   if (useGradientBackground) {
     defs.push(`
