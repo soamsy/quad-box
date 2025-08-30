@@ -232,7 +232,7 @@ const addScoreMetadata = (game) => {
   }
   game.dayTimestamp = getTruncatedDate(game.timestamp).getTime()
   game.total = { hits: 0, misses: 0, percent: 0, possible: 0, ncalc: 0 }
-  if (game?.mode === 'tally') {
+  if (game?.mode === 'tally' || game?.scores?.tally) {
     game.total.hits = game.scores.tally.hits
     game.total.possible = game.scores.tally.possible
     game.total.misses = game.scores.tally.possible - game.scores.tally.hits

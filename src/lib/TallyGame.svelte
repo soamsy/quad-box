@@ -8,8 +8,7 @@ import { settings } from "../stores/settingsStore"
 import { tallyFeedback } from "../stores/tallyFeedbackStore"
 import { analytics } from "../stores/analyticsStore"
 import { mobile } from "../stores/mobileStore"
-import { isPlaying, gameInfo } from "../stores/gameRunningStore"
-import { get } from "svelte/store"
+import { isPlaying, gameDisplayInfo } from "../stores/gameRunningStore"
 
 let trials
 let currentTrial
@@ -17,34 +16,37 @@ let trialsIndex
 let scoresheet = []
 let presentation
 let timeoutCancelFns
+let gameMeta = {}
 let gameId = 0
 
 const resetRuntimeData = () => {
   isPlaying.set(false)
-  gameInfo.set({})
+  gameDisplayInfo.set({})
   trials = []
   currentTrial = {}
   trialsIndex = 0
   scoresheet = []
   presentation = { highlight: false, flash: false }
   timeoutCancelFns = []
+  gameMeta = {}
   gameId++
 }
 
 resetRuntimeData()
 
-const applyGame = (game, isPlaying) => {
+const applyNewGame = (game, isPlaying) => {
   if (!isPlaying) {
-    gameInfo.set(game.meta)
+    gameMeta = { ...game.meta }
+    gameDisplayInfo.set(gameMeta)
   }
 }
 
 $: isMobile = $mobile
 $: gameSettings = $settings.gameSettings[$settings.mode]
 $: game = generateTallyGame(gameSettings, $settings, gameId)
-$: applyGame(game, $isPlaying)
+$: applyNewGame(game, $isPlaying)
 $: trialDisplay = $settings.feedback === 'show' ? game.trials.length - trialsIndex : ''
-$: keys = gameInfo.getNumberKeys($gameInfo)
+$: keys = gameDisplayInfo.getNumberKeys($gameDisplayInfo)
 
 const flashCube = async () => {
   presentation.flash = true
@@ -98,7 +100,8 @@ const startGame = async () => {
     return
   }
   isPlaying.set(true)
-  gameInfo.set({ ...game.meta, start: Date.now() })
+  gameMeta = { ...game.meta, start: Date.now() }
+  gameDisplayInfo.set(gameMeta)
   audioPlayer.cacheAudioSource($settings.audioSource)
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
@@ -111,7 +114,7 @@ const endGame = async (status) => {
     return
   }
 
-  const gameInfoRecord = { ...get(gameInfo), timestamp: Date.now() }
+  const gameInfoRecord = { ...gameMeta, timestamp: Date.now() }
   if (trialsIndex > gameInfoRecord.nBack) {
     await analytics.scoreTallyTrials(gameInfoRecord, status === 'completed' ? scoresheet : scoresheet.slice(0, trialsIndex), status)
   } else {
@@ -135,7 +138,7 @@ const handleCount = (count) => {
     return
   }
 
-  if (trialsIndex < gameInfo.nBack) {
+  if (trialsIndex < gameDisplayInfo.nBack) {
     selectTrial(trialsIndex + 1)
     return
   }

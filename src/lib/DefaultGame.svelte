@@ -10,8 +10,7 @@ import { settings } from "../stores/settingsStore"
 import { feedback } from "../stores/feedbackStore"
 import { analytics } from "../stores/analyticsStore"
 import { mobile } from "../stores/mobileStore"
-import { isPlaying, gameInfo } from "../stores/gameRunningStore"
-import { get } from "svelte/store"
+import { isPlaying, gameDisplayInfo } from "../stores/gameRunningStore"
 
 let trials
 let currentTrial
@@ -19,17 +18,19 @@ let trialsIndex
 let scoresheet = []
 let presentation
 let timeoutCancelFns
+let gameMeta = {}
 let gameId = 0
 
 const resetRuntimeData = () => {
   isPlaying.set(false)
-  gameInfo.set({})
+  gameDisplayInfo.set({})
   trials = []
   currentTrial = {}
   trialsIndex = 0
   scoresheet = []
   presentation = { highlight: false }
   timeoutCancelFns = []
+  gameMeta = {}
   gameId++
 }
 
@@ -37,7 +38,8 @@ resetRuntimeData()
 
 const applyGame = (game, isPlaying) => {
   if (!isPlaying) {
-    gameInfo.set(game.meta)
+    gameMeta = { ...game.meta }
+    gameDisplayInfo.set(gameMeta)
   }
 }
 
@@ -61,8 +63,8 @@ const playTrial = async (i) => {
   selectTrial(i)
   presentation.highlight = true
   const audioWait = currentTrial.audio ? audioPlayer.play(currentTrial.audio) : Promise.resolve()
-  const presentationWait = delay(Math.min(2000, $gameInfo.trialTime - 350)).then(() => presentation.highlight = false)
-  const trialWait = delay($gameInfo.trialTime)
+  const presentationWait = delay(Math.min(2000, $gameDisplayInfo.trialTime - 350)).then(() => presentation.highlight = false)
+  const trialWait = delay($gameDisplayInfo.trialTime)
   await Promise.all([audioWait, presentationWait, trialWait])
   detectMissedStimuli()
   await playTrial(i + 1)
@@ -78,7 +80,8 @@ const startGame = async () => {
     return
   }
   isPlaying.set(true)
-  gameInfo.set({ ...game.meta, start: Date.now() })
+  gameMeta = { ...game.meta, start: Date.now() }
+  gameDisplayInfo.set(gameMeta)
   audioPlayer.cacheAudioSource($settings.audioSource)
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
@@ -100,7 +103,7 @@ const endGame = async (status) => {
     return
   }
 
-  const gameInfoRecord = { ...get(gameInfo), timestamp: Date.now() }
+  const gameInfoRecord = { ...gameMeta, timestamp: Date.now() }
   if (trialsIndex > gameInfoRecord.nBack) {
     await analytics.scoreTrials(gameInfoRecord, status === 'completed' ? scoresheet : scoresheet.slice(0, trialsIndex), status)
     if (status === 'completed') {
@@ -123,11 +126,11 @@ const toggleGame = () => {
 }
 
 const detectMissedStimuli = () => {
-  if (!('tags' in $gameInfo)) {
+  if (!('tags' in $gameDisplayInfo)) {
     return
   }
   let updates = {}
-  for (const tag of $gameInfo.tags) {
+  for (const tag of $gameDisplayInfo.tags) {
     if (currentTrial.matches.includes(tag) &&!(tag in scoresheet[trialsIndex])) {
       scoresheet[trialsIndex][tag] = false
       updates[tag] = 'late-failure'
@@ -139,7 +142,7 @@ const detectMissedStimuli = () => {
 }
 
 const checkForMatch = (type) => {
-  if (!$isPlaying || trialsIndex < $gameInfo.nBack) {
+  if (!$isPlaying || trialsIndex < $gameDisplayInfo.nBack) {
     return
   }
 

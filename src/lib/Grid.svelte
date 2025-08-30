@@ -5,7 +5,7 @@
   import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
   import { gameSettings } from "../stores/gameSettingsStore"
-  import { gameInfo } from "../stores/gameRunningStore"
+  import { gameDisplayInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
 
@@ -37,7 +37,7 @@
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
   $: flash = presentation.flash
-  $: grid = gameInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
+  $: grid = gameDisplayInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
 </script>
 
 {#if grid === 'static2D'}
@@ -46,7 +46,7 @@
   class:mb-10={$mobile}
   >
     {#if trial.position0}
-      {#each range(gameInfo.getMaxWidth()) as i (i)}
+      {#each range(gameDisplayInfo.getMaxWidth()) as i (i)}
         {#if trial[`position${i}`]}
         <Cell
           show={true}
@@ -82,7 +82,7 @@
   style="animation-duration: {rotationTime}s;"
   >
     {#if trial.position0}
-      {#each range(gameInfo.getMaxWidth()) as i (i)}
+      {#each range(gameDisplayInfo.getMaxWidth()) as i (i)}
         {#if trial[`position${i}`]}
         <Cell
           show={true}

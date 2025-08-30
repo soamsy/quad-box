@@ -1,7 +1,7 @@
 import { derived, writable, get } from 'svelte/store'
 
 export const isPlaying = writable(false)
-const createGameInfo = () => {
+const createGameDisplayInfo = () => {
   const { subscribe, set, update } = writable({})
 
   return {
@@ -11,7 +11,7 @@ const createGameInfo = () => {
     getMaxWidth: () => {
       let max = 1
       let current
-      gameInfo.subscribe(value => current = value)()
+      gameDisplayInfo.subscribe(value => current = value)()
       if (current?.enablePositionWidthSequence && Array.isArray(current?.positionWidthSequence)) {
         max = Math.max(...current.positionWidthSequence)
       } else {
@@ -20,9 +20,9 @@ const createGameInfo = () => {
       return max
     },
     getNumberKeys: () => {
-      const current = get(gameInfo)
+      const current = get(gameDisplayInfo)
       let keys = []
-      for (let i = 0; i <= current.tags.length; i++) {
+      for (let i = 0; i <= (current?.tags?.length ?? 0); i++) {
         keys.push(i)
       }
       return keys
@@ -30,5 +30,5 @@ const createGameInfo = () => {
   }
 }
 
-export const gameInfo = createGameInfo()
-export const title = derived(gameInfo, ($gameInfo) => $gameInfo?.title ?? '')
+export const gameDisplayInfo = createGameDisplayInfo()
+export const title = derived(gameDisplayInfo, ($gameInfo) => $gameInfo?.title ?? '')
