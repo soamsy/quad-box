@@ -31,7 +31,15 @@ export const SHAPES = {
   `,
   triangle: `
     M55,5 L105,105 L5,105 Z
-  `
+  `,
+  cross: `
+    M40,5 H70 V40 H105 V70 H70 V105 H40 V70 H5 V40 H40 Z
+  `,
+  crescent: `
+    M95,22
+    A50,50 0 1,0 95,88
+    A35,38 0 1,1 95,22 Z
+  `,
 }
 
 export const LIGHT_PALETTE = {
