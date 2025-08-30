@@ -149,6 +149,10 @@
               Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
             </label>
           </div>
+          <div class="prose text-sm flex flex-col gap-2 ml-4">
+            <p>Tally mode changes how matches are handled. Instead of pressing a hotkey for every stimulus that matches during a trial, you enter the <italic>count</italic> of how many stimuli matched.</p>
+            <p>Because only one input is needed per trial, there’s no fixed trial timer. The game advances when you enter a number, and will be as fast as you're able to handle.</p>
+          </div>
         </div>
       </div>
       {/if}
