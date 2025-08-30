@@ -45,7 +45,7 @@ const defaultSettings = {
     },
     tally: {
       nBack: 2,
-      numTrials: 100,
+      numTrials: 60,
       matchChance: 25,
       interference: 20,
       positionWidth: 2,
