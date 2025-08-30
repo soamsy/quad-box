@@ -387,8 +387,6 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     return `hsl(${Math.floor(hue)}, ${Math.floor(saturation)}%, ${Math.floor(lightness)}%)`
   }
 
-  const baseColor = nextColor()
-
   const organicElement = () => {
     const centerX = range(28, width - 28)
     const centerY = range(28, height - 28)
@@ -565,6 +563,8 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     return [gradient, `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="url(#${gradientId})" />`]
   }
 
+  const baseColor = nextColor()
+
   const styleA = [...repeat(cubeElement, range(1, 2)), ...repeat(squiggleElement, range(0, 1))]
   const styleB = repeat(squiggleElement, range(3, 5))
   const styleC = repeat(organicElement, range(2, 3))
@@ -615,9 +615,22 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     }
   }
 
+  const useGradientBackground = random() < 0.5
+  const bgGradientId = `bg-gradient-${random()}`
+  if (useGradientBackground) {
+    defs.push(`
+      <defs>
+        <linearGradient id="${bgGradientId}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${nextColor()}" />
+          <stop offset="100%" stop-color="${nextColor()}" />
+        </linearGradient>
+      </defs>
+    `)
+  }
+
   return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
             ${defs.length > 0 ? defs.join('\n  ') : ''}
-            <rect width="100%" height="100%" fill="${baseColor}" />
+            <rect width="100%" height="100%" fill="${useGradientBackground ? 'url(#' + bgGradientId + ')' : baseColor}" />
             ${otherElements.join('\n  ')}
           </svg>`
 }
