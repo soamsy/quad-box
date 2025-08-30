@@ -1,5 +1,6 @@
 import { COLOR_POOL, SHAPE_POOL, getAudioPool, POSITION_POOL, POSITION_POOL_2D } from "./constants"
 import { createVoronoiPool } from "./voronoi"
+import { createArtPool } from "./generative"
 
 const pick = (pool) => {
   return pool[Math.floor(Math.random() * pool.length)]
@@ -107,7 +108,8 @@ const generateSingleWidthStimuli = (trials, tags, { nBack, enableAudio, enableSh
     generateStimuli(trials, tags, ['shape'], SHAPE_POOL, nBack, matchChance, interference)
   }
   if (enableShapeColor) {
-    generateStimuli(trials, tags, ['shapeColor'], createVoronoiPool(), nBack, matchChance, interference)
+    const pool = globalSettings.patternSource === 'generative' ? createArtPool() : createVoronoiPool()
+    generateStimuli(trials, tags, ['shapeColor'], pool, nBack, matchChance, interference)
   }
   if (enableColor) {
     generateStimuli(trials, tags, ['color'], COLOR_POOL, nBack, matchChance, interference)

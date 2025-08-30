@@ -125,9 +125,9 @@ onMount(() => {
         <div class="w-full border-b-1 my-1"></div>
         <ModeSwapper />
         <GameSettings />
-        <div class="py-2 divider"></div>
+        <div class="my-2 divider"></div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
-          <span class="text-lg">Feedback:</span>
+          <span class="text-base">Feedback:</span>
           <select bind:value={$settings.feedback} id="feedback-select" class="select">
             <option value="show">Show</option>
             <option value="hide">Hide</option>
@@ -135,7 +135,7 @@ onMount(() => {
           </select>
         </div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
-          <span class="text-lg">Voice:</span>
+          <span class="text-base">Voice:</span>
           <select bind:value={$settings.audioSource} id="audio-select" class="select">
             <option value="letters2">Letters A</option>
             <option value="letters">Letters B</option>
@@ -147,7 +147,7 @@ onMount(() => {
         </div>
         <div class="flex flex-col gap-1">
           <div class="grid grid-cols-[3fr_1fr] items-center">
-            <label for="rotation-speed-range" class="text-lg">Rotation speed:</label>
+            <label for="rotation-speed-range" class="text-base">Rotation speed:</label>
             <input type="number" min="0" max="999" bind:value={$settings.rotationSpeed} step="1" class="input" />
           </div>
           <input id="rotation-speed-range" type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
@@ -155,26 +155,26 @@ onMount(() => {
         <div class="divider"></div>
         {#if $settings.mode !== 'tally'}
         <div class="grid grid-cols-[8fr_2fr] items-center">
-          <label for="enable-auto-progression" class="text-lg">Auto progression:</label>
+          <label for="enable-auto-progression" class="text-base">Auto progression:</label>
           <input id="enable-auto-progression" type="checkbox" bind:checked={$settings.enableAutoProgression} class="toggle" />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-lg">When ≥ {$settings.successCriteria}%
+          <label class="text-base">When ≥ {$settings.successCriteria}%
             <input disabled={!$settings.enableAutoProgression} type="range" min="0" max="100" value={$settings.successCriteria} on:input={(e) => updateSuccessCriteria(+e.target.value)} step="1" class="range" />
           </label>
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-lg">Win after: {$settings.successComboRequired} in a row
+          <label class="text-base">Win after: {$settings.successComboRequired} in a row
             <input disabled={!$settings.enableAutoProgression} type="range" min="1" max="9" bind:value={$settings.successComboRequired} step="1" class="range" />
           </label>
         </div>
         <div class="flex flex-col gap-1 mt-4">
-          <label class="text-lg">When &lt; {$settings.failureCriteria}%
+          <label class="text-base">When &lt; {$settings.failureCriteria}%
             <input disabled={!$settings.enableAutoProgression} type="range" min="0" max="100" value={$settings.failureCriteria} on:input={(e) => updateFailureCriteria(+e.target.value)} step="1" class="range" />
           </label>
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-lg">Lose after: {$settings.failureComboRequired} in a row
+          <label class="text-base">Lose after: {$settings.failureComboRequired} in a row
             <input disabled={!$settings.enableAutoProgression} type="range" min="1" max="9" bind:value={$settings.failureComboRequired} step="1" class="range" />
           </label>
         </div>

@@ -1,6 +1,8 @@
 <script>
   import { SHAPE_URLS } from "./constants"
   import { createVoronoiSvg } from "./voronoi"
+  import { createArtSvg } from "./generative"
+
   export let show = false
   export let flash = false
   export let transparent = false
@@ -8,7 +10,7 @@
   export let boxColor = null
   export let shapeName = null
   export let shapeOuterColor = null
-  export let voronoi = null
+  export let pattern = null
   export let grid = 'rotate3D'
 
   const svgToDataUrl = (svgString) => {
@@ -36,7 +38,7 @@
     return classNames.join(' ')
   }
 
-  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi, transparent) => {
+  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, pattern, transparent) => {
     let style = ''
     if (boxColor) {
       style += `--face-bg-color: ${boxColor}${transparent ? '3A' : ''};`
@@ -46,9 +48,11 @@
 
     if (shapeName) {
       style += `--shape-url: url('${SHAPE_URLS[shapeName]}');`
-    } else if (voronoi) {
-      const [id, splits] = voronoi.split('-')
+    } else if (pattern && pattern.includes('-')) {
+      const [id, splits] = pattern.split('-')
       style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
+    } else if (pattern) {
+      style += `--shape-url: url('${svgToDataUrl(createArtSvg(pattern))}');`
     }
 
     if (transparent) {
@@ -59,7 +63,7 @@
   }
 
   $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash, transparent)
-  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi, transparent)
+  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, pattern, transparent)
 
 </script>
 

@@ -4,7 +4,7 @@ import { get } from 'svelte/store'
 
 const seedSpace = 100000000
 const divisions = 16
-const partition = seedSpace / divisions
+const partitionSize = seedSpace / divisions
 const seededRandom = (seed) => {
   let m = 2 ** 31 - 1 // Large prime number
   let a = 48271       // Multiplier
@@ -140,10 +140,10 @@ export const createVoronoiPool = () => {
   const splitPool = [3, 3, 3, 3, 4, 4, 4, 5, 5]
   const seedPool = []
   for (let i = 0; i < divisions; i++) {
-    const start = i * partition
-    let seed = start + Math.floor(Math.random() * partition)
+    const start = i * partitionSize
+    let seed = start + Math.floor(Math.random() * partitionSize)
     while (seedPool.includes(seed)) {
-      seed = start + Math.floor(Math.random() * partition)
+      seed = start + Math.floor(Math.random() * partitionSize)
     }
     seedPool.push(seed)
   }

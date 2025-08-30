@@ -56,7 +56,7 @@ const defaultSettings = {
       enableColor: false,
       enableShapeColor: false,
       grid: 'rotate3D',
-    }
+    },
   },
   feedback: 'show',
   rotationSpeed: 35,
@@ -66,6 +66,7 @@ const defaultSettings = {
   failureCriteria: 50,
   failureComboRequired: 3,
   audioSource: 'letters2',
+  patternSource: 'voronoi',
   hotkeys: {
     'position': 'A',
     'color': 'F',

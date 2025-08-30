@@ -54,7 +54,7 @@
           {boxColor}
           {shapeName}
           {shapeOuterColor}
-          voronoi={trial[`shapeColor`]}
+          pattern={trial[`shapeColor`]}
           grid={grid}
           />
         {/if}
@@ -66,7 +66,7 @@
       {boxColor}
       {shapeName}
       {shapeOuterColor}
-      voronoi={trial.shapeColor}
+      pattern={trial.shapeColor}
       grid={grid}
       />
     {/if}
@@ -90,7 +90,7 @@
           {boxColor}
           {shapeName}
           {shapeOuterColor}
-          voronoi={trial[`shapeColor`]}
+          pattern={trial[`shapeColor`]}
            />
         {/if}
       {/each}
@@ -101,7 +101,7 @@
       {boxColor}
       {shapeName}
       {shapeOuterColor}
-      voronoi={trial.shapeColor} />
+      pattern={trial.shapeColor} />
     {/if}
     <Frame class="-translate-z-[30.15svmin]" />
     <Frame class="-translate-z-[10.05svmin]" />
