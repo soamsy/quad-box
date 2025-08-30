@@ -312,7 +312,7 @@ var Mh=Object.defineProperty;var Th=(n,t,e)=>t in n?Mh(n,t,{enumerable:!0,config
     `,`<circle cx="${L}" cy="${W}" r="${F}" fill="url(#${U})" />`]},x=l(),T=[...bt(f,o(1,2)),...bt(d,o(0,1))],S=bt(d,o(3,5)),k=bt(u,o(2,3)),w=[...bt(h,o(1,1)),...bt(c,o(1,1))],A=[...bt(h,o(1,2)),...bt(d,o(2,3))],O=[...bt(c,o(1,1)),...bt(u,o(1,2))],$=[...bt(p,o(2,4)),...bt(g,o(1,3))],j=[...bt(_,o(1,2)),...bt(m,o(1,2))],z=[...bt(v,o(1,3)),...bt(y,o(1,2))],R=[...bt(b,o(3,6)),...bt(p,o(1,2))],B=[...bt(y,o(1,2)),...bt(g,o(2,4))],X=[...bt(m,o(1,2)),...bt(d,o(1,3))],Z=[...bt(v,o(1,2)),...bt(c,o(1,2)),...bt(b,o(1,2))],V=[...bt(p,o(2,4)),...bt(g,o(1,3)),...bt(h,o(1,3))],ft=[...bt(f,o(1,2)),...bt(d,o(0,4)),...bt(u,o(0,2)),...bt(h,o(0,4)),...bt(c,o(0,2)),...bt(p,o(0,3)),...bt(g,o(0,1)),...bt(_,o(0,1)),...bt(m,o(0,1)),...bt(b,o(2,4))],G=[...bt(u,o(1,2)),...bt(y,o(1,1)),...bt(_,o(0,1))],Q=[T,S,k,w,A,O,$,j,z,R,B,X,Z,V,ft,G],dt=Q[Math.floor(n/Wa*Q.length)],lt=[],K=[];for(let L of dt){const W=L();W.some(F=>F&&F.includes("<defs>"))?(lt.push(...W.filter(F=>F&&F.includes("<defs>"))),K.push(...W.filter(F=>F&&!F.includes("<defs>")))):K.push(...W)}const I=i()<.5,ct=`bg-gradient-${i()}`;return I&&lt.push(`
       <defs>
         <linearGradient id="${ct}" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="${l()}" />
+          <stop offset="0%" stop-color="${x}" />
           <stop offset="100%" stop-color="${l()}" />
         </linearGradient>
       </defs>
