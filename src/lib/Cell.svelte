@@ -50,6 +50,11 @@
       const [id, splits] = voronoi.split('-')
       style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
     }
+
+    if (transparent) {
+      style += `--face-size: 72%;`
+    }
+
     return style
   }
 
@@ -89,7 +94,7 @@
     opacity: var(--face-opacity, 1.0);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 80% 80%;
+    background-size: var(--face-size, 80%) var(--face-size, 80%);
     transition: filter 0.05s ease-out;
   }
 
