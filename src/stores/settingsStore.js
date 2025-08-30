@@ -77,19 +77,26 @@ const defaultSettings = {
 
 const getDefaultSettings = () => structuredClone(defaultSettings)
 
+const isPlainObject = obj => Object.prototype.toString.call(obj) === '[object Object]'
+
 const deepMerge = (target, source) => {
-  if (Array.isArray(source)) return source.slice()
-  if (typeof target !== 'object' || target === null) return source
-  if (typeof source !== 'object' || source === null) return source
-
-  const result = Array.isArray(target) ? [] : { ...target }
-
-  for (const key of Object.keys(source)) {
-    result[key] =
-      key in target ? deepMerge(target[key], source[key]) : source[key]
+  if (Array.isArray(target) && Array.isArray(source)) {
+    return source.map((item, i) =>
+      i in target ? deepMerge(target[i], item) : item
+    )
   }
 
-  return result
+  if (isPlainObject(target) && isPlainObject(source)) {
+    const result = { ...target }
+    for (const key of Object.keys(source)) {
+      if (key === '__proto__' || key === 'constructor') continue
+      result[key] =
+        key in target ? deepMerge(target[key], source[key]) : source[key]
+    }
+    return result
+  }
+
+  return Array.isArray(source) ? source.slice() : source
 }
 
 const loadSettings = () => {
