@@ -1,5 +1,5 @@
 <script>
-import Cube from "./Cube.svelte"
+import Grid from "./Grid.svelte"
 import LargeKey from "./LargeKey.svelte"
 import SmallKey from "./SmallKey.svelte"
 import { generateGame } from "./nback"
@@ -207,7 +207,7 @@ onDestroy(async () => {
 </script>
 
 
-<Cube trial={currentTrial} {presentation} />
+<Grid trial={currentTrial} {presentation} />
 {#if isMobile}
 <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
   <div class="w-full h-full flex items-center justify-between row-start-1 p-8">

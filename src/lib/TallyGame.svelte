@@ -1,5 +1,5 @@
 <script>
-import Cube from "./Cube.svelte"
+import Grid from "./Grid.svelte"
 import NumberKey from "./NumberKey.svelte"
 import { generateTallyGame } from "./nback"
 import { onDestroy } from "svelte"
@@ -181,7 +181,7 @@ onDestroy(async () => {
 
 </script>
 
-<Cube trial={currentTrial} {presentation} />
+<Grid trial={currentTrial} {presentation} />
 <div class="stretch grid grid-cols-[1fr_3fr_3fr_1fr] grid-rows-[1fr_6fr_1fr]">
   <div class="w-full h-full flex items-center justify-between col-start-1 col-span-4 px-2">
     <div></div>

@@ -51,7 +51,7 @@
         <Cell
           show={true}
           flash={flash}
-          transparent={trial.position1 ? true : false}
+          transparent={false}
           position={trial[`position${i}`]}
           {boxColor}
           {shapeName}
