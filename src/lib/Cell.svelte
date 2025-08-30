@@ -19,7 +19,6 @@
   }
 
   const calculateBoxClassNames = (position, shapeName, show, flash, transparent) => {
-    console.log('1', transparent)
     if (!show) {
       return 'hidden'
     }
@@ -38,7 +37,6 @@
   }
 
   const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi, transparent) => {
-    console.log('2', transparent)
     let style = ''
     if (boxColor) {
       style += `--face-bg-color: ${boxColor}${transparent ? '3A' : ''};`
