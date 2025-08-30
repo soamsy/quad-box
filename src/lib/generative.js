@@ -621,7 +621,7 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     defs.push(`
       <defs>
         <linearGradient id="${bgGradientId}" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="${nextColor()}" />
+          <stop offset="0%" stop-color="${baseColor}" />
           <stop offset="100%" stop-color="${nextColor()}" />
         </linearGradient>
       </defs>
