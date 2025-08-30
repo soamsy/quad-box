@@ -93,12 +93,21 @@
     transition: filter 0.05s ease-out;
   }
 
+
   .flash .face {
+    filter: drop-shadow(0 0 8px #111111);
+  }
+
+  :global(.dark) .flash .face {
     filter: drop-shadow(0 0 8px #FFFFFF);
   }
 
   .see-through .face {
-    outline: 4px solid #FFF9;
+    outline: 3px solid #0009;
+  }
+
+  :global(.dark) .see-through .face {
+    outline: 3px solid #FFF9;
   }
 
   .cell.heart .face {
