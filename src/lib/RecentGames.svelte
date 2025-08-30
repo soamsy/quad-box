@@ -91,6 +91,11 @@
   }
 
   const getGameShortName = (game) => {
+    if (game.title.startsWith('tally')) {
+      const totalElements = game.positionWidthSequence.slice(0, game.nBack).reduce((a, b) => a + b, 0)
+      return 'Tally ' + totalElements
+    }
+
     if (!game.title || game.title === 'custom') {
       let order = ['position', 'color', 'shape', 'audio', 'shapeColor']
       order.reverse()
@@ -133,7 +138,11 @@
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.audio?.percent)}>{formatPercent(game?.scores?.audio?.percent)}</span></td>
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.color?.percent)}>{formatPercent(game?.scores?.color?.percent)}</span></td>
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}>{formatPercent(game?.scores?.shapeColor?.percent ?? game?.scores?.shape?.percent)}</span></td>
-        <td>{formatSeconds(game.trialTime * game.completedTrials / 1000)}</td>
+        {#if game.title.startsWith('tally')}
+          <td>{(game.total.averageTrialTime / 1000).toFixed(2) + 's/t'}</td>
+        {:else}
+          <td>{formatSeconds(game.elapsedSeconds)}</td>
+        {/if}
         {#if $recentGamesState.filter !== "completed"}
           <td><span class={getStatusClass(game.status)}>{game.status}</span></td>
         {/if}

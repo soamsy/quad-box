@@ -1,22 +1,24 @@
 <script>
   import { settings } from '../stores/settingsStore'
   import { Triangle } from '@lucide/svelte'
+  import { onDestroy } from 'svelte'
   $: mode = $settings.mode
 
   const darkColors = new Map([
     ['quad', 'bg-rose-900'],
     ['dual', 'bg-cyan-800'],
-    ['custom', 'bg-gray-700']
+    ['custom', 'bg-gray-700'],
+    ['tally', 'bg-indigo-800'],
   ])
 
   const lightColors = new Map([
     ['quad', 'bg-rose-400'],
     ['dual', 'bg-cyan-400'],
-    ['custom', 'bg-gray-400']
+    ['custom', 'bg-gray-400'],
+    ['tally', 'bg-indigo-400'],
   ])
 
-  const modes = [...lightColors.keys()]
-
+  $: modes = [...lightColors.keys().filter(mode => mode !== 'tally' || $settings.enableTallyBeta)]
   $: bg = $settings.theme === 'light' ? lightColors.get(mode) : darkColors.get(mode)
 
   const nextMode = () => {
@@ -34,6 +36,23 @@
     }
     settings.update('mode', modes[prevIndex])
   }
+
+  const handleKey = (event) => {
+    switch (event.code) {
+      case 'PageUp':
+        prevMode()
+        break
+      case 'PageDown':
+        nextMode()
+        break
+    }
+  }
+
+  document.addEventListener('keydown', handleKey)
+
+  onDestroy(async () => {
+    document.removeEventListener('keydown', handleKey)
+  })
 </script>
 
 <div class="flex bg- items-center justify-around">

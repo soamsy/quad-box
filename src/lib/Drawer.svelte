@@ -1,21 +1,22 @@
 <script>
-export let title
 import { PanelLeftClose, PanelLeftOpen } from '@lucide/svelte'
 import { onMount } from 'svelte'
+import { get } from 'svelte/store'
 import { settings } from '../stores/settingsStore'
+import { gameSettings } from '../stores/gameSettingsStore'
 import { scores } from '../stores/scoreStore'
 import { analytics } from '../stores/analyticsStore'
 import { mobile } from '../stores/mobileStore'
 import { autoProgression } from '../stores/autoProgressionStore'
+import { isPlaying, title } from "../stores/gameRunningStore"
 import GameSettings from './GameSettings.svelte'
 import ModeSwapper from './ModeSwapper.svelte'
 import ThemeSwapper from './ThemeSwapper.svelte'
 import ChartPopup from "./ChartPopup.svelte"
 import KeybindingsPopup from "./KeybindingsPopup.svelte"
 import InfoPopup from './InfoPopup.svelte'
-export let isPlaying = false
-let open = false
 
+let open = false
 const toggle = () => open = !open
 const close = () => open = false
 
@@ -42,6 +43,18 @@ const updateFailureCriteria = (value) => {
   }
 }
 
+const getPositionWidthDisplay = () => {
+  if (!$settings.mode === 'tally') {
+    return '1'
+  }
+
+  const gs =  get(gameSettings)
+  const sequence = gs.positionWidthSequence
+  return $gameSettings.enablePositionWidthSequence
+    ? sequence.slice(0, $gameSettings.nBack).join(',')
+    : $gameSettings.positionWidth
+}
+
 onMount(() => {
   document.addEventListener('click', handleClickOutside)
   return () => {
@@ -49,7 +62,6 @@ onMount(() => {
   }
 })
 
-$: gameSettings = $settings.gameSettings[$settings.mode]
 </script>
 
 <div class="relative flex flex-col h-svh overflow-hidden">
@@ -67,21 +79,30 @@ $: gameSettings = $settings.gameSettings[$settings.mode]
         {/if}
       </div>
     </div>
-    <div class="justify-self-center flex gap-4 select-none px-6"
+    <div class="justify-self-center flex gap-4 select-none px-6 whitespace-nowrap"
       class:advance={$autoProgression.advance} 
       class:fallback={$autoProgression.fallback}>
-      <div>N = {gameSettings.nBack}</div>
-      <div>{title.toUpperCase()}</div>
+      <div>N = {$gameSettings.nBack}</div>
+      {#if $settings.mode === 'tally'}
+      <div>W = {getPositionWidthDisplay()}</div>
+      {/if}
+      <div>{$title.toUpperCase()}</div>
       {#if $scores.total && $mobile}
-      <div>{($scores.total.percent * 100).toFixed(0)}%</div>
+        <div>{($scores.total.percent * 100).toFixed(0)}%</div>
+        {#if $scores.total.averageTrialTime}
+          <div>{($scores.total.averageTrialTime / 1000).toFixed(2)}s/t</div>
+        {/if}
       {/if}
     </div>
-    <div class="justify-self-end flex items-center gap-4 pr-2">
-      {#if !isPlaying && !$mobile && $analytics.playTime}
+    <div class="justify-self-end flex items-center gap-4 pr-2 whitespace-nowrap">
+      {#if !$isPlaying && !$mobile && $analytics.playTime}
       <div>Today: {$analytics.playTime}</div>
       {/if}
-      {#if $scores.total && !isPlaying && !$mobile}
-      <div>Last: {($scores.total.percent * 100).toFixed(0)}%</div>
+      {#if $scores.total && !$isPlaying && !$mobile}
+        <div>Last: {($scores.total.percent * 100).toFixed(0)}%</div>
+        {#if $scores.total.averageTrialTime}
+          <div>{($scores.total.averageTrialTime / 1000).toFixed(2)}s/t</div>
+        {/if}
       {/if}
       <div class="flex">
         <InfoPopup />

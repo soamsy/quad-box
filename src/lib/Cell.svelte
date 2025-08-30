@@ -2,11 +2,14 @@
   import { SHAPE_URLS } from "./constants"
   import { createVoronoiSvg } from "./voronoi"
   export let show = false
+  export let flash = false
+  export let transparent = false
   export let position = '0-0-0'
   export let boxColor = null
   export let shapeName = null
   export let shapeOuterColor = null
   export let voronoi = null
+  export let grid = 'rotate3D'
 
   const svgToDataUrl = (svgString) => {
     const encoded = encodeURIComponent(svgString)
@@ -15,7 +18,7 @@
     return `data:image/svg+xml,${encoded}`
   }
 
-  const calculateBoxClassNames = (position, shapeName, show) => {
+  const calculateBoxClassNames = (position, shapeName, show, flash, transparent) => {
     if (!show) {
       return 'hidden'
     }
@@ -24,15 +27,21 @@
     if (shapeName.includes('heart')) {
       classNames.push('heart')
     }
+    if (flash) {
+      classNames.push('flash')
+    }
+    if (transparent) {
+      classNames.push('see-through')
+    }
     return classNames.join(' ')
   }
 
-  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi) => {
+  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, voronoi, transparent) => {
     let style = ''
     if (boxColor) {
-      style += `--face-bg-color: ${boxColor};`
+      style += `--face-bg-color: ${boxColor}${transparent ? '3A' : ''};`
     } else if (shapeOuterColor) {
-      style += `--face-bg-color: ${shapeOuterColor};`
+      style += `--face-bg-color: ${shapeOuterColor}${transparent ? '2A' : ''};`
     }
 
     if (shapeName) {
@@ -41,41 +50,84 @@
       const [id, splits] = voronoi.split('-')
       style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
     }
+
+    if (transparent) {
+      style += `--face-size: 72%;`
+    }
+
     return style
   }
 
-  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show)
-  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi)
+  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash, transparent)
+  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, voronoi, transparent)
 
 </script>
 
-<div class="cell {boxClassNames}" style="{boxStyle}">
-    <div class="face translate-z-[10svmin]"></div>
-    <div class="face -translate-z-[10svmin] rotate-y-180"></div>
-    <div class="face translate-x-[10svmin] -rotate-y-90"></div>
-    <div class="face -translate-x-[10svmin] rotate-y-90"></div>
-    <div class="face translate-y-[10svmin] rotate-x-90"></div>
-    <div class="face -translate-y-[10svmin] -rotate-x-90"></div>
+{#if grid === 'static2D'}
+<div class="cell2d {boxClassNames}" style="{boxStyle}">
+  <div class="face"></div>
 </div>
-
+{:else}
+<div class="cell {boxClassNames}" style="{boxStyle}">
+  <div class="face translate-z-[10svmin]"></div>
+  <div class="face -translate-z-[10svmin] rotate-y-180"></div>
+  <div class="face translate-x-[10svmin] -rotate-y-90"></div>
+  <div class="face -translate-x-[10svmin] rotate-y-90"></div>
+  <div class="face translate-y-[10svmin] rotate-x-90"></div>
+  <div class="face -translate-y-[10svmin] -rotate-x-90"></div>
+</div>
+{/if}
 <style>
   .cell {
     @apply absolute w-[20.1svmin] h-[20.1svmin] left-[20.1svmin] top-[20.1svmin];
     transform-style: preserve-3d;
   }
 
+  .cell2d {
+    @apply absolute w-[27.1svmin] h-[27.1svmin] left-[27.1svmin] top-[27.1svmin];
+  }
+
   .face {
     @apply absolute w-full h-full;
     background-color: var(--face-bg-color);
     background-image: var(--shape-url);
+    opacity: var(--face-opacity, 1.0);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 80% 80%;
+    background-size: var(--face-size, 80%) var(--face-size, 80%);
+    transition: filter 0.05s ease-out;
+  }
+
+
+  .flash .face {
+    filter: drop-shadow(0 0 8px #111111);
+  }
+
+  :global(.dark) .flash .face {
+    filter: drop-shadow(0 0 8px #FFFFFF);
+  }
+
+  .see-through .face {
+    outline: 3px solid #0009;
+  }
+
+  :global(.dark) .see-through .face {
+    outline: 3px solid #FFF9;
   }
 
   .cell.heart .face {
     background-size: 100% 95%;
   }
+
+  .p0-0   { transform: translate(-27.1svmin, -27.1svmin); }
+  .p0-1   { transform: translate(-27.1svmin,     0svmin); }
+  .p0-2   { transform: translate(-27.1svmin,  27.1svmin); }
+  .p1-0   { transform: translate(0,          -27.1svmin); }
+  .p1-1   { transform: translate(0,              0svmin); }
+  .p1-2   { transform: translate(0,           27.1svmin); }
+  .p2-0   { transform: translate(27.1svmin,  -27.1svmin); }
+  .p2-1   { transform: translate(27.1svmin,      0svmin); }
+  .p2-2   { transform: translate(27.1svmin,   27.1svmin); }
 
   .p0-0-0 { transform: translate3d(-20.1svmin, -20.1svmin, -20.1svmin); }
   .p0-0-1 { transform: translate3d(-20.1svmin, -20.1svmin, 0         ); }

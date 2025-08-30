@@ -4,6 +4,8 @@
   import Cell from "./Cell.svelte"
   import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
+  import { gameSettings } from "../stores/gameSettingsStore"
+  import { gameDisplayInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
 
@@ -27,18 +29,74 @@
     }
   }
 
+  const range = (n) => Array.from({ length: n }, (_, i) => i)
+
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
   $: shapeName = findShapeName(trial)
   $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
+  $: flash = presentation.flash
+  $: grid = gameDisplayInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
 </script>
 
+{#if grid === 'static2D'}
+<div class="flex absolute items-center justify-center w-full h-full select-none overflow-hidden">
+  <div class="absolute w-[81.3svmin] h-[81.3svmin]"
+  class:mb-10={$mobile}
+  >
+    {#if trial.position0}
+      {#each range(gameDisplayInfo.getMaxWidth()) as i (i)}
+        {#if trial[`position${i}`]}
+        <Cell
+          show={true}
+          flash={flash}
+          transparent={false}
+          position={trial[`position${i}`]}
+          {boxColor}
+          {shapeName}
+          {shapeOuterColor}
+          voronoi={trial[`shapeColor`]}
+          grid={grid}
+          />
+        {/if}
+      {/each}
+    {:else}
+    <Cell
+      show={trial.position && highlight}
+      position={trial.position}
+      {boxColor}
+      {shapeName}
+      {shapeOuterColor}
+      voronoi={trial.shapeColor}
+      grid={grid}
+      />
+    {/if}
+    <Frame />
+  </div>
+</div>
+{:else}
 <div class="flex absolute items-center justify-center w-full h-full select-none perspective-[60svmin] overflow-hidden">
   <div class="scene absolute w-[60.3svmin] h-[60.3svmin] transform-3d -translate-z-[10svmin]"
   class:mb-10={$mobile}
   style="animation-duration: {rotationTime}s;"
   >
+    {#if trial.position0}
+      {#each range(gameDisplayInfo.getMaxWidth()) as i (i)}
+        {#if trial[`position${i}`]}
+        <Cell
+          show={true}
+          flash={flash}
+          transparent={trial.position1 ? true : false}
+          position={trial[`position${i}`]}
+          {boxColor}
+          {shapeName}
+          {shapeOuterColor}
+          voronoi={trial[`shapeColor`]}
+           />
+        {/if}
+      {/each}
+    {:else}
     <Cell
       show={trial.position && highlight}
       position={trial.position}
@@ -46,6 +104,7 @@
       {shapeName}
       {shapeOuterColor}
       voronoi={trial.shapeColor} />
+    {/if}
     <Frame class="-translate-z-[30.15svmin]" />
     <Frame class="-translate-z-[10.05svmin]" />
     <Frame class="translate-z-[10.05svmin]" />
@@ -62,6 +121,7 @@
     <Frame class="translate-x-[30.15svmin] rotate-y-90" />
   </div>
 </div>
+{/if}
 
 <style>
   .scene {

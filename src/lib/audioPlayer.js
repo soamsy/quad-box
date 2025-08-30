@@ -1,4 +1,5 @@
 import { Howl } from "howler"
+import { getAudioPool } from "./constants"
 
 class AudioPlayer {
   constructor() {
@@ -40,6 +41,12 @@ class AudioPlayer {
       howl.once('end', resolve, id)
       howl.once('loaderror', reject, id)
       howl.once('playerror', reject, id)
+    })
+  }
+
+  cacheAudioSource(audioSource) {
+    getAudioPool(audioSource).forEach(audio => {
+      this.preload(audio)
     })
   }
 

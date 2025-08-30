@@ -2,6 +2,7 @@
   import { CircleHelp } from '@lucide/svelte'
   import { settings } from '../stores/settingsStore'
   import { deleteDB } from './gamedb'
+  import { get } from 'svelte/store'
 
   let show = false
   let tab = 'how-to-play'
@@ -40,13 +41,24 @@
     show = false
   }
 
+  const applyTallyBeta = (event) => {
+    settings.update('enableTallyBeta', event.target.checked)
+    if (event.target.checked) {
+      settings.update('mode', 'tally')
+    } else {
+      if (get(settings).mode === 'tally') {
+        settings.update('mode', 'quad')
+      }
+    }
+  }
+
 </script>
 
 <button class="flex items-center justify-center" on:click={openModal}>
   <CircleHelp class="btn btn-square btn-ghost h-8 lg:h-6" />
 </button>
 {#if show}
-  <div class="modal modal-open" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
+  <div class="modal modal-open whitespace-normal" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
     <div class="modal-box help-box w-[90%] max-w-3xl">
       <div role="tablist" class="tabs tabs-lift relative">
         <a role="tab" 
@@ -57,9 +69,9 @@
         </a>
         <a role="tab" 
           class="tab"
-          class:tab-active={tab === 'reset-app'}
-          on:click={() => tab = 'reset-app'}>
-          Reset App
+          class:tab-active={tab === 'misc'}
+          on:click={() => tab = 'misc'}>
+          Misc.
         </a>
       </div>
       {#if tab === 'how-to-play'}
@@ -91,7 +103,7 @@
           Stay focused and try to get as high a score as possible!
         </p>
       </div>
-      {:else if tab === 'reset-app'}
+      {:else if tab === 'misc'}
       <div class="prose text-gray-800 dark:text-gray-200 flex flex-col gap-2 overflow-y-auto h-[70svh] w-full mt-2">
         <div class="mt-6">
           <p class="mb-2">Reset all game settings to their default values.</p>
@@ -127,6 +139,16 @@
               </button>
             </div>
           {/if}
+        </div>
+        <div class="divider" />
+        <div class="mt-4 flex flex-col gap-2 text-xl">
+          <p class="mb-2 font-semibold">Betas</p>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="tallyMode" checked={$settings.enableTallyBeta} on:click={applyTallyBeta} class="checkbox" />
+            <label for="tallyMode" class="text-sm font-medium">
+              Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
+            </label>
+          </div>
         </div>
       </div>
       {/if}

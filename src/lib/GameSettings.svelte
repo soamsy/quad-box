@@ -25,6 +25,14 @@
     }
   }
 
+  const updatePositionWidthSequence = (width, value) => {
+    const positionWidthSequence = [...$gameSettings.positionWidthSequence]
+    positionWidthSequence[width] = value
+    gameSettings.setField('positionWidthSequence', positionWidthSequence)
+  }
+
+  const range = (n) => Array.from({ length: n }, (_, i) => i)
+
   $: numTrials = $gameSettings.numTrials
 </script>
 
@@ -34,11 +42,13 @@
     <input type="range" min="1" max="12" bind:value={$gameSettings.nBack} class="range" />
   </label>
 </div>
+{#if 'trialTime' in $gameSettings}
 <div class="flex flex-col gap-1">
   <label class="text-lg">Trial time: {$gameSettings.trialTime}ms
     <input type="range" min="1000" max="5000" bind:value={$gameSettings.trialTime} step="100" class="range" />
   </label>
 </div>
+{/if}
 <div class="grid grid-cols-[6fr_4fr] items-center gap-4">
   <label for="num-trials" class="text-lg">Num trials:</label>
   <input id="num-trials" type="number" min="10" max="999" value={numTrials} on:input={(e) => clampNumber('numTrials', 10, +e.target.value, 999)} step="1" class="input" />
@@ -72,21 +82,52 @@
     <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />  
   </label>
 </div>
-{#if $settings.mode === 'custom'}
-<div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-audio" class="text-lg">Audio:</label>
-  <input id="enable-audio" type="checkbox" bind:checked={$gameSettings.enableAudio} class="toggle" />
+<div class="flex flex-col gap-1">
+  <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
+    <span class="text-lg">Grid:</span>
+    <select bind:value={$gameSettings.grid} id="feedback-select" class="select">
+      <option value="rotate3D">3D</option>
+      <option value="static2D">2D</option>
+    </select>
+  </div>
 </div>
-<div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-color" class="text-lg">Color:</label>
-  <input id="enable-color" type="checkbox" checked={$gameSettings.enableColor} on:input={(e) => toggleShapeOrColor(e, 'enableColor')} class="toggle" />
-</div>
-<div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-shape" class="text-lg">Shape:</label>
-  <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShape} on:input={(e) => toggleShapeOrColor(e, 'enableShape')} class="toggle" />
-</div>
-<div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-  <label for="enable-shape-color" class="text-lg">Pattern:</label>
-  <input id="enable-shape-color" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
-</div>
+{#if $settings.mode === 'tally'}
+  <div class="grid grid-cols-[82fr_18fr] items-center gap-4">
+    <label for="enable-position-width-sequence">Define position chain:</label>
+    <input id="enable-position-width-sequence" type="checkbox" bind:checked={$gameSettings.enablePositionWidthSequence} class="toggle" />
+  </div>
+  {#if $gameSettings.enablePositionWidthSequence}
+    <div class="flex flex-col gap-1">
+      {#each range($gameSettings.nBack) as width (width)}
+        <label class="text-lg flex gap-1">W{width+1}:
+          <input type="range" min="1" max="4" value={$gameSettings.positionWidthSequence[width]} on:input={(e) => updatePositionWidthSequence(width, +e.target.value)} class="range" />
+          {$gameSettings.positionWidthSequence[width]}
+        </label>
+      {/each}
+    </div>
+  {:else}
+    <div class="flex flex-col gap-1">
+      <label class="text-lg">Concurrent Positions: {$gameSettings.positionWidth}
+        <input type="range" min="1" max="4" bind:value={$gameSettings.positionWidth} class="range" />
+      </label>
+    </div>
+  {/if}
+{/if}
+{#if $settings.mode === 'custom' || $settings.mode === 'tally'}
+  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+    <label for="enable-audio" class="text-lg">Audio:</label>
+    <input id="enable-audio" type="checkbox" bind:checked={$gameSettings.enableAudio} class="toggle" />
+  </div>
+  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+    <label for="enable-color" class="text-lg">Color:</label>
+    <input id="enable-color" type="checkbox" checked={$gameSettings.enableColor} on:input={(e) => toggleShapeOrColor(e, 'enableColor')} class="toggle" />
+  </div>
+  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+    <label for="enable-shape" class="text-lg">Shape:</label>
+    <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShape} on:input={(e) => toggleShapeOrColor(e, 'enableShape')} class="toggle" />
+  </div>
+  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+    <label for="enable-shape-color" class="text-lg">Pattern:</label>
+    <input id="enable-shape-color" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
+  </div>
 {/if}
