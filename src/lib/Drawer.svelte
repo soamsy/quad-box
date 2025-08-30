@@ -153,6 +153,7 @@ onMount(() => {
           <input id="rotation-speed-range" type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
         </div>
         <div class="divider"></div>
+        {#if $settings.mode !== 'tally'}
         <div class="grid grid-cols-[8fr_2fr] items-center">
           <label for="enable-auto-progression" class="text-lg">Auto progression:</label>
           <input id="enable-auto-progression" type="checkbox" bind:checked={$settings.enableAutoProgression} class="toggle" />
@@ -177,6 +178,7 @@ onMount(() => {
             <input disabled={!$settings.enableAutoProgression} type="range" min="1" max="9" bind:value={$settings.failureComboRequired} step="1" class="range" />
           </label>
         </div>
+        {/if}
         <div class="my-1"></div>
         <KeybindingsPopup />
       </div>
