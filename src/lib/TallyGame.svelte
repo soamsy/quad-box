@@ -39,7 +39,7 @@ const applyGame = (game, isPlaying) => {
   }
 }
 
-// $: isMobile = $mobile
+$: isMobile = $mobile
 $: gameSettings = $settings.gameSettings[$settings.mode]
 $: game = generateTallyGame(gameSettings, $settings, gameId)
 $: applyGame(game, $isPlaying)
@@ -182,8 +182,23 @@ onDestroy(async () => {
 </script>
 
 <Grid trial={currentTrial} {presentation} />
-<div class="stretch grid grid-cols-[1fr_3fr_3fr_1fr] grid-rows-[1fr_6fr_1fr]">
-  <div class="w-full h-full flex items-center justify-between col-start-1 col-span-4 px-2">
+<div class="stretch grid grid-cols-[1fr_3fr_3fr_1fr] "
+  class:grid-rows-[10fr_70fr_8fr]={!isMobile}
+  class:grid-rows-[8fr_60fr_15fr]={isMobile}>
+{#if isMobile}
+  <div class="w-full h-full flex items-center justify-center text-4xl row-start-1 col-start-1 select-none opacity-30 p-8 pl-10">{trialDisplay}</div>
+  <div class="w-full h-full flex items-center justify-center row-start-1 col-start-4 col-span-1 p-8">
+    <button class="game-button text-4xl p-8"
+      on:click={toggleGame}
+      on:keydown={suppressKey}
+      on:keypress={suppressKey}
+      on:keyup={suppressKey}
+      tabindex="-1"
+    >{#if $isPlaying} Stop {:else} Play {/if}</button>
+  </div>
+{:else}
+  <div class="w-full h-full flex items-center justify-center text-6xl row-start-1 col-start-1 select-none opacity-30">{trialDisplay}</div>
+  <div class="w-full h-full flex items-center justify-between row-start-1 col-start-4 col-span-1 px-2">
     <div></div>
     <button class="game-button text-5xl px-12 py-10 max-w-[90%] mr-4"
       on:click={toggleGame}
@@ -193,10 +208,14 @@ onDestroy(async () => {
       tabindex="-1"
     >{#if $isPlaying} Stop {:else} Play {/if}</button>
   </div>
-  <div class="w-full h-full flex gap-2 items-center justify-around py-1 row-start-4 col-start-1 col-span-4">
+{/if}
+  <div class="w-full h-full flex gap-1 items-center justify-around py-1 row-start-3"
+    class:col-start-2={!isMobile}
+    class:col-span-2={!isMobile}
+    class:coll-start-1={isMobile}
+    class:col-span-4={isMobile}>
     {#each keys as key (key)}
       <NumberKey count={key} {handleCount}>{key}</NumberKey>
     {/each}
   </div>
-  <div class="w-full h-full flex items-center justify-center text-6xl row-start-3 col-start-4 select-none opacity-30">{trialDisplay}</div>
 </div>
