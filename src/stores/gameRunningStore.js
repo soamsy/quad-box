@@ -31,4 +31,12 @@ const createGameDisplayInfo = () => {
 }
 
 export const gameDisplayInfo = createGameDisplayInfo()
-export const title = derived(gameDisplayInfo, ($gameInfo) => $gameInfo?.title ?? '')
+export const title = derived(gameDisplayInfo, ($gameInfo) => {
+  if (!$gameInfo?.title) return ''
+
+  if ($gameInfo.title.startsWith('tally ')) {
+    return 'tally'
+  }
+
+  return $gameInfo.title
+})
