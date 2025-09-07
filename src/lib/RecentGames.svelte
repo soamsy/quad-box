@@ -92,7 +92,7 @@
 
   const getGameShortName = (game) => {
     if (game.title.startsWith('tally')) {
-      const totalElements = game.positionWidthSequence.slice(0, game.nBack).reduce((a, b) => a + b, 0)
+      const totalElements = game.nBack
       return 'Tally ' + totalElements
     }
 
