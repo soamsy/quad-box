@@ -1,7 +1,10 @@
 <script>
+    import { onDestroy } from "svelte";
   import { gameSettings } from "../stores/gameSettingsStore"
   import { settings } from "../stores/settingsStore"
-  import { Info } from "@lucide/svelte"
+  import { Info, Settings } from "@lucide/svelte"
+
+  let isShowingNBackSettingsPopup = false
 
   const clampNumber = (field, min, value, max) => {
     if (value < min || max < value) {
@@ -25,6 +28,22 @@
     }
   }
 
+  const toggleNBackSettingsPopup = () => {
+    isShowingNBackSettingsPopup = !isShowingNBackSettingsPopup
+  }
+
+  const handleClickOutside = (event) => {
+    if (isShowingNBackSettingsPopup && !document.getElementById('nback-settings-popup')?.contains(event.target)) {
+      isShowingNBackSettingsPopup = false
+    }
+  }
+
+  document.addEventListener('click', handleClickOutside)
+
+  onDestroy(() => {
+    document.removeEventListener('click', handleClickOutside)
+  })
+
   const updatePositionWidthSequence = (width, value) => {
     const positionWidthSequence = [...$gameSettings.positionWidthSequence]
     positionWidthSequence[width] = value
@@ -37,10 +56,34 @@
 </script>
 
 
-<div class="flex flex-col gap-1">
-  <label class="text-base">N-back: {$gameSettings.nBack}
-    <input type="range" min="1" max="12" bind:value={$gameSettings.nBack} class="range" />
-  </label>
+<div class="flex gap-2 items-center justify-between">
+  <div class="flex flex-col gap-1 flex-auto">
+    <label class="text-base" for="nback-range">N-back: {$gameSettings.nBack}</label>
+    <input id="nback-range" type="range" min="1" max="12" bind:value={$gameSettings.nBack} class="range" />
+  </div>
+  {#if $settings.mode !== 'tally'}
+  <div id="nback-settings-popup" class="cursor-pointer relative select-none" on:click={() => toggleNBackSettingsPopup()}>
+    <div class="relative">
+      {#if $gameSettings.enableVariableNBack}
+        <span class="absolute top-0 right-[-0.25rem] z-10 rounded bg-amber-500 w-2 h-2"></span>
+      {/if}
+      <span class="transition-transform" class:rotate-90={isShowingNBackSettingsPopup}><Settings /></span>
+    </div>
+    {#if isShowingNBackSettingsPopup}
+    <div class="absolute top-0 right-8 bg-[#020202] border-b-neutral-500 border-2 shadow-lg flex items-center justify-center z-10" on:click={() => toggleNBackSettingsPopup()}>
+      <div class="p-2 w-40 select-auto" on:click|stopPropagation>
+        <div class="flex flex-col gap-4">
+          <div class="grid grid-cols-[6fr_4fr] items-center gap-4">
+            <label for="variable-nback" class="text-base">Variable N-Back:</label>
+            <input id="variable-nback" type="checkbox" bind:checked={$gameSettings.enableVariableNBack} class="toggle" />
+          </div>
+        </div>
+        <p class="mt-4 text-xs">Makes N change randomly each trial</p>
+      </div>
+    </div>
+    {/if}
+  </div>
+  {/if}
 </div>
 {#if 'trialTime' in $gameSettings}
 <div class="flex flex-col gap-1">

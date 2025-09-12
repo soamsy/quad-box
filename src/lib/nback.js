@@ -117,9 +117,13 @@ const generateSingleWidthStimuli = (trials, tags, { nBack, enableAudio, enableSh
 }
 
 export const generateGame = (settings, globalSettings) => {
-  const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference } = settings
+  const { nBack, numTrials, trialTime, enableAudio, enableShape, enableColor, enableShapeColor, matchChance, interference, enableVariableNBack } = settings
   let trials = new Array(numTrials).fill().map(() => ({ matches: [], answers: {} }))
   let tags = []
+  let nBackSequence = Array(numTrials).fill(nBack)
+  if (enableVariableNBack) {
+    nBackSequence = nBackSequence.map(() => Math.floor(Math.pow(Math.random(), 0.5) * nBack) + 1)
+  }
   generateStimuli(trials, tags, ['position'], getPositionPool(settings), nBack, matchChance, interference)
   generateSingleWidthStimuli(trials, tags, settings, globalSettings)
   let title = tags.join('-')
