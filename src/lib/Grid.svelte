@@ -1,5 +1,6 @@
 <script>
   export let trial = {}
+  export let nextTrial = {}
   export let presentation = {}
   import Cell from "./Cell.svelte"
   import Frame from "./Frame.svelte"
@@ -7,7 +8,7 @@
   import { gameSettings } from "../stores/gameSettingsStore"
   import { gameDisplayInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
-  import { createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
+  import { cacheNextTrial, createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
 
   const range = (n) => Array.from({ length: n }, (_, i) => i)
 
@@ -15,6 +16,7 @@
   $: svgId = createSvgId(trial.shape, trial.color, trial.image, $settings)
   $: shapeOuterColor = findShapeOuterColor(trial.color, $settings)
   $: boxColor = findBoxColor(trial.shape, trial.color, trial.image, $settings)
+  $: cacheNextTrial(nextTrial, $settings)
   $: highlight = presentation.highlight
   $: flash = presentation.flash
   $: grid = gameDisplayInfo.grid ?? $gameSettings.grid ?? 'rotate3D'

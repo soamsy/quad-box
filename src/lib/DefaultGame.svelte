@@ -14,6 +14,7 @@ import { isPlaying, gameDisplayInfo } from "../stores/gameRunningStore"
 
 let trials
 let currentTrial
+let nextTrial
 let trialsIndex
 let scoresheet = []
 let presentation
@@ -26,6 +27,7 @@ const resetRuntimeData = () => {
   gameDisplayInfo.set({})
   trials = []
   currentTrial = {}
+  nextTrial = {}
   trialsIndex = 0
   scoresheet = []
   presentation = { highlight: false }
@@ -72,6 +74,9 @@ const playTrial = async (i) => {
 
 const selectTrial = (i) => {
   currentTrial = trials[i]
+  if (i < trials.length - 1) {
+    nextTrial = trials[i+1]
+  }
   trialsIndex = i
 }
 
@@ -84,6 +89,7 @@ const startGame = async () => {
   gameDisplayInfo.set(gameMeta)
   audioPlayer.cacheAudioSource(gameSettings.audioSource)
   trials = structuredClone(game.trials)
+  nextTrial = trials[0]
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   selectTrial(0)
   try {
@@ -223,12 +229,12 @@ onDestroy(async () => {
 </script>
 
 
-<Grid trial={currentTrial} {presentation} />
+<Grid trial={currentTrial} {nextTrial} {presentation} />
 {#if isMobile}
 <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
   <div class="w-full h-full flex items-center justify-between row-start-1 p-8">
     <div class="text-4xl ml-2 select-none opacity-30" >{trialDisplay}</div>
-    <button class="game-button text-4xl p-8 md:p-10" 
+    <button class="game-button text-4xl p-8 md:p-10"
       on:click={toggleGame}
       on:keydown={suppressKey}
       on:keypress={suppressKey}

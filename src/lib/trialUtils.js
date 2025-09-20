@@ -1,4 +1,5 @@
 import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
+import { getSvgUrl } from "./svg"
 
 export const createSvgId = (shape, color, image, settings) => {
   if (image) {
@@ -46,4 +47,13 @@ export const findBoxColor = (shape, color, image, settings) => {
 
 export const findShapeOuterColor = (color, settings) => {
   return settings.theme === 'dark' ? (color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
+}
+
+export const cacheNextTrial = (trial, settings) => {
+  if (trial) {
+    setTimeout(() => {
+      const svgId = createSvgId(trial.shape, trial.color, trial.image, settings)
+      getSvgUrl(svgId)
+    }, 0)
+  }
 }
