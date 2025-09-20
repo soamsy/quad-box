@@ -1,9 +1,10 @@
 import { writable } from 'svelte/store'
+import { migrateToV2 } from '../migrations/v2'
 
 const STORAGE_KEY = 'quad-box-settings'
 
 const defaultSettings = {
-  version: "v1",
+  version: "v2",
   mode: 'quad',
   theme: 'dark',
   gameSettings: {
@@ -16,9 +17,13 @@ const defaultSettings = {
       enableAudio: true,
       enableShape: true,
       enableColor: true,
-      enableShapeColor: false,
+      enableImage: false,
       grid: 'rotate3D',
       gameMode: 'none',
+      audioSource: 'letters2',
+      colorSource: 'basic',
+      shapeSource: 'basic',
+      imageSource: 'voronoi',
     },
     dual: {
       nBack: 2,
@@ -29,22 +34,47 @@ const defaultSettings = {
       enableAudio: true,
       enableShape: false,
       enableColor: false,
-      enableShapeColor: false,
+      enableImage: false,
       grid: 'rotate3D',
       gameMode: 'none',
+      audioSource: 'letters2',
+      colorSource: 'basic',
+      shapeSource: 'basic',
+      imageSource: 'voronoi',
     },
     custom: {
       nBack: 2,
-      numTrials: 30,
+      numTrials: 40,
       trialTime: 2500,
       matchChance: 25,
       interference: 20,
       enableAudio: true,
       enableShape: false,
       enableColor: true,
-      enableShapeColor: false,
+      enableImage: false,
       grid: 'rotate3D',
       gameMode: 'none',
+      audioSource: 'letters2',
+      colorSource: 'basic',
+      shapeSource: 'basic',
+      imageSource: 'voronoi',
+    },
+    customB: {
+      nBack: 2,
+      numTrials: 40,
+      trialTime: 2500,
+      matchChance: 25,
+      interference: 20,
+      enableAudio: true,
+      enableShape: false,
+      enableColor: true,
+      enableImage: false,
+      grid: 'rotate3D',
+      gameMode: 'none',
+      audioSource: 'letters2',
+      colorSource: 'voronoi',
+      shapeSource: 'basic',
+      imageSource: 'generative',
     },
     tally: {
       nBack: 2,
@@ -57,9 +87,13 @@ const defaultSettings = {
       enableAudio: false,
       enableShape: false,
       enableColor: false,
-      enableShapeColor: false,
+      enableImage: false,
       grid: 'rotate3D',
       gameMode: 'tally',
+      audioSource: 'letters2',
+      colorSource: 'basic',
+      shapeSource: 'basic',
+      imageSource: 'voronoi',
     },
   },
   feedback: 'show',
@@ -69,8 +103,6 @@ const defaultSettings = {
   successComboRequired: 1,
   failureCriteria: 50,
   failureComboRequired: 3,
-  audioSource: 'letters2',
-  patternSource: 'voronoi',
   hotkeys: {
     'position': 'A',
     'color': 'F',
@@ -108,7 +140,8 @@ const loadSettings = () => {
   if (typeof localStorage === 'undefined') return getDefaultSettings()
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    const savedSettings = raw ? JSON.parse(raw) : {}
+    let savedSettings = raw ? JSON.parse(raw) : {}
+    savedSettings = migrateToV2(savedSettings)
     return deepMerge(getDefaultSettings(), savedSettings)
   } catch (e) {
     console.error('Failed to load settings from localStorage:', e)

@@ -102,7 +102,7 @@ const startGame = async () => {
   isPlaying.set(true)
   gameMeta = { ...game.meta, start: Date.now() }
   gameDisplayInfo.set(gameMeta)
-  audioPlayer.cacheAudioSource($settings.audioSource)
+  audioPlayer.cacheAudioSource(gameSettings.audioSource)
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   presentation.highlight = true

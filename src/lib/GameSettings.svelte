@@ -1,5 +1,5 @@
 <script>
-    import { onDestroy } from "svelte";
+  import { onDestroy } from "svelte"
   import { gameSettings } from "../stores/gameSettingsStore"
   import { settings } from "../stores/settingsStore"
   import { Info, Settings } from "@lucide/svelte"
@@ -16,12 +16,12 @@
   const toggleShapeOrColor = (event, field) => {
     gameSettings.setField(field, event.target.checked)
     if (event.target.value) {
-      gameSettings.setField('enableShapeColor', false)
+      gameSettings.setField('enableImage', false)
     }
   }
 
   const toggleShapeAndColor = (event) => {
-    gameSettings.setField('enableShapeColor', event.target.checked)
+    gameSettings.setField('enableImage', event.target.checked)
     if (event.target.value) {
       gameSettings.setField('enableShape', false)
       gameSettings.setField('enableColor', false)
@@ -59,6 +59,27 @@
   }
 
   const range = (n) => Array.from({ length: n }, (_, i) => i)
+
+  const audioOptions = new Map([
+    ['letters2','Letters A'],
+    ['letters','Letters B'],
+    ['numbers','Numbers'],
+    ['nato','NATO'],
+    ['syl5','5 syllables'],
+    ['syl10','10 syllables'],
+  ])
+  const shapeOptions = new Map([
+    ['basic', 'Basic'],
+    ['tetris', 'Tetris'],
+    ['iconsA', 'Icons A'],
+    ['iconsB', 'Icons B'],
+  ])
+  const colorOptions = new Map([
+    ['basic','Basic'],
+    ['gradient','Gradient'],
+    ['voronoi','Voronoi'],
+    ['generative','Generative Art'],
+  ])
 
   $: numTrials = $gameSettings.numTrials
 </script>
@@ -130,13 +151,13 @@
         </div>
       </div>
     </span>
-    <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />  
+    <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />
   </label>
 </div>
 <div class="flex flex-col gap-1">
   <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
     <span class="text-base">Grid:</span>
-    <select bind:value={$gameSettings.grid} class="select">
+    <select bind:value={$gameSettings.grid} class="select h-8">
       <option value="rotate3D">3D</option>
       <option value="static2D">2D</option>
     </select>
@@ -164,30 +185,68 @@
     </div>
   {/if}
 {/if}
-{#if $settings.mode === 'custom' || $settings.mode === 'tally'}
-  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+{#if $settings.mode.startsWith('custom') || $settings.mode === 'tally'}
+  <div class="grid grid-cols-[2fr_1fr_3fr] items-center gap-4">
     <label for="enable-audio" class="text-base">Audio:</label>
     <input id="enable-audio" type="checkbox" bind:checked={$gameSettings.enableAudio} class="toggle" />
+    <select bind:value={$gameSettings.audioSource} class="select h-8">
+      {#each audioOptions as [id, description] (id) }
+        <option value={id}>{description}</option>
+      {/each}
+    </select>
   </div>
-  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+  <div class="grid grid-cols-[2fr_1fr_3fr] items-center gap-4">
     <label for="enable-color" class="text-base">Color:</label>
     <input id="enable-color" type="checkbox" checked={$gameSettings.enableColor} on:input={(e) => toggleShapeOrColor(e, 'enableColor')} class="toggle" />
+    <select bind:value={$gameSettings.colorSource} class="select h-8">
+      {#each colorOptions as [id, description] (id) }
+        <option value={id}>{description}</option>
+      {/each}
+    </select>
   </div>
-  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
+  <div class="grid grid-cols-[2fr_1fr_3fr] items-center gap-4">
     <label for="enable-shape" class="text-base">Shape:</label>
     <input id="enable-shape" type="checkbox" checked={$gameSettings.enableShape} on:input={(e) => toggleShapeOrColor(e, 'enableShape')} class="toggle" />
+    <select bind:value={$gameSettings.shapeSource} class="select h-8">
+      {#each shapeOptions as [id, description] (id) }
+        <option value={id}>{description}</option>
+      {/each}
+    </select>
   </div>
-  <div class="grid grid-cols-[7fr_3fr] items-center gap-4">
-    <label for="enable-shape-color" class="text-base">Pattern:</label>
-    <input id="enable-shape-color" type="checkbox" checked={$gameSettings.enableShapeColor} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
-  </div>
-  {#if $gameSettings.enableShapeColor}
-  <div class="grid grid-cols-[4fr_6fr] items-center gap-4 ml-6">
-    <span class="text-base">Source:</span>
-    <select bind:value={$settings.patternSource} class="select">
+  <div class="grid grid-cols-[2fr_1fr_3fr] items-center gap-4">
+    <label for="enable-shape-color" class="text-base">Image:</label>
+    <input id="enable-shape-color" type="checkbox" checked={$gameSettings.enableImage} on:input={(e) => toggleShapeAndColor(e)} class="toggle" />
+    <select bind:value={$gameSettings.imageSource} class="select h-8">
       <option value="voronoi">Voronoi</option>
       <option value="generative">Generative Art</option>
     </select>
   </div>
-  {/if}
+{:else}
+<div class="grid grid-cols-[4fr_6fr] items-center gap-4">
+  <span class="text-base">Audio:</span>
+  <select bind:value={$gameSettings.audioSource} id="audio-select" class="select h-8">
+    {#each audioOptions as [id, description] (id) }
+      <option value={id}>{description}</option>
+    {/each}
+  </select>
+</div>
+{/if}
+
+{#if $settings.mode === 'quad'}
+<div class="grid grid-cols-[4fr_6fr] items-center gap-4">
+  <label for="enable-color" class="text-base">Color:</label>
+  <select bind:value={$gameSettings.colorSource} class="select h-8">
+    {#each colorOptions as [id, description] (id) }
+      <option value={id}>{description}</option>
+    {/each}
+  </select>
+</div>
+<div class="grid grid-cols-[4fr_6fr] items-center gap-4">
+  <label for="enable-shape" class="text-base">Shape:</label>
+  <select bind:value={$gameSettings.shapeSource} class="select h-8">
+    {#each shapeOptions as [id, description] (id) }
+      <option value={id}>{description}</option>
+    {/each}
+  </select>
+</div>
 {/if}

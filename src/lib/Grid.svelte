@@ -9,18 +9,42 @@
   import { mobile } from "../stores/mobileStore"
   import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
 
-  const findShapeName = (trial) => {
-    if (trial.shape && !trial.color) {
-      return `${trial.shape}-${$settings.theme}-inner`
-    } else if (trial.shape) {
-      return `${trial.shape}-${$settings.theme}-${trial.color}`
-    } else {
-      return ''
+  const createSvgId = (trial) => {
+    if (trial.image) {
+      return `${trial.image}-${$settings.theme}`
     }
+
+    if (trial.shape && !trial.color) {
+      return `basicShape-${trial.shape}-inner-${$settings.theme}`
+    } else if (trial.shape) {
+      if (trial.color.startsWith('gradient')) {
+        return `gradientShape-${trial.shape}-${trial.color}-${$settings.theme}`
+      } else if (trial.color.startsWith('generative')) {
+        return `generativeShape-${trial.shape}-${trial.color}-${$settings.theme}`
+      } else if (trial.color.startsWith('voronoi')) {
+        return `voronoiShape-${trial.shape}-${trial.color}-${$settings.theme}`
+      } else {
+        return `basicShape-${trial.shape}-${trial.color}-${$settings.theme}`
+      }
+    }
+
+    if (!trial.shape && trial.color) {
+      if (trial.color.startsWith('gradient')) {
+        return `gradientShape-bg-${trial.color}-${$settings.theme}`
+      }
+      if (trial.color.startsWith('generative')) {
+        return `generativeShape-bg-${trial.color}-${$settings.theme}`
+      }
+      if (trial.color.startsWith('voronoi')) {
+        return `voronoiShape-bg-${trial.color}-${$settings.theme}`
+      }
+    }
+
+    return ''
   }
 
   const findBoxColor = (trial) => {
-    if (trial.shape || trial.shapeColor) {
+    if (trial.shape || trial.image) {
       return ''
     } else if (trial.color) {
       return $settings.theme === 'dark' ? DARK_PALETTE[trial.color] : LIGHT_PALETTE[trial.color]
@@ -32,7 +56,7 @@
   const range = (n) => Array.from({ length: n }, (_, i) => i)
 
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
-  $: shapeName = findShapeName(trial)
+  $: svgId = createSvgId(trial)
   $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
   $: boxColor = findBoxColor(trial)
   $: highlight = presentation.highlight
@@ -57,9 +81,8 @@
           transparent={false}
           position={trial[`position${i}`]}
           {boxColor}
-          {shapeName}
+          {svgId}
           {shapeOuterColor}
-          pattern={trial[`shapeColor`]}
           grid={grid}
           />
         {/if}
@@ -69,9 +92,8 @@
       show={trial.position && highlight}
       position={trial.position}
       {boxColor}
-      {shapeName}
+      {svgId}
       {shapeOuterColor}
-      pattern={trial.shapeColor}
       grid={grid}
       />
     {/if}
@@ -93,9 +115,8 @@
           transparent={trial.position1 ? true : false}
           position={trial[`position${i}`]}
           {boxColor}
-          {shapeName}
+          {svgId}
           {shapeOuterColor}
-          pattern={trial[`shapeColor`]}
            />
         {/if}
       {/each}
@@ -104,9 +125,8 @@
       show={trial.position && highlight}
       position={trial.position}
       {boxColor}
-      {shapeName}
-      {shapeOuterColor}
-      pattern={trial.shapeColor} />
+      {svgId}
+      {shapeOuterColor} />
     {/if}
     <Frame class="-translate-z-[30.15svmin]" />
     <Frame class="-translate-z-[10.05svmin]" />

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- After starting the server with `npm run dev`, navigate
+   to this file at http://localhost:5173/view-shape-pool.html
+   to see what svg shapes are available
+   -->
+  <title>ShapeSvgPool Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .shape-container {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+      width: 120px;
+    }
+    .shape-container svg {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    .shape-name {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ShapeSvgPool Test</h1>
+  <div id="status"></div>
+  <div id="shapes-container"></div>
+
+  <script type="module">
+
+    function randomHex() {
+      const hex = Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
+      return `#${hex}`;
+    }
+
+
+    import shapeSvgPool from './src/lib/shapeSvgPool.js'
+
+    const status = document.getElementById('status')
+    const container = document.getElementById('shapes-container')
+
+    shapeSvgPool.load().then(() => {
+      status.innerHTML = `<p>Loaded: ${shapeSvgPool.isLoaded()}</p>`
+      status.innerHTML += `<p>Total shapes: ${shapeSvgPool.getAllShapeIds().length}</p>`
+
+      const shapeIds = shapeSvgPool.getAllShapeIds()
+
+      shapeIds.forEach(id => {
+
+        const svgElement = shapeSvgPool.getShapeSvg(id)
+        if (svgElement) {
+          svgElement.setAttribute('stroke', '#000')
+          svgElement.setAttribute('fill', randomHex())
+          svgElement.setAttribute('stroke-width', '2%')
+          svgElement.setAttribute('height', '400')
+          svgElement.setAttribute('width', '400')
+
+          const shapeDiv = document.createElement('div')
+          shapeDiv.className = 'shape-container'
+
+          const svgContainer = document.createElement('div')
+          svgContainer.appendChild(svgElement)
+
+          const nameDiv = document.createElement('div')
+          nameDiv.className = 'shape-name'
+          nameDiv.textContent = id
+
+          shapeDiv.appendChild(svgContainer)
+          shapeDiv.appendChild(nameDiv)
+          container.appendChild(shapeDiv)
+        }
+      })
+    }).catch(error => {
+      status.innerHTML = `<p>Error: ${error.message}</p>`
+    })
+  </script>
+</body>
+</html>

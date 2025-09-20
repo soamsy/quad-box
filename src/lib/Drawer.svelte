@@ -125,24 +125,13 @@ onMount(() => {
         <div class="w-full border-b-1 my-1"></div>
         <ModeSwapper />
         <GameSettings />
-        <div class="my-2 divider"></div>
+        <div class="my-0 divider"></div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
           <span class="text-base">Feedback:</span>
           <select bind:value={$settings.feedback} id="feedback-select" class="select">
             <option value="show">Show</option>
             <option value="hide">Hide</option>
             <option value="hide-counter">Hide counter only</option>
-          </select>
-        </div>
-        <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
-          <span class="text-base">Voice:</span>
-          <select bind:value={$settings.audioSource} id="audio-select" class="select">
-            <option value="letters2">Letters A</option>
-            <option value="letters">Letters B</option>
-            <option value="numbers">Numbers</option>
-            <option value="nato">NATO</option>
-            <option value="syl5">5 syllables</option>
-            <option value="syl10">10 syllables</option>
           </select>
         </div>
         <div class="flex flex-col gap-1">

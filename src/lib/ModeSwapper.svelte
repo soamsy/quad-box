@@ -3,18 +3,21 @@
   import { Triangle } from '@lucide/svelte'
   import { onDestroy } from 'svelte'
   $: mode = $settings.mode
+  $: formattedMode = (mode === 'custom' ? 'custom a' : (mode === 'customB' ? 'custom b' : mode)).toUpperCase()
 
   const darkColors = new Map([
     ['quad', 'bg-rose-900'],
     ['dual', 'bg-cyan-800'],
-    ['custom', 'bg-gray-700'],
+    ['custom', 'bg-orange-800'],
+    ['customB', 'bg-yellow-700'],
     ['tally', 'bg-indigo-800'],
   ])
 
   const lightColors = new Map([
     ['quad', 'bg-rose-400'],
     ['dual', 'bg-cyan-400'],
-    ['custom', 'bg-gray-400'],
+    ['custom', 'bg-orange-400'],
+    ['customB', 'bg-yellow-400'],
     ['tally', 'bg-indigo-400'],
   ])
 
@@ -57,7 +60,7 @@
 
 <div class="flex bg- items-center justify-around">
   <div on:click={prevMode} class="btn rounded border-0 px-2 -rotate-90"><Triangle class="fill-base-100" /></div>
-  <div class="flex-grow flex items-center justify-center mx-2 p-1 text-2xl select-none transition-colors duration-100 {bg}">{mode.toUpperCase()}</div>
+  <div class="flex-grow flex items-center justify-center mx-2 p-1 text-2xl select-none transition-colors duration-100 {bg}">{formattedMode}</div>
   <div on:click={nextMode} class="btn rounded border-0 px-2 rotate-90"><Triangle class="fill-base-100" /></div>
 </div>
 

@@ -76,11 +76,11 @@ export class NBackGame {
 
   createDefaultTitle(tags) {
     const has = (tag) => tags.includes(tag)
-    if (has('audio') && !has('shape') && !has('color') && !has('shapeColor')) {
+    if (has('audio') && !has('shape') && !has('color') && !has('image')) {
       return 'dual'
     } else if (has('audio') && has('shape') && has('color')) {
       return 'quad'
-    } else if (has('audio') && (has('shape') !== has('color') || has('shapeColor'))) {
+    } else if (has('audio') && (has('shape') !== has('color') || has('image'))) {
       return 'tri'
     } else {
       return 'custom'

@@ -82,7 +82,7 @@ const startGame = async () => {
   isPlaying.set(true)
   gameMeta = { ...game.meta, start: Date.now() }
   gameDisplayInfo.set(gameMeta)
-  audioPlayer.cacheAudioSource($settings.audioSource)
+  audioPlayer.cacheAudioSource(gameSettings.audioSource)
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   selectTrial(0)
@@ -190,7 +190,7 @@ const handleKey = (event) => {
     if (key.toUpperCase() === event.key.toUpperCase()) {
       checkForMatch(action)
       if (action === 'shape') {
-        checkForMatch('shapeColor')
+        checkForMatch('image')
       }
     }
   }
@@ -227,7 +227,7 @@ onDestroy(async () => {
     <SmallKey field="position" display="Position" {$isPlaying} {checkForMatch}></SmallKey>
     <SmallKey field="color" display="Color" {$isPlaying} {checkForMatch}></SmallKey>
     <SmallKey field="shape" display="Shape" {$isPlaying} {checkForMatch}></SmallKey>
-    <SmallKey field="shapeColor" display="Pattern" {$isPlaying} {checkForMatch}></SmallKey>
+    <SmallKey field="image" display="Image" {$isPlaying} {checkForMatch}></SmallKey>
     <SmallKey field="audio" display="Audio" {$isPlaying} {checkForMatch}></SmallKey>
   </div>
 </div>
@@ -244,14 +244,14 @@ onDestroy(async () => {
     >{#if $isPlaying} Stop {:else} Play {/if}</button>
   </div>
   <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
-    {#if !gameSettings.enableShapeColor}
+    {#if !gameSettings.enableImage}
     <LargeKey field="color" display="Color" {$isPlaying} {checkForMatch}></LargeKey>
     {/if}
     <LargeKey field="position" display="Position" {$isPlaying} {checkForMatch}></LargeKey>
   </div>
   <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
-    {#if gameSettings.enableShapeColor}
-    <LargeKey field="shapeColor" display="Pattern" {$isPlaying} {checkForMatch}></LargeKey>
+    {#if gameSettings.enableImage}
+    <LargeKey field="image" display="Image" {$isPlaying} {checkForMatch}></LargeKey>
     {:else}
     <LargeKey field="shape" display="Shape" {$isPlaying} {checkForMatch}></LargeKey>
     {/if}
