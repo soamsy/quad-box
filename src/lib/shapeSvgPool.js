@@ -23,7 +23,7 @@ class ShapeSvgPool {
   }
 
   async _loadShapes() {
-    const response = await fetch('/sprites/shapes.html')
+    const response = await fetch('sprites/shapes.html')
     const text = await response.text()
 
     const parser = new DOMParser()
