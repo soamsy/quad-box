@@ -80,9 +80,9 @@ onMount(() => {
       </div>
     </div>
     <div class="justify-self-center flex gap-4 select-none px-6 whitespace-nowrap max-w-[70svw] overflow-hidden"
-      class:advance={$autoProgression.advance} 
+      class:advance={$autoProgression.advance}
       class:fallback={$autoProgression.fallback}>
-      <div>N = {$gameSettings.nBack}</div>
+      <div>N {$gameSettings.rules === 'variable' ? '≤' : '='} {$gameSettings.nBack}</div>
       {#if $settings.mode === 'tally'}
       <div>W = {getPositionWidthDisplay()}</div>
       {/if}
@@ -125,7 +125,7 @@ onMount(() => {
         <div class="w-full border-b-1 my-1"></div>
         <ModeSwapper />
         <GameSettings />
-        <div class="my-2 divider"></div>
+        <div class="my-0 divider"></div>
         <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
           <span class="text-base">Feedback:</span>
           <select bind:value={$settings.feedback} id="feedback-select" class="select">
@@ -134,17 +134,7 @@ onMount(() => {
             <option value="hide-counter">Hide counter only</option>
           </select>
         </div>
-        <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
-          <span class="text-base">Voice:</span>
-          <select bind:value={$settings.audioSource} id="audio-select" class="select">
-            <option value="letters2">Letters A</option>
-            <option value="letters">Letters B</option>
-            <option value="numbers">Numbers</option>
-            <option value="nato">NATO</option>
-            <option value="syl5">5 syllables</option>
-            <option value="syl10">10 syllables</option>
-          </select>
-        </div>
+        {#if $settings.mode !== 'vtally'}
         <div class="flex flex-col gap-1">
           <div class="grid grid-cols-[3fr_1fr] items-center">
             <label for="rotation-speed-range" class="text-base">Rotation speed:</label>
@@ -152,8 +142,9 @@ onMount(() => {
           </div>
           <input id="rotation-speed-range" type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
         </div>
+        {/if}
         <div class="divider"></div>
-        {#if $settings.mode !== 'tally'}
+        {#if $settings.mode !== 'tally' && $settings.mode !== 'vtally'}
         <div class="grid grid-cols-[8fr_2fr] items-center">
           <label for="enable-auto-progression" class="text-base">Auto progression:</label>
           <input id="enable-auto-progression" type="checkbox" bind:checked={$settings.enableAutoProgression} class="toggle" />

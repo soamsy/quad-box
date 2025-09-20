@@ -52,6 +52,16 @@
     }
   }
 
+  const applyVisualTallyBeta = (event) => {
+    settings.update('enableVisualTallyBeta', event.target.checked)
+    if (event.target.checked) {
+      settings.update('mode', 'vtally')
+    } else {
+      if (get(settings).mode === 'vtally') {
+        settings.update('mode', 'quad')
+      }
+    }
+  }
 </script>
 
 <button class="flex items-center justify-center" on:click={openModal}>
@@ -61,13 +71,13 @@
   <div class="modal modal-open whitespace-normal" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
     <div class="modal-box help-box w-[90%] max-w-3xl">
       <div role="tablist" class="tabs tabs-lift relative">
-        <a role="tab" 
-          class="tab" 
-          class:tab-active={tab === 'how-to-play'} 
+        <a role="tab"
+          class="tab"
+          class:tab-active={tab === 'how-to-play'}
           on:click={() => tab = 'how-to-play'}>
           How to Play
         </a>
-        <a role="tab" 
+        <a role="tab"
           class="tab"
           class:tab-active={tab === 'misc'}
           on:click={() => tab = 'misc'}>
@@ -98,7 +108,7 @@
         </ul>
         <p>
           You can press multiple keys if more than one aspect matches. The game continues with a new cube every few seconds.
-          After a set amount of trials, you'll be scored on your accuracy. 
+          After a set amount of trials, you'll be scored on your accuracy.
           If you do well enough, you're n-back level will be advanced by 1.
           Stay focused and try to get as high a score as possible!
         </p>
@@ -143,11 +153,19 @@
         <div class="divider" />
         <div class="mt-4 flex flex-col gap-2 text-xl">
           <p class="mb-2 font-semibold">Betas</p>
-          <div class="flex items-center gap-2">
-            <input type="checkbox" id="tallyMode" checked={$settings.enableTallyBeta} on:click={applyTallyBeta} class="checkbox" />
-            <label for="tallyMode" class="text-sm font-medium">
-              Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
-            </label>
+          <div class="flex flex-col md:flex-row items-center gap-2">
+            <div class="flex gap-1 items-center justify-between">
+              <input type="checkbox" id="tallyMode" checked={$settings.enableTallyBeta} on:click={applyTallyBeta} class="checkbox" />
+              <label for="tallyMode" class="text-sm font-medium">
+                Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
+              </label>
+            </div>
+            <div class="flex gap-1 items-center justify-between">
+              <input type="checkbox" id="visualTallyMode" checked={$settings.enableVisualTallyBeta} on:click={applyVisualTallyBeta} class="checkbox" />
+              <label for="visualTallyMode" class="text-sm font-medium">
+                Enable <span class="bg-emerald-400 dark:bg-emerald-800 px-2 py-1 rounded">Visual Tally</span>
+              </label>
+            </div>
           </div>
           <div class="prose text-sm flex flex-col gap-2 ml-4">
             <p>Tally mode changes how matches are handled. Instead of pressing a hotkey for every stimulus that matches during a trial, you enter the <italic>count</italic> of how many stimuli matched.</p>
@@ -158,6 +176,7 @@
       {/if}
       <div class="modal-action flex flex-row-reverse items-center justify-between mt-2">
         <button class="btn" on:click={closeModal}>Close</button>
+        <a class="link" href="https://ko-fi.com/soasoa" target="_blank">Donate☕</a>
         <a class="link" href="https://github.com/soamsy/quad-box" target="_blank">Github</a>
       </div>
     </div>

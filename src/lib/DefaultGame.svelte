@@ -14,6 +14,7 @@ import { isPlaying, gameDisplayInfo } from "../stores/gameRunningStore"
 
 let trials
 let currentTrial
+let nextTrial
 let trialsIndex
 let scoresheet = []
 let presentation
@@ -26,6 +27,7 @@ const resetRuntimeData = () => {
   gameDisplayInfo.set({})
   trials = []
   currentTrial = {}
+  nextTrial = {}
   trialsIndex = 0
   scoresheet = []
   presentation = { highlight: false }
@@ -62,7 +64,7 @@ const playTrial = async (i) => {
 
   selectTrial(i)
   presentation.highlight = true
-  const audioWait = currentTrial.audio ? audioPlayer.play(currentTrial.audio) : Promise.resolve()
+  const audioWait = currentTrial.audio ? makeCancellable(audioPlayer.play(currentTrial.audio)) : Promise.resolve()
   const presentationWait = delay(Math.min(2000, $gameDisplayInfo.trialTime - 350)).then(() => presentation.highlight = false)
   const trialWait = delay($gameDisplayInfo.trialTime)
   await Promise.all([audioWait, presentationWait, trialWait])
@@ -72,6 +74,9 @@ const playTrial = async (i) => {
 
 const selectTrial = (i) => {
   currentTrial = trials[i]
+  if (i < trials.length - 1) {
+    nextTrial = trials[i+1]
+  }
   trialsIndex = i
 }
 
@@ -82,15 +87,16 @@ const startGame = async () => {
   isPlaying.set(true)
   gameMeta = { ...game.meta, start: Date.now() }
   gameDisplayInfo.set(gameMeta)
-  audioPlayer.cacheAudioSource($settings.audioSource)
+  audioPlayer.cacheAudioSource(gameSettings.audioSource)
   trials = structuredClone(game.trials)
+  nextTrial = trials[0]
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   selectTrial(0)
   try {
     await delay(700)
     await playTrial(0)
   } catch (e) {
-    if (e.message === 'Timeout cancelled') {
+    if (e.message === 'Game cancelled') {
       console.debug('Game cancelled', e)
     } else {
       throw e
@@ -165,7 +171,7 @@ const delay = async (ms) => {
   const cancel = () => {
     if (timeoutId !== undefined) {
       clearTimeout(timeoutId)
-      rejectFn(new Error('Timeout cancelled'))
+      rejectFn(new Error('Game cancelled'))
       timeoutId = undefined
     }
   }
@@ -173,6 +179,19 @@ const delay = async (ms) => {
   timeoutCancelFns.push(cancel)
 
   return promise
+}
+
+const makeCancellable = (originalPromise) => {
+  let cancelFn
+
+  const wrappedPromise = new Promise((resolve, reject) => {
+    cancelFn = () => reject(new Error('Game cancelled'))
+    originalPromise.then(resolve, reject)
+  })
+
+  timeoutCancelFns.push(cancelFn)
+
+  return wrappedPromise
 }
 
 const handleKey = (event) => {
@@ -190,7 +209,7 @@ const handleKey = (event) => {
     if (key.toUpperCase() === event.key.toUpperCase()) {
       checkForMatch(action)
       if (action === 'shape') {
-        checkForMatch('shapeColor')
+        checkForMatch('image')
       }
     }
   }
@@ -210,12 +229,12 @@ onDestroy(async () => {
 </script>
 
 
-<Grid trial={currentTrial} {presentation} />
+<Grid trial={currentTrial} {nextTrial} {presentation} />
 {#if isMobile}
 <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
   <div class="w-full h-full flex items-center justify-between row-start-1 p-8">
     <div class="text-4xl ml-2 select-none opacity-30" >{trialDisplay}</div>
-    <button class="game-button text-4xl p-8 md:p-10" 
+    <button class="game-button text-4xl p-8 md:p-10"
       on:click={toggleGame}
       on:keydown={suppressKey}
       on:keypress={suppressKey}
@@ -227,7 +246,7 @@ onDestroy(async () => {
     <SmallKey field="position" display="Position" {$isPlaying} {checkForMatch}></SmallKey>
     <SmallKey field="color" display="Color" {$isPlaying} {checkForMatch}></SmallKey>
     <SmallKey field="shape" display="Shape" {$isPlaying} {checkForMatch}></SmallKey>
-    <SmallKey field="shapeColor" display="Pattern" {$isPlaying} {checkForMatch}></SmallKey>
+    <SmallKey field="image" display="Image" {$isPlaying} {checkForMatch}></SmallKey>
     <SmallKey field="audio" display="Audio" {$isPlaying} {checkForMatch}></SmallKey>
   </div>
 </div>
@@ -244,14 +263,14 @@ onDestroy(async () => {
     >{#if $isPlaying} Stop {:else} Play {/if}</button>
   </div>
   <div class="game-button-lg-group row-start-2 col-start-1 pr-24">
-    {#if !gameSettings.enableShapeColor}
+    {#if !gameSettings.enableImage}
     <LargeKey field="color" display="Color" {$isPlaying} {checkForMatch}></LargeKey>
     {/if}
     <LargeKey field="position" display="Position" {$isPlaying} {checkForMatch}></LargeKey>
   </div>
   <div class="game-button-lg-group row-start-2 col-start-4 pl-24">
-    {#if gameSettings.enableShapeColor}
-    <LargeKey field="shapeColor" display="Pattern" {$isPlaying} {checkForMatch}></LargeKey>
+    {#if gameSettings.enableImage}
+    <LargeKey field="image" display="Image" {$isPlaying} {checkForMatch}></LargeKey>
     {:else}
     <LargeKey field="shape" display="Shape" {$isPlaying} {checkForMatch}></LargeKey>
     {/if}

@@ -1,6 +1,4 @@
 import { line, curveBasis, curveCardinal, curveCatmullRom, curveMonotoneX, curveNatural } from 'd3-shape'
-import { settings } from '../stores/settingsStore'
-import { get } from 'svelte/store'
 
 const seedSpace = 100000000
 const divisions = 16
@@ -139,7 +137,7 @@ const generateSquigglePattern = (random, range, width, height, waveCount = 5) =>
   const points = []
 
   const fixed = [
-    [[0, 0], [width, height]], 
+    [[0, 0], [width, height]],
     [[0, 0], [width, height / 2]],
     [[0, 0], [width / 2, height]],
     [[width / 2, 0], [width / 2, height]],
@@ -249,7 +247,7 @@ const generateCylinder = (random, centerX, centerY, radius, height) => {
     const topY = centerY - height / 2
     const bottomX = centerX + radius * Math.cos(angle) * 0.8
     const bottomY = centerY + height / 2
-    
+
     top.push([topX, topY])
     bottom.push([bottomX, bottomY])
   }
@@ -310,14 +308,14 @@ const generateFractal = (random, centerX, centerY, size, depth = 3) => {
     const distance = size * (0.6 + random() * 0.3)
     const newX = centerX + distance * Math.cos(angle)
     const newY = centerY + distance * Math.sin(angle)
-    
+
     elements.push(...generateFractal(random, newX, newY, newSize * 0.7, depth - 1))
   }
 
   return elements
 }
 
-export const createArtSvg = (seed, width = 400, height = 400) => {
+export const createArtSvg = (seed, theme, width = 400, height = 400) => {
   let random = seededRandom(seed)
   let colorId = 0
   let firstHue
@@ -331,7 +329,6 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
   }
 
   const rollColor = () => {
-    let theme = get(settings).theme
     const hue = Math.floor(range(360))
     let lightness
     let saturation
@@ -353,14 +350,14 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
       const useDarkEnd = roll < 0.15
       const useLightEnd = roll > 0.80
       if (useDarkEnd) {
-        saturation = range(0, 12)
+        saturation = range(5, 17)
         lightness = range(3, 21)
       } else if (useLightEnd) {
         saturation = range(80, 90)
-        lightness = range(90, 100)
+        lightness = range(80, 90)
       } else {
-        saturation = range(58, 93)
-        lightness = range(45, 80)
+        saturation = range(63, 95)
+        lightness = range(35, 70)
       }
     }
 
@@ -451,16 +448,16 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     const radius = range(20, Math.min(width, height) / 3)
     const sides = 3 + Math.floor(random() * 7)
     const points = generatePolygon(random, centerX, centerY, radius, sides)
-    
+
     const lineGenerator = line()
       .x(d => d[0])
       .y(d => d[1])
-    
+
     const path = lineGenerator(points)
     const color = nextColor()
     const opacity = 0.4 + random() * 0.6
     const strokeWidth = 1 + random() * 3
-    
+
     return [`<path d="${path}" fill="${color}" fill-opacity="${opacity}" stroke="${nextColor()}" stroke-width="${strokeWidth}" />`]
   }
 
@@ -471,15 +468,15 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     const innerRadius = outerRadius * (0.3 + random() * 0.3)
     const points = range(5, 10)
     const vertices = generateStar(random, centerX, centerY, outerRadius, innerRadius, points)
-    
+
     const lineGenerator = line()
       .x(d => d[0])
       .y(d => d[1])
-    
+
     const path = lineGenerator(vertices)
     const color = nextColor()
     const opacity = 0.5 + random() * 0.5
-    
+
     return [`<path d="${path}" fill="${color}" fill-opacity="${opacity}" />`]
   }
 
@@ -488,19 +485,19 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     const centerY = range(50, height - 50)
     const size = range(30, Math.min(width, height) / 3)
     const pyramid = generatePyramid(random, centerX, centerY, size)
-    
+
     const faceColor = nextColor()
     const darkFaceColor = nextColor()
     const baseColor = nextColor()
     const edgeColor = nextColor()
-    
+
     const paths = []
     paths.push(`<path d="M${pyramid.base.map(p => p.join(',')).join(' L')} Z" fill="${baseColor}" stroke="${edgeColor}" stroke-width="1" />`)
     paths.push(`<path d="M${pyramid.face1.map(p => p.join(',')).join(' L')} Z" fill="${faceColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.8" />`)
     paths.push(`<path d="M${pyramid.face2.map(p => p.join(',')).join(' L')} Z" fill="${darkFaceColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.8" />`)
     paths.push(`<path d="M${pyramid.face3.map(p => p.join(',')).join(' L')} Z" fill="${faceColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.8" />`)
     paths.push(`<path d="M${pyramid.face4.map(p => p.join(',')).join(' L')} Z" fill="${darkFaceColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.8" />`)
-    
+
     return paths
   }
 
@@ -510,18 +507,18 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     const radius = range(20, Math.min(width, height) / 4)
     const heightVal = range(40, Math.min(width, height) / 2)
     const cylinder = generateCylinder(random, centerX, centerY, radius, heightVal)
-    
+
     const topColor = nextColor()
     const sideColor = nextColor()
     const edgeColor = nextColor()
-    
+
     const elements = []
     elements.push(`<path d="M${cylinder.top.map(p => p.join(',')).join(' L')} Z" fill="${topColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.7" />`)
     elements.push(`<path d="M${cylinder.bottom.map(p => p.join(',')).join(' L')} Z" fill="${topColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.9" />`)
     cylinder.sides.forEach(side => {
       elements.push(`<path d="M${side.map(p => p.join(',')).join(' L')} Z" fill="${sideColor}" stroke="${edgeColor}" stroke-width="1" fill-opacity="0.8" />`)
     })
-    
+
     return elements
   }
 
@@ -547,10 +544,10 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     const centerY = range(28, height - 28)
     const radius = range(30, Math.min(width, height) / 2)
     const gradientId = `gradient-${random()}`
-    
+
     const color1 = nextColor()
     const color2 = nextColor()
-    
+
     const gradient = `
       <defs>
         <radialGradient id="${gradientId}" cx="50%" cy="50%" r="50%">
@@ -559,7 +556,7 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
         </radialGradient>
       </defs>
     `
-    
+
     return [gradient, `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="url(#${gradientId})" />`]
   }
 
@@ -578,7 +575,7 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
   const styleK = [...repeat(gradientElement, range(1, 2)), ...repeat(starElement, range(2, 4))]
   const styleL = [...repeat(cylinderElement, range(1, 2)), ...repeat(squiggleElement, range(1, 3))]
   const styleM = [...repeat(fractalElement, range(1, 2)), ...repeat(spiralElement, range(1, 2)), ...repeat(textureElement, range(1, 2))]
-  const styleN = [...repeat(polygonElement, range(2, 4)), ...repeat(starElement, range(1, 3)), ...repeat(dotElement, range(1, 3))]  
+  const styleN = [...repeat(polygonElement, range(2, 4)), ...repeat(starElement, range(1, 3)), ...repeat(dotElement, range(1, 3))]
 
   const styleChaos = [
     ...repeat(cubeElement, range(1, 2)),
@@ -592,19 +589,19 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     ...repeat(cylinderElement, range(0, 1)),
     ...repeat(textureElement, range(2, 4))
   ]
-  
+
   const styleMinimal = [
     ...repeat(textureElement, range(3, 4)),
     ...repeat(gradientElement, range(1, 1)),
     ...repeat(pyramidElement, range(1, 1))
   ]
-  
+
   const styles = [styleA, styleB, styleC, styleD, styleE, styleF, styleG, styleH, styleI, styleJ, styleK, styleL, styleM, styleN, styleChaos, styleMinimal]
   const style = styles[Math.floor((seed / seedSpace) * styles.length)]
 
   const defs = []
   const otherElements = []
-  
+
   for (let f of style) {
     const el = f()
     if (el.some(e => e && e.includes('<defs>'))) {
@@ -628,11 +625,9 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
     `)
   }
 
-  return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
-            ${defs.length > 0 ? defs.join('\n  ') : ''}
-            <rect width="100%" height="100%" fill="${useGradientBackground ? 'url(#' + bgGradientId + ')' : baseColor}" />
-            ${otherElements.join('\n  ')}
-          </svg>`
+  return `${defs.length > 0 ? defs.join('\n  ') : ''}
+          <rect width="100%" height="100%" fill="${useGradientBackground ? 'url(#' + bgGradientId + ')' : baseColor}" />
+          ${otherElements.join('\n  ')}`
 }
 
 
@@ -646,5 +641,5 @@ export const createArtPool = () => {
     }
     seedPool.push(seed)
   }
-  return seedPool.map(s => Math.floor(s).toString())
+  return seedPool.map(s => 'generative_' + Math.floor(s).toString())
 }

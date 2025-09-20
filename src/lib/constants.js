@@ -1,46 +1,93 @@
-export const SHAPES = {
-  diamond: `
-    M55,5 L105,55 L55,105 L5,55 Z
-  `,
-  heart: `
-    M55,92
-    C30,77 10,47 30,27
-    C40,17 55,22 55,37
-    C55,22 70,17 80,27
-    C100,47 80,77 55,92 Z
-  `,
-  hemicircle: `
-    M5,40
-    A55,60 0 0,1 105,40 
-    L105,100
-    L5,100 Z
-  `,
-  octagon: `
-    M35,5 L75,5 L105,35 L105,75 L75,105 L35,105 L5,75 L5,35 Z
-  `,
-  square: `
-    M5,5 H105 V105 H5 Z
-  `,
-  star: `
-    M55,5 
-    L66.8,40.1 L105,40.1 
-    L74.1,62 L85.9,96 
-    L55,75 L24.1,96 
-    L35.9,62 L5,40.1 
-    L43.2,40.1 Z
-  `,
-  triangle: `
-    M55,5 L105,105 L5,105 Z
-  `,
-  cross: `
-    M40,5 H70 V40 H105 V70 H70 V105 H40 V70 H5 V40 H40 Z
-  `,
-  crescent: `
-    M95,22
-    A50,50 0 1,0 95,88
-    A35,38 0 1,1 95,22 Z
-  `,
-}
+export const SHAPE_POOL = [
+  'diamond',
+  'heart',
+  'hemicircle',
+  'octagon',
+  'square',
+  'star',
+  'triangle',
+  'cross',
+  'crescent',
+]
+
+export const TETRIS_POOL = [
+  'tetris_i',
+  'tetris_t',
+  'tetris_z',
+  'tetris_l',
+  'tetris_u',
+  'tetris_arrow',
+  'tetris_cross',
+  'tetris_zig',
+  'tetris_corner',
+]
+
+export const ICONS_A_POOL = [
+  'full_lucide_cookie',
+  'full_lucide_swatch_book',
+  'full_graphene_apps',
+  'full_mindustry',
+  'full_biome',
+  'full_emoji_tooth',
+  'full_nebbia_kwgt',
+  'full_signal_alt_1',
+  'full_guardians',
+  'full_grasshopper',
+  'full_goodtime',
+  'full_gms_flags',
+  'full_tokyo_amesh_log',
+  'full_toogoodtogo',
+  'full_canli_doviz',
+  'full_beehive',
+  'full_diaspora',
+  'full_bubble_pop',
+  'full_officesuite',
+  'full_status2',
+  'full_youdao_note',
+  'full_unity_remote',
+  'full_unacademy',
+  'full_tuta_alt',
+  'full_toast_takeout',
+  'full_siyuan',
+  'full_airtel',
+  'full_alfred_camera',
+  'full_apcoa_flow',
+  'full_cloud',
+  'full_deezer',
+  'full_emoji_beans',
+  'full_2050',
+  'full_lucide_command',
+  'full_domestika',
+  'full_mbills',
+]
+
+export const ICONS_B_POOL = [
+  'full_lucide_bean',
+  'full_lucide_snail',
+  'full_lucide_hamburger',
+  'full_lucide_worm',
+  'full_lucide_fish',
+  'full_breadboard',
+  'full_money_manager',
+  'full_afvalwijzer',
+  'full_toxic',
+  'full_emoji_baby_bottle',
+  'full_emoji_bat',
+  'full_emoji_thunder_cloud_and_rain',
+  'full_lego_builder',
+  'full_quacker',
+  'full_samsung_gift_indonesia',
+  'full_toxic',
+  'full_altcoinprices',
+  'full_oroaming',
+  'full_emoji_mushroom',
+  'full_repainter',
+  'full_bos_funk',
+  'full_cherrygram',
+  'full_life_fits_into_home',
+  'full_meditation_assistant_alt',
+  'full_functiongenerator'
+]
 
 export const LIGHT_PALETTE = {
   red: '#FF2233',
@@ -51,6 +98,7 @@ export const LIGHT_PALETTE = {
   cyan: '#69FCFF',
   orange: '#FF9320',
   pink: '#FC75BA',
+  inner: '#313131',
 }
 
 export const DARK_PALETTE = {
@@ -62,36 +110,10 @@ export const DARK_PALETTE = {
   cyan: '#57B6C3',
   orange: '#CC5000',
   pink: '#F27191',
+  inner: '#FFFFFF',
 }
 
-export const COLOR_POOL = Object.keys(LIGHT_PALETTE)
-export const SHAPE_POOL = Object.keys(SHAPES)
-
-function createSvgBlobUrl(path, fill, stroke) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110">
-    <path d="${path.trim()}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>
-  </svg>`
-  const blob = new Blob([svg], { type: 'image/svg+xml' })
-  return URL.createObjectURL(blob)
-}
-
-const generateShapeUrls = () => {
-  const shapeUrls = {}
-  for (const shape in SHAPES) {
-    shapeUrls[shape] = {}
-    for (const lightColor in LIGHT_PALETTE) {
-      shapeUrls[`${shape}-light-${lightColor}`] = createSvgBlobUrl(SHAPES[shape], LIGHT_PALETTE[lightColor], '#222')
-    }
-    for (const darkColor in DARK_PALETTE) {
-      shapeUrls[`${shape}-dark-${darkColor}`] = createSvgBlobUrl(SHAPES[shape], DARK_PALETTE[darkColor], '#333')
-    }
-    shapeUrls[`${shape}-dark-inner`] = createSvgBlobUrl(SHAPES[shape], "#FFFFFF", '#333')
-    shapeUrls[`${shape}-light-inner`] = createSvgBlobUrl(SHAPES[shape], "#313131", '#333')
-  }
-  return shapeUrls
-}
-
-export const SHAPE_URLS = generateShapeUrls()
+export const COLOR_POOL = Object.keys(LIGHT_PALETTE).filter(key => key !== 'inner')
 
 const NATURAL_PATH = "Natural-Numbers/"
 export const NUMBER_AUDIO_POOL = [

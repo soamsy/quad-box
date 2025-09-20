@@ -1,5 +1,6 @@
 <script>
   export let trial = {}
+  export let nextTrial = {}
   export let presentation = {}
   import Cell from "./Cell.svelte"
   import Frame from "./Frame.svelte"
@@ -7,39 +8,25 @@
   import { gameSettings } from "../stores/gameSettingsStore"
   import { gameDisplayInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
-  import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
-
-  const findShapeName = (trial) => {
-    if (trial.shape && !trial.color) {
-      return `${trial.shape}-${$settings.theme}-inner`
-    } else if (trial.shape) {
-      return `${trial.shape}-${$settings.theme}-${trial.color}`
-    } else {
-      return ''
-    }
-  }
-
-  const findBoxColor = (trial) => {
-    if (trial.shape || trial.shapeColor) {
-      return ''
-    } else if (trial.color) {
-      return $settings.theme === 'dark' ? DARK_PALETTE[trial.color] : LIGHT_PALETTE[trial.color]
-    } else {
-      return $settings.theme === 'dark' ? '#FDFDFD' : '#313131'
-    }
-  }
+  import { cacheNextTrial, createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
 
   const range = (n) => Array.from({ length: n }, (_, i) => i)
 
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
-  $: shapeName = findShapeName(trial)
-  $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
-  $: boxColor = findBoxColor(trial)
+  $: svgId = createSvgId(trial.shape, trial.color, trial.image, $settings)
+  $: shapeOuterColor = findShapeOuterColor(trial.color, $settings)
+  $: boxColor = findBoxColor(trial.shape, trial.color, trial.image, $settings)
+  $: cacheNextTrial(nextTrial, $settings)
   $: highlight = presentation.highlight
   $: flash = presentation.flash
   $: grid = gameDisplayInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
 </script>
 
+{#if trial.variableNBack}
+<div class="flex absolute z-10 items-center justify-center w-full h-full select-none pointer-events-none text-9xl md:text-[10rem] font-bold text-gray-700 dark:text-gray-300 opacity-80 [text-shadow:_1px_1px_0_black,_-1px_1px_0_black,_1px_-1px_0_black,_-1px_-1px_0_black]">
+  {trial.variableNBack}
+</div>
+{/if}
 {#if grid === 'static2D'}
 <div class="flex absolute items-center justify-center w-full h-full select-none overflow-hidden">
   <div class="absolute w-[81.3svmin] h-[81.3svmin] mb-10">
@@ -52,9 +39,8 @@
           transparent={false}
           position={trial[`position${i}`]}
           {boxColor}
-          {shapeName}
+          {svgId}
           {shapeOuterColor}
-          pattern={trial[`shapeColor`]}
           grid={grid}
           />
         {/if}
@@ -64,9 +50,8 @@
       show={trial.position && highlight}
       position={trial.position}
       {boxColor}
-      {shapeName}
+      {svgId}
       {shapeOuterColor}
-      pattern={trial.shapeColor}
       grid={grid}
       />
     {/if}
@@ -88,9 +73,8 @@
           transparent={trial.position1 ? true : false}
           position={trial[`position${i}`]}
           {boxColor}
-          {shapeName}
+          {svgId}
           {shapeOuterColor}
-          pattern={trial[`shapeColor`]}
            />
         {/if}
       {/each}
@@ -99,9 +83,8 @@
       show={trial.position && highlight}
       position={trial.position}
       {boxColor}
-      {shapeName}
-      {shapeOuterColor}
-      pattern={trial.shapeColor} />
+      {svgId}
+      {shapeOuterColor} />
     {/if}
     <Frame class="-translate-z-[30.15svmin]" />
     <Frame class="-translate-z-[10.05svmin]" />

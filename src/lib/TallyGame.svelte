@@ -1,6 +1,7 @@
 <script>
 import Grid from "./Grid.svelte"
 import NumberKey from "./NumberKey.svelte"
+import VisualCrank from "./VisualCrank.svelte"
 import { generateTallyGame } from "./nback"
 import { onDestroy } from "svelte"
 import { audioPlayer } from "./audioPlayer"
@@ -12,6 +13,7 @@ import { isPlaying, gameDisplayInfo } from "../stores/gameRunningStore"
 
 let trials
 let currentTrial
+let nextTrial
 let trialsIndex
 let scoresheet = []
 let presentation
@@ -24,6 +26,7 @@ const resetRuntimeData = () => {
   gameDisplayInfo.set({})
   trials = []
   currentTrial = {}
+  nextTrial = {}
   trialsIndex = 0
   scoresheet = []
   presentation = { highlight: false, flash: false }
@@ -90,6 +93,9 @@ const selectTrial = (i) => {
   flashCube()
   currentTrial = trials[i]
   trialsIndex = i
+  if (i < trials.length - 1) {
+    nextTrial = trials[i+1]
+  }
   if (currentTrial.audio) {
     audioPlayer.play(currentTrial.audio)
   }
@@ -102,7 +108,7 @@ const startGame = async () => {
   isPlaying.set(true)
   gameMeta = { ...game.meta, start: Date.now() }
   gameDisplayInfo.set(gameMeta)
-  audioPlayer.cacheAudioSource($settings.audioSource)
+  audioPlayer.cacheAudioSource(gameSettings.audioSource)
   trials = structuredClone(game.trials)
   scoresheet = new Array(trials.length).fill().map(() => ({}))
   presentation.highlight = true
@@ -184,7 +190,11 @@ onDestroy(async () => {
 
 </script>
 
-<Grid trial={currentTrial} {presentation} />
+{#if $settings.mode === 'vtally'}
+<VisualCrank trial={currentTrial} {presentation} trialIndex={trialsIndex} />
+{:else}
+<Grid trial={currentTrial} {nextTrial} {presentation} />
+{/if}
 <div class="stretch grid grid-cols-[1fr_3fr_3fr_1fr] "
   class:grid-rows-[10fr_70fr_8fr]={!isMobile}
   class:grid-rows-[8fr_60fr_15fr]={isMobile}>
