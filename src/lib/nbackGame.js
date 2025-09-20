@@ -9,7 +9,7 @@ export class NBackGame {
     this.numTrials = gameSettings.numTrials
     this.matchChance = gameSettings.matchChance
     this.interference = gameSettings.interference
-    this.gameMode = gameSettings.gameMode
+    this.rules = gameSettings.rules
     this.randomFn = randomFn
   }
 
@@ -29,7 +29,7 @@ export class NBackGame {
     let trials = new Array(this.numTrials).fill().map(() => ({ matches: [] }))
     let tags = []
     const nSequence = this.generateNSequence()
-    if (this.gameMode === 'variable') {
+    if (this.rules === 'variable') {
       trials.forEach((trial, i) => {
         if (i >= this.nBack) {
           trial.variableNBack = nSequence[i]
@@ -47,8 +47,8 @@ export class NBackGame {
     }
 
     let title = this.createTitle(tags)
-    let meta = (({ nBack, numTrials, trialTime, matchChance, interference, gameMode }) =>
-                  ({ nBack, numTrials, trialTime, matchChance, interference, gameMode }))(this.gameSettings)
+    let meta = (({ nBack, numTrials, trialTime, matchChance, interference, rules }) =>
+                  ({ nBack, numTrials, trialTime, matchChance, interference, rules }))(this.gameSettings)
 
     meta = { ...meta, title, tags }
     if (this.tallyStimuli.size > 0) {
@@ -69,7 +69,7 @@ export class NBackGame {
   createTitle(tags) {
     const title = this.createDefaultTitle(tags)
     if (this.tallyStimuli.size > 0) {
-      const prefix = this.gameMode === 'vtally' ? 'vtally' : 'tally'
+      const prefix = this.rules === 'vtally' ? 'vtally' : 'tally'
       return prefix + ' ' + title
     }
     return this.createDefaultTitle(tags)
@@ -89,7 +89,7 @@ export class NBackGame {
   }
 
   generateNSequence() {
-    if (this.gameMode === 'variable') {
+    if (this.rules === 'variable') {
       return new Array(this.numTrials).fill().map(() => Math.floor(Math.pow(this.random(), 0.7) * this.nBack) + 1)
     } else {
       return new Array(this.numTrials).fill(this.nBack)

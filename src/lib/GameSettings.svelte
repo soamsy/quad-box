@@ -40,9 +40,9 @@
 
   const toggleVariableNBack = (event) => {
     if (event.target.checked) {
-      gameSettings.setField('gameMode', 'variable')
+      gameSettings.setField('rules', 'variable')
     } else {
-      gameSettings.setField('gameMode', 'none')
+      gameSettings.setField('rules', 'none')
     }
   }
 
@@ -93,7 +93,7 @@
   {#if $settings.mode !== 'tally' && $settings.mode !== 'vtally'}
   <div id="nback-settings-popup" class="cursor-pointer relative select-none" on:click={() => toggleNBackSettingsPopup()}>
     <div class="relative">
-      {#if $gameSettings.gameMode === 'variable'}
+      {#if $gameSettings.rules === 'variable'}
         <span class="absolute top-0 right-[-0.25rem] z-10 rounded bg-amber-500 w-2 h-2"></span>
       {/if}
       <span class="transition-transform" class:rotate-90={isShowingNBackSettingsPopup}><Settings /></span>
@@ -104,7 +104,7 @@
         <div class="flex flex-col gap-4">
           <div class="grid grid-cols-[6fr_4fr] items-center gap-4">
             <label for="variable-nback" class="text-base">Variable N-Back:</label>
-            <input id="variable-nback" type="checkbox" checked={$gameSettings.gameMode === 'variable'} on:change={toggleVariableNBack} class="toggle" />
+            <input id="variable-nback" type="checkbox" checked={$gameSettings.rules === 'variable'} on:change={toggleVariableNBack} class="toggle" />
           </div>
         </div>
         <p class="mt-4 text-xs">Makes N change randomly each trial</p>

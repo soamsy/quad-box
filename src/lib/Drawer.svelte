@@ -82,7 +82,7 @@ onMount(() => {
     <div class="justify-self-center flex gap-4 select-none px-6 whitespace-nowrap max-w-[70svw] overflow-hidden"
       class:advance={$autoProgression.advance}
       class:fallback={$autoProgression.fallback}>
-      <div>N {$gameSettings.gameMode === 'variable' ? '≤' : '='} {$gameSettings.nBack}</div>
+      <div>N {$gameSettings.rules === 'variable' ? '≤' : '='} {$gameSettings.nBack}</div>
       {#if $settings.mode === 'tally'}
       <div>W = {getPositionWidthDisplay()}</div>
       {/if}
