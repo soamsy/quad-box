@@ -62,7 +62,7 @@ const playTrial = async (i) => {
 
   selectTrial(i)
   presentation.highlight = true
-  const audioWait = currentTrial.audio ? audioPlayer.play(currentTrial.audio) : Promise.resolve()
+  const audioWait = currentTrial.audio ? makeCancellable(audioPlayer.play(currentTrial.audio)) : Promise.resolve()
   const presentationWait = delay(Math.min(2000, $gameDisplayInfo.trialTime - 350)).then(() => presentation.highlight = false)
   const trialWait = delay($gameDisplayInfo.trialTime)
   await Promise.all([audioWait, presentationWait, trialWait])
@@ -90,7 +90,7 @@ const startGame = async () => {
     await delay(700)
     await playTrial(0)
   } catch (e) {
-    if (e.message === 'Timeout cancelled') {
+    if (e.message === 'Game cancelled') {
       console.debug('Game cancelled', e)
     } else {
       throw e
@@ -165,7 +165,7 @@ const delay = async (ms) => {
   const cancel = () => {
     if (timeoutId !== undefined) {
       clearTimeout(timeoutId)
-      rejectFn(new Error('Timeout cancelled'))
+      rejectFn(new Error('Game cancelled'))
       timeoutId = undefined
     }
   }
@@ -173,6 +173,19 @@ const delay = async (ms) => {
   timeoutCancelFns.push(cancel)
 
   return promise
+}
+
+const makeCancellable = (originalPromise) => {
+  let cancelFn
+
+  const wrappedPromise = new Promise((resolve, reject) => {
+    cancelFn = () => reject(new Error('Game cancelled'))
+    originalPromise.then(resolve, reject)
+  })
+
+  timeoutCancelFns.push(cancelFn)
+
+  return wrappedPromise
 }
 
 const handleKey = (event) => {
