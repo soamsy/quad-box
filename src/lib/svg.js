@@ -65,7 +65,6 @@ const changeToSymbol = (svg) => {
   while (svg.firstChild) {
     newEl.appendChild(svg.firstChild)
   }
-  svg.replaceWith(newEl)
   return newEl
 }
 
