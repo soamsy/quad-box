@@ -49,7 +49,7 @@ onDestroy(async () => {
 <main data-theme={theme} class={$settings.theme}>
 <ErrorDisplay />
 <Drawer>
-  {#if $settings.mode === 'tally'}
+  {#if $settings.mode === 'tally' || $settings.mode === 'vtally'}
   <TallyGame />
   {:else}
   <DefaultGame />

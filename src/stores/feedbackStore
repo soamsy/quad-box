@@ -7,7 +7,7 @@ const createFeedbackStore = () => {
     position: 'blank',
     color: 'blank',
     shape: 'blank',
-    shapeColor: 'blank',
+    image: 'blank',
     audio: 'blank',
   }
 
@@ -15,7 +15,7 @@ const createFeedbackStore = () => {
     defaultFeedback.position = 'blank'
     defaultFeedback.color = $gameSettings.enableColor ? 'blank' : 'disabled'
     defaultFeedback.shape = $gameSettings.enableShape ? 'blank' : 'disabled'
-    defaultFeedback.shapeColor = $gameSettings.enableShapeColor ? 'blank' : 'disabled'
+    defaultFeedback.image = $gameSettings.enableImage ? 'blank' : 'disabled'
     defaultFeedback.audio = $gameSettings.enableAudio ? 'blank' : 'disabled'
   }
 

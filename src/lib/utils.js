@@ -34,3 +34,17 @@ export const getLocalDateString = (date) => {
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
+
+export const pick = (pool) => {
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+export const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const tmp = array[i]
+    array[i] = array[j]
+    array[j] = tmp
+  }
+  return array
+}

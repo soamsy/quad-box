@@ -1,33 +1,23 @@
 <script>
-  import { SHAPE_URLS } from "./constants"
-  import { createVoronoiSvg } from "./voronoi"
-  import { createArtSvg } from "./generative"
+  import { getSvgUrl } from "./svg"
 
   export let show = false
   export let flash = false
   export let transparent = false
   export let position = '0-0-0'
   export let boxColor = null
-  export let shapeName = null
+  export let svgId = null
   export let shapeOuterColor = null
-  export let pattern = null
   export let grid = 'rotate3D'
 
-  const svgToDataUrl = (svgString) => {
-    const encoded = encodeURIComponent(svgString)
-      .replace(/'/g, '%27')
-      .replace(/"/g, '%22')
-    return `data:image/svg+xml,${encoded}`
-  }
-
-  const calculateBoxClassNames = (position, shapeName, show, flash, transparent) => {
+  const calculateBoxClassNames = (position, svgId, show, flash, transparent) => {
     if (!show) {
       return 'hidden'
     }
 
     let classNames = ['p' + position]
-    if (shapeName.includes('heart')) {
-      classNames.push('heart')
+    if (svgId && (svgId.includes('-bg-') || svgId.includes('-full_'))) {
+      classNames.push('no-padding')
     }
     if (flash) {
       classNames.push('flash')
@@ -38,7 +28,7 @@
     return classNames.join(' ')
   }
 
-  const calculateBoxStyle = (boxColor, shapeName, shapeOuterColor, pattern, transparent) => {
+  const calculateBoxStyle = (boxColor, svgId, shapeOuterColor, transparent) => {
     let style = ''
     if (boxColor) {
       style += `--face-bg-color: ${boxColor}${transparent ? '3A' : ''};`
@@ -46,13 +36,8 @@
       style += `--face-bg-color: ${shapeOuterColor}${transparent ? '2A' : ''};`
     }
 
-    if (shapeName) {
-      style += `--shape-url: url('${SHAPE_URLS[shapeName]}');`
-    } else if (pattern && pattern.includes('-')) {
-      const [id, splits] = pattern.split('-')
-      style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
-    } else if (pattern) {
-      style += `--shape-url: url('${svgToDataUrl(createArtSvg(pattern))}');`
+    if (svgId) {
+      style += `--shape-url: url('${getSvgUrl(svgId)}');`
     }
 
     if (transparent) {
@@ -62,13 +47,17 @@
     return style
   }
 
-  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', shapeName, show, flash, transparent)
-  $: boxStyle = calculateBoxStyle(boxColor, shapeName, shapeOuterColor, pattern, transparent)
+  $: boxClassNames = calculateBoxClassNames(position ?? '0-0-0', svgId, show, flash, transparent)
+  $: boxStyle = calculateBoxStyle(boxColor, svgId, shapeOuterColor, transparent)
 
 </script>
 
 {#if grid === 'static2D'}
 <div class="cell2d {boxClassNames}" style="{boxStyle}">
+  <div class="face"></div>
+</div>
+{:else if grid === 'visualCrank'}
+<div class="visualCell {boxClassNames}" style="{boxStyle}">
   <div class="face"></div>
 </div>
 {:else}
@@ -98,7 +87,7 @@
     opacity: var(--face-opacity, 1.0);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: var(--face-size, 80%) var(--face-size, 80%);
+    background-size: var(--face-size, 82%) var(--face-size, 82%);
     transition: filter 0.05s ease-out;
   }
 
@@ -119,8 +108,8 @@
     outline: 3px solid #FFF9;
   }
 
-  .cell.heart .face {
-    background-size: 100% 95%;
+  .no-padding .face {
+    background-size: 100% 100%;
   }
 
   .p0-0   { transform: translate(-27.1svmin, -27.1svmin); }

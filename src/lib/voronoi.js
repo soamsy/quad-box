@@ -1,6 +1,4 @@
 import { Delaunay } from 'd3-delaunay'
-import { settings } from '../stores/settingsStore'
-import { get } from 'svelte/store'
 
 const seedSpace = 100000000
 const divisions = 16
@@ -17,7 +15,7 @@ const seededRandom = (seed) => {
   }
 }
 
-export const createVoronoiSvg = (seed, splits) => {
+export const createVoronoiSvg = (seed, splits, theme, padding=0) => {
   let random = seededRandom(seed)
   let colorId = 0
   let firstHue
@@ -31,7 +29,6 @@ export const createVoronoiSvg = (seed, splits) => {
   }
 
   const rollColor = () => {
-    const theme = get(settings).theme
     const hue = Math.floor(range(360))
     let lightness
     let saturation
@@ -96,14 +93,14 @@ export const createVoronoiSvg = (seed, splits) => {
       let isTooClose
       let attempts = 0
       do {
-        point = [range(8, 120), range(12, 116)]
+        point = [range(padding + 8, 400 - padding - 8), range(padding + 12, 400 - padding - 12)]
         if (useOneDimensionShifts && points.length > 0) {
           point = (useBarStrips || random() < 0.5) ? [points[points.length - 1][0], point[1]] : [point[0], points[points.length - 1][1]]
         }
         isTooClose = points.some(([x, y]) => {
           const dx = x - point[0]
           const dy = y - point[1]
-          return Math.sqrt(dx * dx + dy * dy) < 10
+          return Math.sqrt(dx * dx + dy * dy) < 30
         })
         attempts++
       } while (isTooClose && attempts < 100)
@@ -113,22 +110,19 @@ export const createVoronoiSvg = (seed, splits) => {
   }
 
   const generateVoronoiSvg = (id, splits) => {
-    const width = 128
-    const height = 128
+    const width = 400
+    const height = 400
 
     const points = findPoints(splits)
     const delaunay = Delaunay.from(points)
     const voronoi = delaunay.voronoi([0, 0, width, height])
 
-    let svgContent = `<svg id="voronoi-${id}" width="${width}" height="${height}" class="voronoi" xmlns="http://www.w3.org/2000/svg">`
-
+    let svgContent = ``
     for (let i = 0; i < splits; i++) {
       const path = voronoi.renderCell(i)
       const color = nextColor()
-      svgContent += `<path d="${path}" fill="${color}" stroke="#000" stroke-width="1"/>`
+      svgContent += `<path d="${path}" fill="${color}" stroke="#000A" stroke-width="1"></path>`
     }
-
-    svgContent += '</svg>'
     return svgContent
   }
 
@@ -150,7 +144,7 @@ export const createVoronoiPool = () => {
   const pool = []
   for (const seed of seedPool) {
     const split = splitPool[Math.floor(Math.random() * splitPool.length)]
-    pool.push(`${seed}-${split}`)
+    pool.push(`voronoi_${seed}_${split}`)
   }
   return pool
 }
