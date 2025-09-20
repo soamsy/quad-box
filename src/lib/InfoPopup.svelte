@@ -153,15 +153,19 @@
         <div class="divider" />
         <div class="mt-4 flex flex-col gap-2 text-xl">
           <p class="mb-2 font-semibold">Betas</p>
-          <div class="flex items-center gap-2">
-            <input type="checkbox" id="tallyMode" checked={$settings.enableTallyBeta} on:click={applyTallyBeta} class="checkbox" />
-            <label for="tallyMode" class="text-sm font-medium">
-              Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
-            </label>
-            <input type="checkbox" id="visualTallyMode" checked={$settings.enableVisualTallyBeta} on:click={applyVisualTallyBeta} class="checkbox" />
-            <label for="visualTallyMode" class="text-sm font-medium">
-              Enable <span class="bg-emerald-400 dark:bg-emerald-800 px-2 py-1 rounded">Visual Tally</span>
-            </label>
+          <div class="flex flex-col md:flex-row items-center gap-2">
+            <div class="flex gap-1 items-center justify-between">
+              <input type="checkbox" id="tallyMode" checked={$settings.enableTallyBeta} on:click={applyTallyBeta} class="checkbox" />
+              <label for="tallyMode" class="text-sm font-medium">
+                Enable <span class="bg-indigo-400 dark:bg-indigo-800 px-2 py-1 rounded">Tally N-Back</span>
+              </label>
+            </div>
+            <div class="flex gap-1 items-center justify-between">
+              <input type="checkbox" id="visualTallyMode" checked={$settings.enableVisualTallyBeta} on:click={applyVisualTallyBeta} class="checkbox" />
+              <label for="visualTallyMode" class="text-sm font-medium">
+                Enable <span class="bg-emerald-400 dark:bg-emerald-800 px-2 py-1 rounded">Visual Tally</span>
+              </label>
+            </div>
           </div>
           <div class="prose text-sm flex flex-col gap-2 ml-4">
             <p>Tally mode changes how matches are handled. Instead of pressing a hotkey for every stimulus that matches during a trial, you enter the <italic>count</italic> of how many stimuli matched.</p>
