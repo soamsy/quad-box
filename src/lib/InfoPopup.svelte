@@ -172,6 +172,7 @@
       {/if}
       <div class="modal-action flex flex-row-reverse items-center justify-between mt-2">
         <button class="btn" on:click={closeModal}>Close</button>
+        <a class="link" href="https://ko-fi.com/soasoa" target="_blank">Donate☕</a>
         <a class="link" href="https://github.com/soamsy/quad-box" target="_blank">Github</a>
       </div>
     </div>
