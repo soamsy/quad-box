@@ -2,6 +2,7 @@
   import { SHAPE_URLS } from "./constants"
   import { createVoronoiSvg } from "./voronoi"
   import { createArtSvg } from "./generative"
+  import { settings } from "../stores/settingsStore"
 
   export let show = false
   export let flash = false
@@ -12,6 +13,7 @@
   export let shapeOuterColor = null
   export let pattern = null
   export let grid = 'rotate3D'
+  const theme = $settings.theme
 
   const svgToDataUrl = (svgString) => {
     const encoded = encodeURIComponent(svgString)
@@ -50,9 +52,9 @@
       style += `--shape-url: url('${SHAPE_URLS[shapeName]}');`
     } else if (pattern && pattern.includes('-')) {
       const [id, splits] = pattern.split('-')
-      style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits))}');`
+      style += `--shape-url: url('${svgToDataUrl(createVoronoiSvg(id, splits, theme))}');`
     } else if (pattern) {
-      style += `--shape-url: url('${svgToDataUrl(createArtSvg(pattern))}');`
+      style += `--shape-url: url('${svgToDataUrl(createArtSvg(pattern, theme))}');`
     }
 
     if (transparent) {

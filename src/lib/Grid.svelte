@@ -40,6 +40,11 @@
   $: grid = gameDisplayInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
 </script>
 
+{#if trial.variableNBack}
+<div class="flex absolute z-10 items-center justify-center w-full h-full select-none pointer-events-none text-9xl md:text-[10rem] font-bold text-gray-700 dark:text-gray-300 opacity-80 [text-shadow:_1px_1px_0_black,_-1px_1px_0_black,_1px_-1px_0_black,_-1px_-1px_0_black]">
+  {trial.variableNBack}
+</div>
+{/if}
 {#if grid === 'static2D'}
 <div class="flex absolute items-center justify-center w-full h-full select-none overflow-hidden">
   <div class="absolute w-[81.3svmin] h-[81.3svmin] mb-10">

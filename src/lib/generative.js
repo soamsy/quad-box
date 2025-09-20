@@ -1,6 +1,4 @@
 import { line, curveBasis, curveCardinal, curveCatmullRom, curveMonotoneX, curveNatural } from 'd3-shape'
-import { settings } from '../stores/settingsStore'
-import { get } from 'svelte/store'
 
 const seedSpace = 100000000
 const divisions = 16
@@ -317,7 +315,7 @@ const generateFractal = (random, centerX, centerY, size, depth = 3) => {
   return elements
 }
 
-export const createArtSvg = (seed, width = 400, height = 400) => {
+export const createArtSvg = (seed, theme, width = 400, height = 400) => {
   let random = seededRandom(seed)
   let colorId = 0
   let firstHue
@@ -331,7 +329,6 @@ export const createArtSvg = (seed, width = 400, height = 400) => {
   }
 
   const rollColor = () => {
-    let theme = get(settings).theme
     const hue = Math.floor(range(360))
     let lightness
     let saturation

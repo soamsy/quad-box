@@ -1,6 +1,4 @@
 import { Delaunay } from 'd3-delaunay'
-import { settings } from '../stores/settingsStore'
-import { get } from 'svelte/store'
 
 const seedSpace = 100000000
 const divisions = 16
@@ -17,7 +15,7 @@ const seededRandom = (seed) => {
   }
 }
 
-export const createVoronoiSvg = (seed, splits) => {
+export const createVoronoiSvg = (seed, splits, theme) => {
   let random = seededRandom(seed)
   let colorId = 0
   let firstHue
@@ -31,7 +29,6 @@ export const createVoronoiSvg = (seed, splits) => {
   }
 
   const rollColor = () => {
-    const theme = get(settings).theme
     const hue = Math.floor(range(360))
     let lightness
     let saturation
