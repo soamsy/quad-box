@@ -56,6 +56,10 @@
 <div class="cell2d {boxClassNames}" style="{boxStyle}">
   <div class="face"></div>
 </div>
+{:else if grid === 'visualCrank'}
+<div class="visualCell {boxClassNames}" style="{boxStyle}">
+  <div class="face"></div>
+</div>
 {:else}
 <div class="cell {boxClassNames}" style="{boxStyle}">
   <div class="face translate-z-[10svmin]"></div>

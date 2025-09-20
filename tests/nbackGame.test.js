@@ -22,7 +22,7 @@ describe('NBackGame', () => {
 
   const mockStimulusPool = ['a', 'b', 'c']
   const mockTallyStimuli = {
-    pool: ['x', 'y', 'z'],
+    pools: [['x', 'y', 'z'], ['x', 'y', 'z']],
     tags: ['position0', 'position1'],
     sequence: [2, 1]
   }
@@ -33,7 +33,7 @@ describe('NBackGame', () => {
       game.addStimulus('position', mockStimulusPool)
       game.addStimulus('audio', mockStimulusPool)
       game.addStimulus('shape', mockStimulusPool)
-      
+
       const result = game.generateGame()
 
       expect(result).toEqual({
@@ -80,8 +80,8 @@ describe('NBackGame', () => {
 
     it('should generate a game with correct structure for tally stimuli', () => {
       const game = new NBackGame(mockGameSettings, vi.fn(() => 0.99))
-      game.addTallyStimuli('positions', mockTallyStimuli.pool, mockTallyStimuli.tags, mockTallyStimuli.sequence)
-      
+      game.addTallyStimuli('positions', mockTallyStimuli.pools, mockTallyStimuli.tags, mockTallyStimuli.sequence)
+
       const result = game.generateGame()
       expect(result).toEqual({
         trials: [
@@ -118,28 +118,28 @@ describe('NBackGame', () => {
   describe('createTitle', () => {
     it('should create correct titles for regular games', () => {
       const game = new NBackGame(mockGameSettings)
-      
+
       const dualResult = game.createDefaultTitle(['audio'])
       expect(dualResult).toBe('dual')
-      
+
       const quadResult = game.createDefaultTitle(['audio', 'shape', 'color'])
       expect(quadResult).toBe('quad')
-      
+
       const triResult = game.createDefaultTitle(['audio', 'shape'])
       expect(triResult).toBe('tri')
-      
+
       const customResult = game.createDefaultTitle(['shape', 'color'])
       expect(customResult).toBe('custom')
     })
 
     it('should create correct titles for tally games', () => {
       const game = new NBackGame(mockGameSettings)
-      
-      game.addTallyStimuli('positions', mockTallyStimuli.pool, mockTallyStimuli.tags, mockTallyStimuli.sequence)
-      
+
+      game.addTallyStimuli('positions', mockTallyStimuli.pools, mockTallyStimuli.tags, mockTallyStimuli.sequence)
+
       const dualResult = game.createTitle(['audio'])
       expect(dualResult).toBe('tally dual')
-      
+
       const quadResult = game.createTitle(['audio', 'shape', 'color'])
       expect(quadResult).toBe('tally quad')
     })

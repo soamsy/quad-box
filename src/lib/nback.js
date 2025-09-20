@@ -5,12 +5,11 @@ import { NBackGame } from "./nbackGame.js"
 import { createGradientPool } from "./gradient.js"
 import { shuffle } from "./utils.js"
 
-const getPositionPool = (gameSettings) => {
-  if (gameSettings.grid?.includes('2D')) {
-    return POSITION_POOL_2D
-  } else {
-    return POSITION_POOL
-  }
+export const generateGame = (gameSettings, globalSettings) => {
+  const nbackGame = new NBackGame(gameSettings)
+  nbackGame.addStimulus('position', getPositionPool(gameSettings))
+  addNonTallyStimuli(nbackGame, gameSettings, globalSettings)
+  return nbackGame.generateGame()
 }
 
 const addNonTallyStimuli = (nbackGame, gameSettings) => {
@@ -19,72 +18,111 @@ const addNonTallyStimuli = (nbackGame, gameSettings) => {
     nbackGame.addStimulus('audio', getAudioPool(gameSettings.audioSource))
   }
   if (enableShape) {
-    let shapePool
-    switch (gameSettings.shapeSource) {
-      case 'tetris':
-        shapePool = TETRIS_POOL
-        break
-      case 'iconsA':
-        shapePool = ICONS_A_POOL
-        break
-      case 'iconsB':
-        shapePool = ICONS_B_POOL
-        break
-      default:
-        shapePool = SHAPE_POOL
-        break
-    }
-    nbackGame.addStimulus('shape', shuffle(shapePool.slice()).slice(0, Math.min(16, shapePool.length)))
+    nbackGame.addStimulus('shape', getShapePool(gameSettings))
   }
   if (enableColor) {
-    let colorPool
-    switch (gameSettings.colorSource) {
-      case 'gradient':
-        colorPool = createGradientPool()
-        break
-      case 'generative':
-        colorPool = createArtPool()
-        break
-      case 'voronoi':
-        colorPool = createVoronoiPool()
-        break
-      default:
-        colorPool = COLOR_POOL
-        break
-    }
-    nbackGame.addStimulus('color', shuffle(colorPool.slice()).slice(0, Math.min(16, colorPool.length)))
+    nbackGame.addStimulus('color', getColorPool(gameSettings))
   }
   if (enableImage) {
-    const pool = gameSettings.imageSource === 'generative' ? createArtPool() : createVoronoiPool()
-    nbackGame.addStimulus('image', pool)
+    nbackGame.addStimulus('image', getImagePool(gameSettings))
   }
-}
-
-export const generateGame = (gameSettings, globalSettings) => {
-  const nbackGame = new NBackGame(gameSettings)
-  nbackGame.addStimulus('position', getPositionPool(gameSettings))
-  addNonTallyStimuli(nbackGame, gameSettings, globalSettings)
-  return nbackGame.generateGame()
 }
 
 export const generateTallyGame = (gameSettings, globalSettings) => {
+  if (globalSettings.mode === 'vtally') {
+    return generateVisualTallyGame(gameSettings)
+  } else {
+    return generateDefaultTallyGame(gameSettings)
+  }
+}
+
+const generateDefaultTallyGame = (gameSettings) => {
   const nbackGame = new NBackGame(gameSettings)
+  generateWidthBasedStimuli(nbackGame, gameSettings, 'position', () => getPositionPool(gameSettings))
+  addNonTallyStimuli(nbackGame, gameSettings)
+  return nbackGame.generateGame()
+}
+
+const generateVisualTallyGame = (gameSettings) => {
+  const nbackGame = new NBackGame(gameSettings)
+  const { enableShape, enableColor, enableImage } = gameSettings
+  if (enableShape) {
+    generateWidthBasedStimuli(nbackGame, gameSettings, 'shape', () => getShapePool(gameSettings))
+  }
+  if (enableColor) {
+    generateWidthBasedStimuli(nbackGame, gameSettings, 'color', () => getColorPool(gameSettings))
+  }
+  if (enableImage) {
+    generateWidthBasedStimuli(nbackGame, gameSettings, 'image', () => getImagePool(gameSettings))
+  }
+  return nbackGame.generateGame()
+}
+
+const generateWidthBasedStimuli = (nbackGame, gameSettings, field, findPool) => {
   if (gameSettings.enablePositionWidthSequence) {
     const sequence = gameSettings.positionWidthSequence.slice(0, gameSettings.nBack)
     const maxWidth = sequence.reduce((a, b) => Math.max(a, b), 1)
-    let allPositionStimuli = []
-    for (let i = 0; i < maxWidth; i++) {
-      allPositionStimuli.push(`position${i}`)
-    }
-    nbackGame.addTallyStimuli('position', getPositionPool(gameSettings), allPositionStimuli, sequence)
+    const allStimuli = createNTallyStimuli(maxWidth, field)
+    nbackGame.addTallyStimuli(field, allStimuli.map(findPool), allStimuli, sequence)
   } else {
     const width = gameSettings.positionWidth
-    let allPositionStimuli = []
-    for (let i = 0; i < width; i++) {
-      allPositionStimuli.push(`position${i}`)
-    }
-    nbackGame.addTallyStimuli('position', getPositionPool(gameSettings), allPositionStimuli, [width])
+    const allStimuli = createNTallyStimuli(width, field)
+    nbackGame.addTallyStimuli(field, allStimuli.map(findPool), allStimuli, [width])
   }
-  addNonTallyStimuli(nbackGame, gameSettings, globalSettings)
-  return nbackGame.generateGame()
+}
+
+const createNTallyStimuli = (width, field) => {
+  let allStimuli = []
+  for (let i = 0; i < width; i++) {
+    allStimuli.push(`${field}${i}`)
+  }
+  return allStimuli
+}
+
+const getPositionPool = (gameSettings) => {
+  if (gameSettings.grid?.includes('2D')) {
+    return POSITION_POOL_2D
+  } else {
+    return POSITION_POOL
+  }
+}
+
+const getShapePool = (gameSettings) => {
+  return pickN(getShapeSource(gameSettings), 16)
+}
+
+const getShapeSource = (gameSettings) => {
+  switch (gameSettings.shapeSource) {
+    case 'tetris':
+      return TETRIS_POOL
+    case 'iconsA':
+      return ICONS_A_POOL
+    case 'iconsB':
+      return ICONS_B_POOL
+  }
+  return SHAPE_POOL
+}
+
+const getColorPool = (gameSettings) => {
+  return pickN(getColorSource(gameSettings), 16)
+}
+
+const getColorSource = (gameSettings) => {
+  switch (gameSettings.colorSource) {
+    case 'gradient':
+      return createGradientPool()
+    case 'generative':
+      return createArtPool()
+    case 'voronoi':
+      return createVoronoiPool()
+  }
+  return COLOR_POOL
+}
+
+const getImagePool = (gameSettings) => {
+  return gameSettings.imageSource === 'generative' ? createArtPool() : createVoronoiPool()
+}
+
+const pickN = (pool, num) => {
+  return shuffle(pool.slice()).slice(0, Math.min(num, pool.length))
 }

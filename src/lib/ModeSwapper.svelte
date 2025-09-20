@@ -11,6 +11,7 @@
     ['custom', 'bg-orange-800'],
     ['customB', 'bg-yellow-700'],
     ['tally', 'bg-indigo-800'],
+    ['vtally', 'bg-emerald-800'],
   ])
 
   const lightColors = new Map([
@@ -19,9 +20,12 @@
     ['custom', 'bg-orange-400'],
     ['customB', 'bg-yellow-400'],
     ['tally', 'bg-indigo-400'],
+    ['vtally', 'bg-emerald-400'],
   ])
 
-  $: modes = [...lightColors.keys().filter(mode => mode !== 'tally' || $settings.enableTallyBeta)]
+  $: modes = [...lightColors.keys()
+    .filter(mode => mode !== 'tally' || $settings.enableTallyBeta)
+    .filter(mode => mode !== 'vtally' || $settings.enableVisualTallyBeta)]
   $: bg = $settings.theme === 'light' ? lightColors.get(mode) : darkColors.get(mode)
 
   const nextMode = () => {

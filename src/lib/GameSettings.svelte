@@ -90,7 +90,7 @@
     <label class="text-base" for="nback-range">N-back: {$gameSettings.nBack}</label>
     <input id="nback-range" type="range" min="1" max="12" bind:value={$gameSettings.nBack} class="range" />
   </div>
-  {#if $settings.mode !== 'tally'}
+  {#if $settings.mode !== 'tally' && $settings.mode !== 'vtally'}
   <div id="nback-settings-popup" class="cursor-pointer relative select-none" on:click={() => toggleNBackSettingsPopup()}>
     <div class="relative">
       {#if $gameSettings.gameMode === 'variable'}
@@ -154,6 +154,7 @@
     <input type="range" min="0" max="75" bind:value={$gameSettings.interference} step="1" class="range" />
   </label>
 </div>
+{#if $settings.mode !== 'vtally'}
 <div class="flex flex-col gap-1">
   <div class="grid grid-cols-[4fr_6fr] items-center gap-4">
     <span class="text-base">Grid:</span>
@@ -163,9 +164,10 @@
     </select>
   </div>
 </div>
-{#if $settings.mode === 'tally'}
+{/if}
+{#if $settings.mode === 'tally' || $settings.mode === 'vtally'}
   <div class="grid grid-cols-[82fr_18fr] items-center gap-4">
-    <label for="enable-position-width-sequence">Define position chain:</label>
+    <label for="enable-position-width-sequence">Define { $settings.mode === 'vtally' ? 'visual' : 'position' } chain:</label>
     <input id="enable-position-width-sequence" type="checkbox" bind:checked={$gameSettings.enablePositionWidthSequence} class="toggle" />
   </div>
   {#if $gameSettings.enablePositionWidthSequence}
@@ -179,13 +181,14 @@
     </div>
   {:else}
     <div class="flex flex-col gap-1">
-      <label class="text-base">Concurrent Positions: {$gameSettings.positionWidth}
+      <label class="text-base">Concurrent { $settings.mode === 'vtally' ? 'visuals' : 'positions' }: {$gameSettings.positionWidth}
         <input type="range" min="1" max="4" bind:value={$gameSettings.positionWidth} class="range" />
       </label>
     </div>
   {/if}
 {/if}
-{#if $settings.mode.startsWith('custom') || $settings.mode === 'tally'}
+{#if $settings.mode.startsWith('custom') || $settings.mode === 'tally' || $settings.mode === 'vtally'}
+{#if $settings.mode !== 'vtally'}
   <div class="grid grid-cols-[2fr_1fr_3fr] items-center gap-4">
     <label for="enable-audio" class="text-base">Audio:</label>
     <input id="enable-audio" type="checkbox" bind:checked={$gameSettings.enableAudio} class="toggle" />
@@ -195,6 +198,7 @@
       {/each}
     </select>
   </div>
+{/if}
   <div class="grid grid-cols-[2fr_1fr_3fr] items-center gap-4">
     <label for="enable-color" class="text-base">Color:</label>
     <input id="enable-color" type="checkbox" checked={$gameSettings.enableColor} on:input={(e) => toggleShapeOrColor(e, 'enableColor')} class="toggle" />

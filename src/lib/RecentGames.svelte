@@ -92,8 +92,10 @@
 
   const getGameShortName = (game) => {
     if (game.title.startsWith('tally')) {
-      const totalElements = game.nBack
-      return 'Tally ' + totalElements
+      return 'Tally ' + game.nBack
+    }
+    if (game.title.startsWith('vtally')) {
+      return 'VTally ' + game.nBack
     }
 
     if (!game.title || game.title === 'custom') {
@@ -135,7 +137,7 @@
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.audio?.percent)}>{formatPercent(game?.scores?.audio?.percent)}</span></td>
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.color?.percent)}>{formatPercent(game?.scores?.color?.percent)}</span></td>
         <td class="text-center"><span class={'text-sm px-1 ' + getPercentClass(game?.scores?.shapeColor?.percent ?? game?.scores?.image?.percent ?? game?.scores?.shape?.percent)}>{formatPercent(game?.scores?.shapeColor?.percent ?? game?.scores?.image?.percent ?? game?.scores?.shape?.percent)}</span></td>
-        {#if game.title.startsWith('tally')}
+        {#if game.title.startsWith('tally') || game.title.startsWith('vtally')}
           <td>{(game.total.averageTrialTime / 1000).toFixed(2) + 's/t'}</td>
         {:else}
           <td>{formatSeconds(game.elapsedSeconds)}</td>

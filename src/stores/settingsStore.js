@@ -95,6 +95,24 @@ const defaultSettings = {
       shapeSource: 'basic',
       imageSource: 'voronoi',
     },
+    vtally: {
+      nBack: 2,
+      numTrials: 60,
+      matchChance: 25,
+      interference: 20,
+      positionWidth: 2,
+      enablePositionWidthSequence: false,
+      positionWidthSequence: [2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      enableShape: false,
+      enableColor: false,
+      enableImage: true,
+      grid: 'rotate3D',
+      gameMode: 'vtally',
+      audioSource: 'letters2',
+      colorSource: 'basic',
+      shapeSource: 'basic',
+      imageSource: 'generative',
+    },
   },
   feedback: 'show',
   rotationSpeed: 35,
@@ -110,6 +128,7 @@ const defaultSettings = {
     'audio': 'L',
   },
   enableTallyBeta: false,
+  enableVisualTallyBeta: false,
 }
 
 const getDefaultSettings = () => structuredClone(defaultSettings)

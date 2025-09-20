@@ -17,9 +17,9 @@ export class NBackGame {
     this.stimuli.set(tag, pool)
   }
 
-  addTallyStimuli(group, pool, tags, sequence) {
+  addTallyStimuli(group, pools, tags, sequence) {
     this.tallyStimuli.set(group, {
-      pool,
+      pools,
       tags,
       sequence,
     })
@@ -41,20 +41,20 @@ export class NBackGame {
       this.generateStimuli(trials, tag, pool, nSequence)
     }
 
-    for (const [_, { tags: groupTags, sequence, pool }] of this.tallyStimuli) {
+    for (const [_, { tags: groupTags, sequence, pools }] of this.tallyStimuli) {
       groupTags.forEach(tag => tags.push(tag))
-      this.generateTallyStimuli(trials, groupTags, sequence, pool)
+      this.generateTallyStimuli(trials, groupTags, sequence, pools)
     }
 
     let title = this.createTitle(tags)
-    let meta = (({ nBack, numTrials, trialTime, matchChance, interference }) => 
-                  ({ nBack, numTrials, trialTime, matchChance, interference }))(this.gameSettings)
+    let meta = (({ nBack, numTrials, trialTime, matchChance, interference, gameMode }) =>
+                  ({ nBack, numTrials, trialTime, matchChance, interference, gameMode }))(this.gameSettings)
 
     meta = { ...meta, title, tags }
     if (this.tallyStimuli.size > 0) {
-      meta = { ...meta, 
-        mode: 'tally', 
-        positionWidth: this.gameSettings.positionWidth, 
+      meta = { ...meta,
+        mode: 'tally',
+        positionWidth: this.gameSettings.positionWidth,
         enablePositionWidthSequence: this.gameSettings.enablePositionWidthSequence,
         positionWidthSequence: this.gameSettings.positionWidthSequence,
       }
@@ -69,7 +69,8 @@ export class NBackGame {
   createTitle(tags) {
     const title = this.createDefaultTitle(tags)
     if (this.tallyStimuli.size > 0) {
-      return 'tally ' + title
+      const prefix = this.gameMode === 'vtally' ? 'vtally' : 'tally'
+      return prefix + ' ' + title
     }
     return this.createDefaultTitle(tags)
   }
@@ -125,14 +126,14 @@ export class NBackGame {
     }
   }
 
-  /** 
+  /**
    * Generates stimuli for a tag group like ['position0', 'position1', 'position2']
    * with no overlap, and according to a sequence rule like [3, 2, 1, 1].
    * E.g. if sequence is [3,2,1,1], the first trial will have all 3 positions,
    * the second trial will have 2 positions, the third and fourth trials will
    * have 1 position each, then the pattern repeats.
    */
-  generateTallyStimuli(trials, tags, sequence, pool) {
+  generateTallyStimuli(trials, tags, sequence, pools) {
     const n = this.nBack
     const tagMatches = tags.map(_ => this.generateMatches())
     let stimuli = new Array(trials.length)
@@ -142,6 +143,7 @@ export class NBackGame {
         if (tagIndex >= width) {
           return
         }
+        const pool = pools[tagIndex % pools.length]
         const matches = tagMatches[tagIndex]
         const otherTags = tags.filter(otherTag => otherTag !== tag)
         let banned = otherTags.map(otherTag => trials[i][otherTag]).filter(stimulus => stimulus)

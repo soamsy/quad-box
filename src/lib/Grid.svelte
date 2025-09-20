@@ -7,58 +7,14 @@
   import { gameSettings } from "../stores/gameSettingsStore"
   import { gameDisplayInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
-  import { LIGHT_PALETTE, DARK_PALETTE } from "./constants"
-
-  const createSvgId = (trial) => {
-    if (trial.image) {
-      return `${trial.image}-${$settings.theme}`
-    }
-
-    if (trial.shape && !trial.color) {
-      return `basicShape-${trial.shape}-inner-${$settings.theme}`
-    } else if (trial.shape) {
-      if (trial.color.startsWith('gradient')) {
-        return `gradientShape-${trial.shape}-${trial.color}-${$settings.theme}`
-      } else if (trial.color.startsWith('generative')) {
-        return `generativeShape-${trial.shape}-${trial.color}-${$settings.theme}`
-      } else if (trial.color.startsWith('voronoi')) {
-        return `voronoiShape-${trial.shape}-${trial.color}-${$settings.theme}`
-      } else {
-        return `basicShape-${trial.shape}-${trial.color}-${$settings.theme}`
-      }
-    }
-
-    if (!trial.shape && trial.color) {
-      if (trial.color.startsWith('gradient')) {
-        return `gradientShape-bg-${trial.color}-${$settings.theme}`
-      }
-      if (trial.color.startsWith('generative')) {
-        return `generativeShape-bg-${trial.color}-${$settings.theme}`
-      }
-      if (trial.color.startsWith('voronoi')) {
-        return `voronoiShape-bg-${trial.color}-${$settings.theme}`
-      }
-    }
-
-    return ''
-  }
-
-  const findBoxColor = (trial) => {
-    if (trial.shape || trial.image) {
-      return ''
-    } else if (trial.color) {
-      return $settings.theme === 'dark' ? DARK_PALETTE[trial.color] : LIGHT_PALETTE[trial.color]
-    } else {
-      return $settings.theme === 'dark' ? '#FDFDFD' : '#313131'
-    }
-  }
+  import { createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
 
   const range = (n) => Array.from({ length: n }, (_, i) => i)
 
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
-  $: svgId = createSvgId(trial)
-  $: shapeOuterColor = $settings.theme === 'dark' ? (trial.color ? '#FDFDFD' : '#EEEEEE') : '#FAFAFA'
-  $: boxColor = findBoxColor(trial)
+  $: svgId = createSvgId(trial.shape, trial.color, trial.image, $settings)
+  $: shapeOuterColor = findShapeOuterColor(trial.color, $settings)
+  $: boxColor = findBoxColor(trial.shape, trial.color, trial.image, $settings)
   $: highlight = presentation.highlight
   $: flash = presentation.flash
   $: grid = gameDisplayInfo.grid ?? $gameSettings.grid ?? 'rotate3D'
