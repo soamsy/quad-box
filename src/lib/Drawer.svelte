@@ -140,7 +140,7 @@ onMount(() => {
             <label for="rotation-speed-range" class="text-base">Rotation speed:</label>
             <input type="number" min="0" max="999" bind:value={$settings.rotationSpeed} step="1" class="input" />
           </div>
-          <input id="rotation-speed-range" type="range" min="1" max="120" bind:value={$settings.rotationSpeed} step="1" class="range" />
+          <input id="rotation-speed-range" type="range" min="0" max="140" bind:value={$settings.rotationSpeed} step="1" class="range" />
         </div>
         {/if}
         <div class="divider"></div>

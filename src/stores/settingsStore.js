@@ -10,7 +10,7 @@ const defaultSettings = {
   gameSettings: {
     quad: {
       nBack: 2,
-      numTrials: 30,
+      numTrials: 35,
       trialTime: 2500,
       matchChance: 25,
       interference: 20,
@@ -27,7 +27,7 @@ const defaultSettings = {
     },
     dual: {
       nBack: 2,
-      numTrials: 30,
+      numTrials: 35,
       trialTime: 2500,
       matchChance: 30,
       interference: 20,
