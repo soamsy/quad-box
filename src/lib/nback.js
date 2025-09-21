@@ -1,4 +1,4 @@
-import { COLOR_POOL, SHAPE_POOL, getAudioPool, POSITION_POOL, POSITION_POOL_2D, TETRIS_POOL, ICONS_A_POOL, ICONS_B_POOL } from "./constants.js"
+import { COLOR_POOL, SHAPE_POOL, getAudioPool, POSITION_POOL, POSITION_POOL_2D, TETRIS_POOL, ICONS_A_POOL, ICONS_B_POOL, ALL_SHAPES_POOL } from "./constants.js"
 import { createVoronoiPool } from "./voronoi.js"
 import { createArtPool } from "./generative.js"
 import { NBackGame } from "./nbackGame.js"
@@ -99,6 +99,8 @@ const getShapeSource = (gameSettings) => {
       return ICONS_A_POOL
     case 'iconsB':
       return ICONS_B_POOL
+    case 'all':
+      return ALL_SHAPES_POOL
   }
   return SHAPE_POOL
 }

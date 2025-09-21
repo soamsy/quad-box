@@ -89,6 +89,8 @@ export const ICONS_B_POOL = [
   'full_functiongenerator'
 ]
 
+export const ALL_SHAPES_POOL = [ ...SHAPE_POOL, ...TETRIS_POOL, ...ICONS_A_POOL, ...ICONS_B_POOL ]
+
 export const LIGHT_PALETTE = {
   red: '#FF2233',
   green: '#35FF55',
