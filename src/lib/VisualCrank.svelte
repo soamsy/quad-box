@@ -1,10 +1,11 @@
 <script>
   export let trial = {}
+  export let nextTrial = {}
   export let presentation = {}
   export let trialIndex = 0
   import Cell from "./Cell.svelte"
   import { settings } from "../stores/settingsStore"
-  import { createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
+  import { cacheNextTrial, createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
 
   const createCells = (trial) => {
     const cells = []
@@ -38,6 +39,14 @@
 
     return `transform: translate(${x}svmin, ${y}svmin);`
   }
+
+  const cacheNext = (nextTrial) => {
+    for (const cell of createCells(nextTrial)) {
+      cacheNextTrial(cell, $settings)
+    }
+  }
+
+  $: cacheNext(nextTrial)
 
 </script>
 

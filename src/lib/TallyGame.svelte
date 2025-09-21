@@ -191,7 +191,7 @@ onDestroy(async () => {
 </script>
 
 {#if $settings.mode === 'vtally'}
-<VisualCrank trial={currentTrial} {presentation} trialIndex={trialsIndex} />
+<VisualCrank trial={currentTrial} {nextTrial} {presentation} trialIndex={trialsIndex} />
 {:else}
 <Grid trial={currentTrial} {nextTrial} {presentation} />
 {/if}
