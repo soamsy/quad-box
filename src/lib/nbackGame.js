@@ -90,7 +90,7 @@ export class NBackGame {
 
   generateNSequence() {
     if (this.rules === 'variable') {
-      return new Array(this.numTrials).fill().map(() => Math.floor(Math.pow(this.random(), 0.7) * this.nBack) + 1)
+      return new Array(this.numTrials).fill().map(() => Math.floor(Math.pow(this.random(), 0.5) * this.nBack) + 1)
     } else {
       return new Array(this.numTrials).fill(this.nBack)
     }
