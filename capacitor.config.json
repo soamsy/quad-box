@@ -1,0 +1,6 @@
+{
+  "appId": "com.stimlus44.quadbox",
+  "appName": "QuadBox",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
