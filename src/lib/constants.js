@@ -59,6 +59,12 @@ export const ICONS_A_POOL = [
   'full_lucide_command',
   'full_domestika',
   'full_mbills',
+  'big_lightbulb',
+  'big_stairs',
+  'big_parent',
+  'big_alarm',
+  'big_brush',
+  'big_gate',
 ]
 
 export const ICONS_B_POOL = [
@@ -86,7 +92,12 @@ export const ICONS_B_POOL = [
   'full_cherrygram',
   'full_life_fits_into_home',
   'full_meditation_assistant_alt',
-  'full_functiongenerator'
+  'full_functiongenerator',
+  'big_cake',
+  'big_beer',
+  'big_plant',
+  'big_camera',
+  'big_planet',
 ]
 
 export const ALL_SHAPES_POOL = [ ...SHAPE_POOL, ...TETRIS_POOL, ...ICONS_A_POOL, ...ICONS_B_POOL ]

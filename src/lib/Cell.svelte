@@ -18,6 +18,8 @@
     let classNames = ['p' + position]
     if (svgId && (svgId.includes('-bg-') || svgId.includes('-full_'))) {
       classNames.push('no-padding')
+    } else if (svgId && svgId.includes('-big_')) {
+      classNames.push('little-padding')
     }
     if (flash) {
       classNames.push('flash')
@@ -110,6 +112,10 @@
 
   .no-padding .face {
     background-size: 100% 100%;
+  }
+
+  .little-padding .face {
+    background-size: 95% 95%;
   }
 
   .p0-0   { transform: translate(-27.1svmin, -27.1svmin); }
