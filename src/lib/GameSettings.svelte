@@ -63,8 +63,9 @@
   const audioOptions = new Map([
     ['letters2','Letters M1'],
     ['letters3','Letters M2'],
-    ['letters4','Letters F1'],
-    ['letters','Letters F2'],
+    ['letters5','Letters F1'],
+    ['letters4','Letters F2'],
+    ['letters','Letters F3'],
     ['numbers','Numbers'],
     ['nato','NATO'],
     ['syl5','5 syllables'],

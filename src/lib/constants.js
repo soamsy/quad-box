@@ -181,14 +181,23 @@ export const LETTER_F1_AUDIO_POOL = [
   `${LETTERS_F1_PATH}b`,
   `${LETTERS_F1_PATH}c`,
   `${LETTERS_F1_PATH}d`,
+  `${LETTERS_F1_PATH}e`,
   `${LETTERS_F1_PATH}f`,
   `${LETTERS_F1_PATH}g`,
+  `${LETTERS_F1_PATH}h`,
+  `${LETTERS_F1_PATH}i`,
+  `${LETTERS_F1_PATH}j`,
   `${LETTERS_F1_PATH}k`,
   `${LETTERS_F1_PATH}l`,
-  `${LETTERS_F1_PATH}m`,
+  `${LETTERS_F1_PATH}n`,
+  `${LETTERS_F1_PATH}o`,
   `${LETTERS_F1_PATH}p`,
   `${LETTERS_F1_PATH}q`,
   `${LETTERS_F1_PATH}r`,
+  `${LETTERS_F1_PATH}s`,
+  `${LETTERS_F1_PATH}t`,
+  `${LETTERS_F1_PATH}u`,
+  `${LETTERS_F1_PATH}w`,
   `${LETTERS_F1_PATH}x`,
   `${LETTERS_F1_PATH}y`,
   `${LETTERS_F1_PATH}z`,
@@ -196,15 +205,34 @@ export const LETTER_F1_AUDIO_POOL = [
 
 const LETTERS_F2_PATH = "LettersF2/"
 export const LETTER_F2_AUDIO_POOL = [
+  `${LETTERS_F2_PATH}a`,
   `${LETTERS_F2_PATH}b`,
   `${LETTERS_F2_PATH}c`,
+  `${LETTERS_F2_PATH}d`,
+  `${LETTERS_F2_PATH}f`,
   `${LETTERS_F2_PATH}g`,
-  `${LETTERS_F2_PATH}i`,
-  `${LETTERS_F2_PATH}j`,
-  `${LETTERS_F2_PATH}m`,
-  `${LETTERS_F2_PATH}l`,
-  `${LETTERS_F2_PATH}t`,
   `${LETTERS_F2_PATH}k`,
+  `${LETTERS_F2_PATH}l`,
+  `${LETTERS_F2_PATH}m`,
+  `${LETTERS_F2_PATH}p`,
+  `${LETTERS_F2_PATH}q`,
+  `${LETTERS_F2_PATH}r`,
+  `${LETTERS_F2_PATH}x`,
+  `${LETTERS_F2_PATH}y`,
+  `${LETTERS_F2_PATH}z`,
+]
+
+const LETTERS_F3_PATH = "LettersF3/"
+export const LETTER_F3_AUDIO_POOL = [
+  `${LETTERS_F3_PATH}b`,
+  `${LETTERS_F3_PATH}c`,
+  `${LETTERS_F3_PATH}g`,
+  `${LETTERS_F3_PATH}i`,
+  `${LETTERS_F3_PATH}j`,
+  `${LETTERS_F3_PATH}m`,
+  `${LETTERS_F3_PATH}l`,
+  `${LETTERS_F3_PATH}t`,
+  `${LETTERS_F3_PATH}k`,
 ]
 
 const NATO_PATH = "Nato/"
@@ -290,12 +318,14 @@ export const SYL_10_AUDIO_POOL = [
 export const getAudioPool = (audioSource) => {
   switch (audioSource) {
     case 'letters':
-      return LETTER_F2_AUDIO_POOL
+      return LETTER_F3_AUDIO_POOL
     case 'letters2':
       return LETTER_M1_AUDIO_POOL
     case 'letters3':
       return LETTER_M2_AUDIO_POOL
     case 'letters4':
+      return LETTER_F2_AUDIO_POOL
+    case 'letters5':
       return LETTER_F1_AUDIO_POOL
     case 'numbers':
       return NUMBER_AUDIO_POOL
