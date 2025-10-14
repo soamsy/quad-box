@@ -30,6 +30,12 @@
   <div class="modal modal-open" on:click={handleBackdropClick} on:keydown={handleKeydown} tabindex="0">
     <div class="modal-box">
       <Keybindings />
+      <div class="prose grid grid-cols-2 gap-2">
+        <div><span class="text-black dark:text-white">Space:</span> Start Game</div>
+        <div><span class="text-black dark:text-white">Esc:</span> End Game</div>
+        <div><span class="text-black dark:text-white">PgDown:</span> Next Mode</div>
+        <div><span class="text-black dark:text-white">PgUp:</span> Previous Mode</div>
+      </div>
     </div>
   </div>
 {/if}
