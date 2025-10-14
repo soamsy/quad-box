@@ -1,10 +1,10 @@
 import { writable } from 'svelte/store'
-import { migrateToV2 } from '../migrations/v2'
+import { migrateSettings } from '../migrations/migrations'
 
 const STORAGE_KEY = 'quad-box-settings'
 
 const defaultSettings = {
-  version: "v2",
+  version: "v3",
   mode: 'quad',
   theme: 'dark',
   gameSettings: {
@@ -127,8 +127,7 @@ const defaultSettings = {
     'shape': 'J',
     'audio': 'L',
   },
-  enableTallyBeta: false,
-  enableVisualTallyBeta: false,
+  enabledModes: ['quad', 'dual', 'custom'],
 }
 
 const getDefaultSettings = () => structuredClone(defaultSettings)
@@ -160,7 +159,7 @@ const loadSettings = () => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     let savedSettings = raw ? JSON.parse(raw) : {}
-    savedSettings = migrateToV2(savedSettings)
+    savedSettings = migrateSettings(savedSettings)
     return deepMerge(getDefaultSettings(), savedSettings)
   } catch (e) {
     console.error('Failed to load settings from localStorage:', e)
