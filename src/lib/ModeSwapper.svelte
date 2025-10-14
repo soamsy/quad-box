@@ -31,7 +31,7 @@
 
   const allModes = [...lightColors.keys()]
 
-  $: modes = $settings.enabledModes
+  $: modes = [...$settings.enabledModes].sort((a, b) => allModes.indexOf(a) - allModes.indexOf(b))
   $: displayModes = new Map(
     allModes.map(m => [m, modes.includes(m)]),
   )
