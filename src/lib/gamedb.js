@@ -258,7 +258,7 @@ const addScoreMetadata = (game) => {
   }
 
   if (game.total.percent >= 0.4 && game?.mode !== 'tally') {
-    game.ncalc = game.nBack + (game.total.percent - 0.5) * 2.5
+    game.ncalc = game.nBack + (game.total.percent - 0.5) * 2.7
   }
 
   if (game?.mode === 'tally') {
