@@ -2,6 +2,7 @@
   export let trial = {}
   export let nextTrial = {}
   export let presentation = {}
+  export let gameId = 0
   import Cell from "./Cell.svelte"
   import Frame from "./Frame.svelte"
   import { settings } from "../stores/settingsStore"
@@ -9,10 +10,30 @@
   import { gameDisplayInfo } from "../stores/gameRunningStore"
   import { mobile } from "../stores/mobileStore"
   import { cacheNextTrial, createSvgId, findBoxColor, findShapeOuterColor } from "./trialUtils"
+  import { seededRandom } from './utils.js'
 
   const range = (n) => Array.from({ length: n }, (_, i) => i)
 
+
+  const currentRotationRandom = (gameId) => {
+    const now = Date.now()
+    const twoHourTruncated = Math.floor(now / 7200000) * 7200000
+    const seed = twoHourTruncated + Math.floor(gameId / 6)
+    const random = seededRandom(seed)
+    return random
+  }
+
+  const determineRotationStart = (gameId) => {
+    const random = currentRotationRandom(gameId)
+    return {
+      x: (random() * 360).toFixed(2),
+      z: (random() * 360).toFixed(2),
+      y: (random() * 360).toFixed(2),
+    }
+  }
+
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
+  $: rotationStart = determineRotationStart(gameId)
   $: svgId = createSvgId(trial.shape, trial.color, trial.image, $settings)
   $: shapeOuterColor = findShapeOuterColor(trial.color, $settings)
   $: boxColor = findBoxColor(trial.shape, trial.color, trial.image, $settings)
@@ -62,7 +83,12 @@
 <div class="flex absolute items-center justify-center w-full h-full select-none perspective-[60svmin] overflow-hidden">
   <div class="scene absolute w-[60.3svmin] h-[60.3svmin] transform-3d -translate-z-[10svmin]"
   class:mb-10={$mobile}
-  style="animation-duration: {rotationTime}s;"
+  style="
+  animation-duration: {rotationTime}s;
+  --rotation-start-x: {rotationStart.x}deg;
+  --rotation-start-y: {rotationStart.y}deg;
+  --rotation-start-z: {rotationStart.z}deg;
+  "
   >
     {#if trial.position0}
       {#each range(gameDisplayInfo.getMaxWidth()) as i (i)}
@@ -116,6 +142,17 @@
     }
     100% {
       transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotateX(var(--rotation-start-x, 0deg)) rotateY(var(--rotation-start-y, 0deg)) rotateZ(var(--rotation-start-z, 0deg));
+    }
+    to {
+      transform: rotateX(calc(var(--rotation-start-x, 0deg) + 360deg))
+                rotateY(calc(var(--rotation-start-y, 0deg) + 360deg))
+                rotateZ(calc(var(--rotation-start-z, 0deg) + 360deg));
     }
   }
 </style>

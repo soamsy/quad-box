@@ -48,3 +48,18 @@ export const shuffle = (array) => {
   }
   return array
 }
+
+export const seededRandom = (seed) => {
+  let m = 2 ** 31 - 1 // Large prime number
+  let a = 48271       // Multiplier
+  let c = 1           // Increment
+  let state = seed % m
+  for (let i = 0; i < 10; i++) {
+    state = (a * state + c) % m
+  }
+
+  return () => {
+    state = (a * state + c) % m
+    return state / m // Normalize to [0, 1)
+  }
+}

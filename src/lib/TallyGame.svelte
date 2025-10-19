@@ -193,7 +193,7 @@ onDestroy(async () => {
 {#if $settings.mode === 'vtally'}
 <VisualCrank trial={currentTrial} {nextTrial} {presentation} trialIndex={trialsIndex} />
 {:else}
-<Grid trial={currentTrial} {nextTrial} {presentation} />
+<Grid trial={currentTrial} {nextTrial} {presentation} {gameId} />
 {/if}
 <div class="stretch grid grid-cols-[1fr_3fr_3fr_1fr] "
   class:grid-rows-[10fr_70fr_8fr]={!isMobile}

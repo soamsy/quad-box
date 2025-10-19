@@ -1,19 +1,9 @@
 import { Delaunay } from 'd3-delaunay'
+import { seededRandom } from './utils.js'
 
 const seedSpace = 100000000
 const divisions = 16
 const partitionSize = seedSpace / divisions
-const seededRandom = (seed) => {
-  let m = 2 ** 31 - 1 // Large prime number
-  let a = 48271       // Multiplier
-  let c = 0           // Increment
-  let state = seed % m
-
-  return () => {
-    state = (a * state + c) % m
-    return state / m // Normalize to [0, 1)
-  }
-}
 
 export const createVoronoiSvg = (seed, splits, theme, padding=0) => {
   let random = seededRandom(seed)

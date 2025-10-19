@@ -229,7 +229,7 @@ onDestroy(async () => {
 </script>
 
 
-<Grid trial={currentTrial} {nextTrial} {presentation} />
+<Grid trial={currentTrial} {nextTrial} {presentation} {gameId} />
 {#if isMobile}
 <div class="stretch grid grid-rows-[1fr_7fr_2fr] md:grid-rows-[1fr_8fr_2fr] gap-1">
   <div class="w-full h-full flex items-center justify-between row-start-1 p-8">

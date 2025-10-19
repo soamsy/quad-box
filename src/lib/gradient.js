@@ -1,18 +1,8 @@
+import { seededRandom } from './utils.js'
+
 const seedSpace = 100000000
 const divisions = 16
 const partitionSize = seedSpace / divisions
-
-const seededRandom = (seed) => {
-  let m = 2 ** 31 - 1
-  let a = 48271
-  let c = 0
-  let state = seed % m
-
-  return () => {
-    state = (a * state + c) % m
-    return state / m
-  }
-}
 
 export const createGradient = (gradientId, theme) => {
   const seed = parseInt(gradientId.replace('gradient_', ''))
