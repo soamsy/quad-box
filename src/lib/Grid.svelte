@@ -15,25 +15,24 @@
   const range = (n) => Array.from({ length: n }, (_, i) => i)
 
 
-  const currentRotationRandom = (gameId) => {
+  const currentRotationRandom = () => {
     const now = Date.now()
-    const twoHourTruncated = Math.floor(now / 7200000) * 7200000
-    const seed = twoHourTruncated + Math.floor(gameId / 6)
+    const seed = Math.floor(now / 7200000) * 7200000 // 2 hrs * 60 min * 60 sec * 1000 ms
     const random = seededRandom(seed)
     return random
   }
 
-  const determineRotationStart = (gameId) => {
-    const random = currentRotationRandom(gameId)
+  const determineRotationStart = () => {
+    const random = currentRotationRandom()
     return {
       x: (random() * 360).toFixed(2),
       z: (random() * 360).toFixed(2),
       y: (random() * 360).toFixed(2),
     }
   }
+  const rotationStart = determineRotationStart()
 
   $: rotationTime = (3400 / $settings.rotationSpeed).toFixed(0)
-  $: rotationStart = determineRotationStart(gameId)
   $: svgId = createSvgId(trial.shape, trial.color, trial.image, $settings)
   $: shapeOuterColor = findShapeOuterColor(trial.color, $settings)
   $: boxColor = findBoxColor(trial.shape, trial.color, trial.image, $settings)
