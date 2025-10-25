@@ -24,7 +24,9 @@ onMount(async () => {
 
   await tick()
 
-  scrollContainer.scrollLeft = scrollContainer.scrollWidth / 2
+  if (scrollContainer) {
+    scrollContainer.scrollLeft = scrollContainer.scrollWidth / 2
+  }
 })
 
 const start = getLocalDateString(new Date(Date.now() - 363 * 24 * 60 * 60 * 1000))
@@ -32,7 +34,7 @@ const end = getLocalDateString(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000))
 </script>
 
 <div bind:this={scrollContainer} class="flex items-center justify-center w-full overflow-x-auto">
-<activity-graph 
+<activity-graph
 class:activity-graph-dark={$settings.theme === 'dark'}
 activity-data={activity}
 range-start={start}
