@@ -120,6 +120,14 @@ const endGame = async (status) => {
     return
   }
 
+  if (status === 'completed') {
+    try {
+      await delay(100)
+    } catch {
+      // ignore
+    }
+  }
+
   const gameInfoRecord = { ...gameMeta, timestamp: Date.now() }
   if (trialsIndex > gameInfoRecord.nBack) {
     await analytics.scoreTallyTrials(gameInfoRecord, status === 'completed' ? scoresheet : scoresheet.slice(0, trialsIndex), status)
