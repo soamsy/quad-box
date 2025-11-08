@@ -214,7 +214,6 @@ export const LETTER_F2_AUDIO_POOL = [
   `${LETTERS_F2_PATH}k`,
   `${LETTERS_F2_PATH}l`,
   `${LETTERS_F2_PATH}m`,
-  `${LETTERS_F2_PATH}p`,
   `${LETTERS_F2_PATH}q`,
   `${LETTERS_F2_PATH}r`,
   `${LETTERS_F2_PATH}x`,
