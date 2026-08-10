@@ -2,6 +2,7 @@
 import Grid from "./Grid.svelte"
 import NumberKey from "./NumberKey.svelte"
 import VisualCrank from "./VisualCrank.svelte"
+import AudioIndicator from "./AudioIndicator.svelte"
 import { generateTallyGame } from "./nback"
 import { onDestroy } from "svelte"
 import { audioPlayer } from "./audioPlayer"
@@ -200,6 +201,8 @@ onDestroy(async () => {
 
 {#if $settings.mode === 'vtally'}
 <VisualCrank trial={currentTrial} {nextTrial} {presentation} trialIndex={trialsIndex} />
+{:else if $settings.mode === 'atally'}
+<AudioIndicator {presentation} />
 {:else}
 <Grid trial={currentTrial} {nextTrial} {presentation} {gameId} />
 {/if}

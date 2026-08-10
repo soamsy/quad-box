@@ -18,6 +18,7 @@
     ['customB', 'bg-yellow-700'],
     ['tally', 'bg-indigo-800'],
     ['vtally', 'bg-emerald-800'],
+    ['atally', 'bg-purple-800'],
   ])
 
   const lightColors = new Map([
@@ -27,6 +28,7 @@
     ['customB', 'bg-yellow-400'],
     ['tally', 'bg-indigo-400'],
     ['vtally', 'bg-emerald-400'],
+    ['atally', 'bg-purple-400'],
   ])
 
   const allModes = [...lightColors.keys()]
@@ -132,6 +134,9 @@
     <div class="prose text-sm flex flex-col gap-2 ml-4">
       <p>Tally mode changes how matches are handled. Instead of pressing a hotkey for every stimulus that matches during a trial, you enter the <italic>count</italic> of how many stimuli matched.</p>
       <p>Because only one input is needed per trial, there’s no fixed trial timer. The game advances when you enter a number, and will be as fast as you're able to keep up.</p>
+      {#if mode === 'atally'}
+      <p>Audio tally plays one sound per trial, so the count is always 0 or 1: press 1 if it matches the sound from N trials back, 0 if it doesn't.</p>
+      {/if}
     </div>
     <div class="flex justify-end w-full"><button class="btn btn-primary mt-4" on:click={() => showTallyExplanation = false}>Close</button></div>
   </div>

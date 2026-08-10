@@ -31,6 +31,8 @@ const addNonTallyStimuli = (nbackGame, gameSettings) => {
 export const generateTallyGame = (gameSettings, globalSettings) => {
   if (globalSettings.mode === 'vtally') {
     return generateVisualTallyGame(gameSettings)
+  } else if (globalSettings.mode === 'atally') {
+    return generateAudioTallyGame(gameSettings)
   } else {
     return generateDefaultTallyGame(gameSettings)
   }
@@ -55,6 +57,12 @@ const generateVisualTallyGame = (gameSettings) => {
   if (enableImage) {
     generateWidthBasedStimuli(nbackGame, gameSettings, 'image', () => getImagePool(gameSettings))
   }
+  return nbackGame.generateGame()
+}
+
+const generateAudioTallyGame = (gameSettings) => {
+  const nbackGame = new NBackGame(gameSettings)
+  nbackGame.addTallyStimuli('audio', [getAudioPool(gameSettings.audioSource)], ['audio'], [1])
   return nbackGame.generateGame()
 }
 

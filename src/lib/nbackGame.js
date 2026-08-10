@@ -69,7 +69,7 @@ export class NBackGame {
   createTitle(tags) {
     const title = this.createDefaultTitle(tags)
     if (this.tallyStimuli.size > 0) {
-      const prefix = this.rules === 'vtally' ? 'vtally' : 'tally'
+      const prefix = this.rules === 'vtally' ? 'vtally' : this.rules === 'atally' ? 'atally' : 'tally'
       return prefix + ' ' + title
     }
     return this.createDefaultTitle(tags)

@@ -134,7 +134,7 @@ onMount(() => {
             <option value="hide-counter">Hide counter only</option>
           </select>
         </div>
-        {#if $settings.mode !== 'vtally'}
+        {#if $settings.mode !== 'vtally' && $settings.mode !== 'atally'}
         <div class="flex flex-col gap-1">
           <div class="grid grid-cols-[3fr_1fr] items-center">
             <label for="rotation-speed-range" class="text-base">Rotation speed:</label>
@@ -144,7 +144,7 @@ onMount(() => {
         </div>
         {/if}
         <div class="divider"></div>
-        {#if $settings.mode !== 'tally' && $settings.mode !== 'vtally'}
+        {#if $settings.mode !== 'tally' && $settings.mode !== 'vtally' && $settings.mode !== 'atally'}
         <div class="grid grid-cols-[8fr_2fr] items-center">
           <label for="enable-auto-progression" class="text-base">Auto progression:</label>
           <input id="enable-auto-progression" type="checkbox" bind:checked={$settings.enableAutoProgression} class="toggle" />

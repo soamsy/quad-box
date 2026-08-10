@@ -38,6 +38,8 @@ export const title = derived(gameDisplayInfo, ($gameInfo) => {
     return 'tally'
   } else if ($gameInfo.title.startsWith('vtally ')) {
     return 'vtally'
+  } else if ($gameInfo.title.startsWith('atally ')) {
+    return 'atally'
   }
 
   return $gameInfo.title

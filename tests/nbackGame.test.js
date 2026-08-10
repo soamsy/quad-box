@@ -143,6 +143,15 @@ describe('NBackGame', () => {
       const quadResult = game.createTitle(['audio', 'shape', 'color'])
       expect(quadResult).toBe('tally quad')
     })
+
+    it('should create correct titles for audio tally games', () => {
+      const game = new NBackGame({ ...mockGameSettings, rules: 'atally' })
+
+      game.addTallyStimuli('audio', [['a', 'b', 'c']], ['audio'], [1])
+
+      const result = game.createTitle([])
+      expect(result).toBe('atally custom')
+    })
   })
 
   describe('generateMatches', () => {
